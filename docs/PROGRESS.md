@@ -5,7 +5,7 @@
 | # | Nama Tahap | Status |
 |---|---|---|
 | 1 | Fondasi proyek dan file konsep | Selesai |
-| 2 | Database dan model | Belum |
+| 2 | Database dan model | Selesai |
 | 3 | Panel admin bagian 1: login, keamanan, Proyek | Belum |
 | 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Belum |
 | 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Belum |
@@ -67,10 +67,44 @@
 
 ---
 
+## Tahap 2 — Database dan Model ✅ SELESAI
+
+**Selesai pada:** 2026-09-29
+
+### Yang selesai
+- [x] 7 migrasi baru: `site_settings`, `projects`, `project_media`, `experiences`, `certificates`, `links`, `link_highlights`
+- [x] Semua enum diimplementasikan sebagai PHP backed enum + string kolom (tidak pakai `$table->enum()`): `ProjectType`, `ProjectStatus`, `MediaKind`, `ExperienceKind`, `LinkGroup`
+- [x] 7 model baru dengan `HasTranslations`: `SiteSetting`, `Project`, `ProjectMedia`, `Experience`, `Certificate`, `Link`, `LinkHighlight`
+- [x] Scope `published()` dan `ordered()` di semua model yang relevan
+- [x] Slug otomatis dari judul Indonesia, unik (akhiran angka), dan immutable setelah terbit
+- [x] `published_at` terisi sekali saat pertama kali diterbitkan
+- [x] `SiteSetting::current()` — singleton-style, tidak bisa buat baris kedua
+- [x] Fallback bahasa `id` dikonfigurasi di `AppServiceProvider` via `Translatable::fallback()`. String kosong dari form admin otomatis fall back ke `id` karena `allowEmptyStringForTranslation = false` (default)
+- [x] Kunci asing cascade delete: `project_media.project_id` dan `link_highlights.link_id`
+- [x] Indeks: semua yang diminta sudah ditambahkan
+- [x] 7 factory untuk pengujian (`ProjectFactory`, `ProjectMediaFactory`, `ExperienceFactory`, `CertificateFactory`, `LinkFactory`, `LinkHighlightFactory`, `SiteSettingFactory`)
+- [x] `SiteSettingSeeder` — idempoten, placeholder `[ISI: ...]`, tidak menimpa data yang sudah ada
+- [x] `config/portfolio.php` dengan `admin_email` membaca dari `ADMIN_EMAIL` env
+- [x] `ADMIN_EMAIL=` ditambahkan ke `.env.example` dan `.env`
+- [x] Perintah `php artisan portfolio:make-admin` — baca email dari config, interaktif, idempoten
+- [x] 29 tes — semua hijau (scope published, published_at sekali, default draft, slug unik+immutable, fallback bahasa termasuk string kosong, cascade delete, SiteSetting current, make-admin)
+- [x] `migrate:fresh --seed` sukses; `db:seed` kedua kalinya tidak duplikasi
+- [x] `config:cache` + `portfolio:make-admin` bekerja; `config:clear` sudah dijalankan
+- [x] `php artisan test` → 29/29 hijau
+- [x] `vendor/bin/pint` → 0 error
+
+### Keputusan penting
+- Default nilai model (`status`, `is_featured`, `sort_order`, `is_published`) didefinisikan di property `$attributes` di model, bukan hanya di migration. Ini penting agar Eloquent mengenal default sebelum save (tanpa perlu `refresh()` setelah create di test).
+- Fallback bahasa bekerja via `Translatable::fallback(fallbackLocale: 'id')` di `AppServiceProvider`. String kosong difilter karena `allowEmptyStringForTranslation = false` (default spatie v6).
+- `SiteSetting::exists()` adalah static method custom (bukan `Builder::exists()`) untuk cek apakah tabel punya baris.
+
+### Catatan perbedaan dengan KONSEP.md
+Tidak ada perbedaan yang ditemukan antara skema yang diimplementasikan dengan spesifikasi di KONSEP.md. Semua model konten yang disebutkan sudah diimplementasikan.
+
+
 ## Catatan lingkungan
 
 | Item | Status | Tindakan |
 |------|--------|----------|
 | Node.js 20.18.1 | ⚠️ Di bawah minimum Vite 8 (butuh ≥ 20.19) | Upgrade ke **Node 22 LTS** atau minimal 20.19+ sebelum tahap berikutnya. Gunakan `nvm` atau `winget install OpenJS.NodeJS.LTS`. |
 | PHP VPS (tahap 10) | ❓ Belum dicek | Pastikan PHP di VPS ≥ **8.3** sebelum deploy. Jika lebih rendah, putuskan apakah menurunkan constraint `composer.json` atau upgrade VPS PHP terlebih dahulu. |
-

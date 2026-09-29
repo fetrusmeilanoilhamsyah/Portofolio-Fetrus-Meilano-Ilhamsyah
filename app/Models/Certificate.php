@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Models;
+
+use Database\Factories\CertificateFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Translatable\HasTranslations;
+
+#[Fillable([
+    'title',
+    'issuer',
+    'category',
+    'issued_at',
+    'expires_at',
+    'credential_url',
+    'image',
+    'file',
+    'alt',
+    'is_published',
+    'sort_order',
+])]
+class Certificate extends Model
+{
+    /** @use HasFactory<CertificateFactory> */
+    use HasFactory, HasTranslations;
+
+    public array $translatable = ['alt'];
+
+    protected $attributes = [
+        'is_published' => false,
+        'sort_order' => 0,
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'issued_at' => 'date',
+            'expires_at' => 'date',
+            'is_published' => 'boolean',
+            'sort_order' => 'integer',
+        ];
+    }
+
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('is_published', true);
+    }
+
+    public function scopeOrdered(Builder $query): void
+    {
+        $query->orderBy('sort_order')->orderBy('issued_at', 'desc');
+    }
+}
