@@ -31,11 +31,11 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => array_merge(Color::hex('#C8501E'), [
-                    600 => '#C8501E', // Light mode
-                    500 => '#C8501E', // Base
-                    400 => '#E8743F', // Dark mode
-                ]),
+                'primary' => [
+                    400 => '#E8743F',
+                    500 => '#C8501E',
+                    600 => '#C8501E',
+                ] + \Filament\Support\Colors\Color::hex('#C8501E'),
             ])
             ->multiFactorAuthentication(AppAuthentication::make()->recoverable())
             ->renderHook(
