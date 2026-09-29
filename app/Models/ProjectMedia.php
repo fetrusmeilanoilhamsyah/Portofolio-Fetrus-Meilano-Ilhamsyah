@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MediaKind;
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\ProjectMediaFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +24,8 @@ use Spatie\Translatable\HasTranslations;
 ])]
 class ProjectMedia extends Model
 {
+    use DispatchesContentChanged;
+
     /** @use HasFactory<ProjectMediaFactory> */
     use HasFactory, HasTranslations;
 

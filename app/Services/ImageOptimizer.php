@@ -27,6 +27,10 @@ class ImageOptimizer
 
         [$origWidth, $origHeight, $imageType] = $info;
 
+        if ($origWidth * $origHeight > 24000000) {
+            throw new InvalidArgumentException('Gambar terlalu besar (lebih dari 24 megapiksel). Harap perkecil gambar Anda sebelum mengunggah.');
+        }
+
         $image = match ($imageType) {
             IMAGETYPE_JPEG => imagecreatefromjpeg($sourcePath),
             IMAGETYPE_PNG => imagecreatefrompng($sourcePath),
@@ -37,6 +41,29 @@ class ImageOptimizer
 
         if (! $image) {
             throw new InvalidArgumentException('Gagal memproses gambar.');
+        }
+
+        if ($imageType === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
+            $exif = @exif_read_data($sourcePath);
+            if (! empty($exif['Orientation'])) {
+                switch ($exif['Orientation']) {
+                    case 3:
+                        $image = imagerotate($image, 180, 0);
+                        break;
+                    case 6:
+                        $image = imagerotate($image, -90, 0);
+                        $tmp = $origWidth;
+                        $origWidth = $origHeight;
+                        $origHeight = $tmp;
+                        break;
+                    case 8:
+                        $image = imagerotate($image, 90, 0);
+                        $tmp = $origWidth;
+                        $origWidth = $origHeight;
+                        $origHeight = $tmp;
+                        break;
+                }
+            }
         }
 
         // Hitung dimensi baru

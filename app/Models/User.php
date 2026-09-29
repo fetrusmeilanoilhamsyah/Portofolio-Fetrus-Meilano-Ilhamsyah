@@ -33,7 +33,7 @@ class User extends Authenticatable implements FilamentUser, HasAppAuthentication
     {
         $adminEmail = config('portfolio.admin_email');
 
-        return filled($adminEmail) && $this->email === $adminEmail;
+        return filled($adminEmail) && strtolower($this->email) === strtolower($adminEmail);
     }
 
     /**

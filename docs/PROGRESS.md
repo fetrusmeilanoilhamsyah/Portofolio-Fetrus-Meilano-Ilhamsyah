@@ -135,3 +135,14 @@ Tidak ada perbedaan yang ditemukan antara skema yang diimplementasikan dengan sp
 - **ImageOptimizer:** Pakai GD bawaan PHP (imagecreatefrom*, imagecopyresampled, imagewebp) alih-alih memasang package baru, sesuai aturan proyek.
 - **Translasi Admin:** Tidak memakai plugin Spatie Translatable Filament karena dilarang menambah paket tanpa izin, jadi field .id dan .en dibuat manual di form.
 - **Rate Limiting:** Mengandalkan limit bawaan halaman Login Filament 5 (5 kali per menit).
+
+### Koreksi Tahap 3b
+- **Perbaikan Namespace Filament 5:** Mengganti import `Filament\Forms\Components\Tabs` menjadi `Filament\Schemas\Components\Tabs`, `Get` menjadi `Filament\Schemas\Components\Utilities\Get`, dan aksi-aksi tabel dari `Filament\Tables\Actions` menjadi `Filament\Actions`. (Catatan namespace Filament 5: Tabs, Get, Set, Section, Grid, Fieldset ada di `Schemas`; Action, BulkAction, EditAction, DeleteAction, dll ada di `Actions`).
+- **Hidrasi Translatable (Edit):** Menambahkan trait `FillsTranslatableAttributes` yang memetakan manual atribut multi-bahasa di `mutateFormDataBeforeFill`, serta callback `mutateRelationshipDataBeforeFillUsing` di Repeater media.
+- **Event ContentChanged:** Membuat trait `DispatchesContentChanged` dan menerapkannya pada `Project` dan `ProjectMedia` sehingga perubahan media tak terlewat.
+- **2FA Recoverable:** `AppAuthentication` pada `AdminPanelProvider` kini ditautkan dengan `->recoverable()` (cara memulihkan: gunakan Recovery Code saat login).
+- **Toleransi Email:** `canAccessPanel` disesuaikan menggunakan `strtolower` agar case-insensitive.
+- **Enum Labels:** `ProjectType`, `ProjectStatus`, dan `MediaKind` diimpelementasikan dengan `HasLabel` sehingga tampil rapi di panel admin.
+- **Optimasi Gambar Lanjutan:** Menambahkan rotasi orientasi EXIF dan pengecekan resolusi maksimal 24MP pada `ImageOptimizer`.
+- **Livewire Tests:** Menambahkan tes `ProjectResourceTest` untuk memvalidasi fungsi render, penambahan, pengubahan, hidrasi, dan aksi massal.
+

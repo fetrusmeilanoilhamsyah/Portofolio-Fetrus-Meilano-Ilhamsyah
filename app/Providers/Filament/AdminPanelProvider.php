@@ -37,7 +37,7 @@ class AdminPanelProvider extends PanelProvider
                     400 => '#E8743F', // Dark mode
                 ]),
             ])
-            ->multiFactorAuthentication(AppAuthentication::make())
+            ->multiFactorAuthentication(AppAuthentication::make()->recoverable())
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
                 fn (): string => '<meta name="robots" content="noindex, nofollow">'

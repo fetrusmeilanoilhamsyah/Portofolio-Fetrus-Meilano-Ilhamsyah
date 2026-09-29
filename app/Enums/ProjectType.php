@@ -2,7 +2,9 @@
 
 namespace App\Enums;
 
-enum ProjectType: string
+use Filament\Support\Contracts\HasLabel;
+
+enum ProjectType: string implements HasLabel
 {
     case Bot = 'bot';
     case Web = 'web';
@@ -10,7 +12,7 @@ enum ProjectType: string
     case Magang = 'magang';
     case Kegiatan = 'kegiatan';
 
-    public function label(): string
+    public function getLabel(): ?string
     {
         return match ($this) {
             self::Bot => 'Bot',
@@ -19,5 +21,10 @@ enum ProjectType: string
             self::Magang => 'Magang',
             self::Kegiatan => 'Kegiatan',
         };
+    }
+
+    public function label(): string
+    {
+        return $this->getLabel();
     }
 }

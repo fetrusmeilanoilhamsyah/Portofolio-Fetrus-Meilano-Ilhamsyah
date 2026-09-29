@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectType;
-use App\Events\ContentChanged;
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,6 +36,8 @@ use Spatie\Translatable\HasTranslations;
 ])]
 class Project extends Model
 {
+    use DispatchesContentChanged;
+
     /** @use HasFactory<ProjectFactory> */
     use HasFactory, HasTranslations;
 
@@ -88,12 +90,6 @@ class Project extends Model
                 $project->slug = $project->getOriginal('slug');
             }
         });
-
-        $dispatchContentChanged = fn () => event(new ContentChanged);
-
-        static::created($dispatchContentChanged);
-        static::updated($dispatchContentChanged);
-        static::deleted($dispatchContentChanged);
     }
 
     /**

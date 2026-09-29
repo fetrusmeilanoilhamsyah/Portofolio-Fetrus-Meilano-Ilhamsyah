@@ -5,17 +5,18 @@ namespace App\Filament\Resources\Projects\Schemas;
 use App\Enums\MediaKind;
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectType;
+use App\Models\Project;
 use App\Services\ImageOptimizer;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
@@ -60,10 +61,10 @@ class ProjectForm
                                     ->validationMessages([
                                         'max.file' => 'Ukuran cover maksimal 5 MB.',
                                     ])
-                                    ->required(),
+                                    ->required(fn (Get $get) => $get('status') === ProjectStatus::Published->value),
                                 TextInput::make('cover_alt.id')
                                     ->label('Cover Alt (ID)')
-                                    ->required(),
+                                    ->required(fn (Get $get) => $get('status') === ProjectStatus::Published->value),
                                 TextInput::make('cover_alt.en')
                                     ->label('Cover Alt (EN)'),
                             ])
@@ -90,6 +91,18 @@ class ProjectForm
                                 Repeater::make('media')
                                     ->relationship()
                                     ->label('Galeri Media')
+                                    ->mutateRelationshipDataBeforeFillUsing(function (array $data, Project $record): array {
+                                        $mediaId = $data['id'] ?? null;
+                                        if ($mediaId) {
+                                            $media = $record->media->firstWhere('id', $mediaId);
+                                            if ($media) {
+                                                $data['alt'] = $media->getTranslations('alt');
+                                                $data['caption'] = $media->getTranslations('caption');
+                                            }
+                                        }
+
+                                        return $data;
+                                    })
                                     ->schema([
                                         Select::make('kind')
                                             ->label('Jenis Media')
