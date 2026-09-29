@@ -15,7 +15,23 @@ Situs portofolio pribadi yang dinamis. Semua isi (proyek, pengalaman, sertifikat
 Bahasa: Indonesia sebagai default (tanpa prefix), Inggris di prefix `/en`. Field bahasa Inggris boleh kosong; kalau kosong tampilkan versi Indonesia. Nama rute tetap berbahasa Inggris, label di layar diterjemahkan.
 
 ## Stack
-Laravel 13.33.0, Filament v5.9.0 (panel admin), Blade + Tailwind CSS v4 + Alpine.js v3, SQLite, spatie/laravel-translatable, league/commonmark 2.10.3, Vite. Node 20.18.1 hanya dipakai saat build di laptop. Tidak ada Redis, antrean, atau layanan pihak ketiga selain yang tertulis di sini. Tidak ada React, Next.js, Supabase, atau Firebase.
+| Komponen | Versi |
+|---|---|
+| PHP | 8.4.25 (minimum efektif: **8.3**, dituntut `composer.json`; Filament menuntut `^8.2`) |
+| Laravel | 13.33.0 |
+| Filament | 5.9.0 |
+| spatie/laravel-translatable | 6.14.1 |
+| league/commonmark | 2.10.3 |
+| Tailwind CSS | 4.x (via `@tailwindcss/vite`) |
+| Alpine.js | 3.x |
+| Node.js | 20.18.1 (akan diupgrade ke 22 LTS — Vite 8 butuh ≥ 20.19) |
+| Vite | 8.x |
+
+Database: SQLite. Tidak ada Redis, antrean, atau layanan pihak ketiga selain yang tertulis di sini. Tidak ada React, Next.js, Supabase, atau Firebase.
+
+**Catatan Tailwind v4:** Token desain (warna, font, radius) didefinisikan lewat direktif `@theme` di file CSS (`resources/css/app.css`), **bukan** lewat `tailwind.config.js`. Tidak ada file `tailwind.config.js` di proyek ini.
+
+**Catatan VPS (tahap 10):** Versi PHP minimum yang dituntut saat ini adalah **8.3**. Sebelum deploy, pastikan PHP di VPS ≥ 8.3. Jika VPS memakai PHP versi lebih lama, buat keputusan eksplisit sebelum mengubah constraint di `composer.json`.
 
 ## Model konten (ringkas)
 - Proyek: satu tabel untuk semua jenis (bot, web, sistem, magang, kegiatan). Tautan opsional: Telegram, situs, demo, kode. Tombol di halaman publik hanya muncul kalau tautannya diisi. Punya status draft atau terbit, unggulan, urutan, dan media (gambar, video pendek, atau URL).

@@ -1,58 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Portofolio Fetrus Meilano Ilhamsyah
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Situs portofolio pribadi yang dinamis dengan panel admin. Lihat [`docs/KONSEP.md`](docs/KONSEP.md) untuk gambaran lengkap dan [`docs/PROGRESS.md`](docs/PROGRESS.md) untuk status pengerjaan per tahap.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+PHP 8.4 · Laravel 13 · Filament 5 · Tailwind CSS 4 · Alpine.js 3 · SQLite · Vite 8
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Menjalankan di lokal (Windows)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Prasyarat
 
-## Learning Laravel
+- PHP ≥ 8.3 — jika belum ada, install via WinGet:
+  ```powershell
+  winget install PHP.PHP.8.4
+  ```
+  Setelah install, **buka terminal baru** agar PATH terupdate. Jika `php -v` masih tidak dikenali, tambahkan path PHP ke variabel lingkungan `PATH` secara manual melalui System Properties.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Composer ≥ 2 — https://getcomposer.org/download/
+- Node.js ≥ 20.19 atau 22 LTS — https://nodejs.org (gunakan `nvm` untuk mengelola versi)
+- Git
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Langkah setup
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+```powershell
+# 1. Salin file environment
+cp .env.example .env
 
-## Agentic Development
+# 2. Install dependensi PHP
+composer install
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+# 3. Generate application key
+php artisan key:generate
 
-```bash
-composer require laravel/boost --dev
+# 4. Buat file database SQLite dan jalankan migrasi
+New-Item -ItemType File -Force database/database.sqlite
+php artisan migrate
 
-php artisan boost:install
+# 5. Install dependensi Node
+npm install
+
+# 6. Build aset (untuk produksi)
+npm run build
+
+# Atau, jalankan dev server dengan hot-reload
+npm run dev
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Menjalankan server lokal
 
-## Contributing
+```powershell
+php artisan serve
+# → buka http://localhost:8000
+# → panel admin di http://localhost:8000/admin
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Jalankan `npm run dev` di terminal terpisah saat pengembangan agar perubahan CSS/JS langsung terlihat.
 
-## Code of Conduct
+### Catatan PATH PHP (Windows)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+PHP yang diinstall via WinGet mungkin belum otomatis masuk ke PATH di terminal yang sudah terbuka. Jika `php -v` tidak dikenali, jalankan ini di terminal PowerShell untuk session tersebut:
 
-## Security Vulnerabilities
+```powershell
+$env:PATH = "C:\Users\<username>\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe;" + $env:PATH
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ganti `<username>` dengan nama user Windows Anda. Untuk permanen, tambahkan path itu ke System Environment Variables.
 
-## License
+## Dokumentasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| File | Isi |
+|------|-----|
+| [`docs/KONSEP.md`](docs/KONSEP.md) | Tujuan, halaman, stack, desain, aturan kerja |
+| [`docs/PROGRESS.md`](docs/PROGRESS.md) | Status 10 tahap pengerjaan |
