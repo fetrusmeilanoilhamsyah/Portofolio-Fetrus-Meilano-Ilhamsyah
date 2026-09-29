@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectType;
+use App\Events\ContentChanged;
 use Database\Factories\ProjectFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -87,14 +88,23 @@ class Project extends Model
                 $project->slug = $project->getOriginal('slug');
             }
         });
+
+        $dispatchContentChanged = fn () => event(new ContentChanged);
+
+        static::created($dispatchContentChanged);
+        static::updated($dispatchContentChanged);
+        static::deleted($dispatchContentChanged);
     }
 
     /**
      * Buat slug unik dari teks. Jika ada bentrok, tambah akhiran angka.
      */
-    public static function generateUniqueSlug(string $text, ?int $excludeId = null): string
+    public static function generateUniqueSlug(?string $text, ?int $excludeId = null): string
     {
-        $base = Str::slug($text);
+        $base = Str::slug($text ?? '');
+        if (empty($base)) {
+            $base = 'project-'.Str::random(6);
+        }
         $slug = $base;
         $counter = 1;
 
