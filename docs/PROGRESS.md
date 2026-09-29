@@ -3,17 +3,17 @@
 ## Daftar Tahap
 
 | # | Nama Tahap | Status |
-|---|------------|--------|
-| 1 | Fondasi (PHP, Laravel, Filament, Tailwind, SQLite, git init) | ✅ Selesai |
-| 2 | Model & Migrasi | ⬜ Belum |
-| 3 | Panel Admin — Proyek | ⬜ Belum |
-| 4 | Panel Admin — Pengalaman & Sertifikat | ⬜ Belum |
-| 5 | Panel Admin — Tautan & Pengaturan Situs | ⬜ Belum |
-| 6 | Halaman Publik — Layout & Home | ⬜ Belum |
-| 7 | Halaman Publik — About, Experience, Projects | ⬜ Belum |
-| 8 | Halaman Publik — Social, Contact, Slug Proyek | ⬜ Belum |
-| 9 | Internasionalisasi (id/en), Tema, Aksesibilitas | ⬜ Belum |
-| 10 | Polish, Testing, Optimasi, Deploy-ready | ⬜ Belum |
+|---|---|---|
+| 1 | Fondasi proyek dan file konsep | Selesai |
+| 2 | Database dan model | Belum |
+| 3 | Panel admin bagian 1: login, keamanan, Proyek | Belum |
+| 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Belum |
+| 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Belum |
+| 6 | Home dan About | Belum |
+| 7 | Experience dan Projects | Belum |
+| 8 | Media Sosial, Kontak, SEO | Belum |
+| 9 | Polesan, performa, keamanan, tes | Belum |
+| 10 | Persiapan deploy ke VPS | Belum |
 
 ---
 
@@ -59,7 +59,7 @@
 | npm | 10.8.2 |
 
 ### Keputusan penting
-- PHP diinstall via WinGet karena XAMPP lama sudah dihapus. PHP binary ada di `C:\Users\ASUS_\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe\php.exe`. **Wajib tambahkan ke PATH sistem** agar `php` bisa dipanggil langsung dari terminal baru (saat ini butuh refresh shell).
+- PHP diinstall via WinGet karena XAMPP lama sudah dihapus. PHP binary ada di `C:\Users\<username>\AppData\Local\Microsoft\WinGet\Packages\PHP.PHP.8.4_Microsoft.Winget.Source_8wekyb3d8bbwe\php.exe`. **Wajib tambahkan ke PATH sistem** agar `php` bisa dipanggil langsung dari terminal baru (saat ini butuh refresh shell).
 - Vite 8 membutuhkan Node ≥ 20.19.0, sedangkan mesin memakai 20.18.1. Build tetap berjalan setelah install manual `@rolldown/binding-win32-x64-msvc`. Untuk menghilangkan warning, upgrade Node ke 20.19+ atau 22.x disarankan di tahap berikutnya.
 - `database/database.sqlite` dikecualikan dari git (file lokal). Tiap developer baru perlu jalankan `touch database/database.sqlite && php artisan migrate`.
 - Proyek berada di `D:\PROJEK PROJEK KODING\portofolio`.
