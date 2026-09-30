@@ -28,25 +28,44 @@ class ImageOptimizer
         $info = @getimagesize($sourcePath);
 
         if ($info === false) {
-            throw new InvalidArgumentException('Gagal membaca informasi gambar.');
+            // Coba baca langsung, siapa tahu format WEBP/AVIF dari TikTok atau sosmed lain yang getimagesize() gagal baca.
+            // Jika benar-benar gagal, bypass optimasi dan simpan file asli saja.
+            $content = @file_get_contents($sourcePath);
+            if ($content === false) {
+                throw new InvalidArgumentException('Gagal membaca file gambar.');
+            }
+            
+            $image = @imagecreatefromstring($content);
+            if ($image === false) {
+                return $file->store($directory, 'public');
+            }
+            
+            $origWidth = imagesx($image);
+            $origHeight = imagesy($image);
+            $imageType = -1; // Unknown but successfully read by imagecreatefromstring
+        } else {
+            [$origWidth, $origHeight, $imageType] = $info;
+            
+            if ($origWidth * $origHeight > 24000000) {
+                throw new InvalidArgumentException('Gambar terlalu besar (lebih dari 24 megapiksel). Harap perkecil gambar Anda sebelum mengunggah.');
+            }
+
+            $image = match ($imageType) {
+                IMAGETYPE_JPEG => @imagecreatefromjpeg($sourcePath),
+                IMAGETYPE_PNG => @imagecreatefrompng($sourcePath),
+                IMAGETYPE_WEBP => @imagecreatefromwebp($sourcePath),
+                IMAGETYPE_GIF => @imagecreatefromgif($sourcePath),
+                default => false,
+            };
+            
+            if ($image === false) {
+                // Tipe dikenali getimagesize tapi gagal diproses, bypass optimasi
+                return $file->store($directory, 'public');
+            }
         }
-
-        [$origWidth, $origHeight, $imageType] = $info;
-
-        if ($origWidth * $origHeight > 24000000) {
-            throw new InvalidArgumentException('Gambar terlalu besar (lebih dari 24 megapiksel). Harap perkecil gambar Anda sebelum mengunggah.');
-        }
-
-        $image = match ($imageType) {
-            IMAGETYPE_JPEG => imagecreatefromjpeg($sourcePath),
-            IMAGETYPE_PNG => imagecreatefrompng($sourcePath),
-            IMAGETYPE_WEBP => imagecreatefromwebp($sourcePath),
-            IMAGETYPE_GIF => imagecreatefromgif($sourcePath),
-            default => throw new InvalidArgumentException('Tipe gambar tidak didukung.'),
-        };
 
         if (! $image) {
-            throw new InvalidArgumentException('Gagal memproses gambar.');
+            return $file->store($directory, 'public');
         }
 
         if ($imageType === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
