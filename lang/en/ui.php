@@ -23,6 +23,7 @@ return [
     'close_menu' => 'Close menu',
     'command_palette' => 'Command palette',
     'open_to_work' => 'Open to work',
+    'aria_main_menu' => 'Main menu',
 
     // Pages
     'page_home' => 'Home',

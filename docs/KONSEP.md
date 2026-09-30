@@ -74,6 +74,7 @@ Tata letak dan alur UX mengikuti pola situs pribadi dengan sidebar kiri (desktop
 8. Jangan menjalankan perintah apa pun di server produksi atau VPS.
 9. Sebelum mengimpor atau memakai kelas Filament, pastikan kelas itu ada di versi terpasang (cek `vendor/filament` atau `class_exists`). Jangan menulis API Filament dari ingatan versi lama. Setiap resource wajib punya tes yang merender halaman daftar, buat, dan ubah.
 10. Dilarang menyembunyikan tes yang gagal: jangan menangkap kegagalan asersi (try/catch ExpectationFailedException), jangan memakai assertTrue(true) sebagai pengganti asersi, jangan memakai markTestSkipped untuk kegagalan yang bisa diperbaiki. Kalau sebuah tes gagal, perbaiki penyebabnya atau laporkan dengan jujur bahwa belum bisa diselesaikan.
+11. Catatan di docs/PROGRESS.md hanya boleh ditambah. Dilarang menghapus, meringkas, atau menyembunyikan catatan tahap sebelumnya. Kalau file terlalu panjang, pindahkan bagian lama ke docs/arsip/ dengan tautan, jangan dibuang.
 
 ## Di luar cakupan (jangan dibuat kecuali diminta)
 Formulir kontak, komentar, buku tamu, login publik, chat, dasbor pantauan bot, integrasi TikTok atau Instagram, blog.

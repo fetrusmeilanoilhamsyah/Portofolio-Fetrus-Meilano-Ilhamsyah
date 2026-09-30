@@ -27,19 +27,12 @@
                 href="{{ $url }}"
                 @if($isMobile && ($closeMenu ?? false)) @click="open = false" @endif
                 aria-current="{{ $isActive ? 'page' : 'false' }}"
-                class="flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-colors"
-                style="
-                    color: {{ $isActive ? 'var(--brand)' : 'var(--ink-muted)' }};
-                    background-color: {{ $isActive ? 'color-mix(in srgb, var(--brand) 8%, transparent)' : 'transparent' }};
-                "
-                onmouseover="if(!this.getAttribute('aria-current') || this.getAttribute('aria-current') === 'false') { this.style.color='var(--ink)'; this.style.backgroundColor='color-mix(in srgb, var(--ink) 5%, transparent)'; }"
-                onmouseout="if(!this.getAttribute('aria-current') || this.getAttribute('aria-current') === 'false') { this.style.color='var(--ink-muted)'; this.style.backgroundColor='transparent'; }"
+                class="flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-colors {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10' }}"
             >
                 @if($isActive)
                     {{-- Indikator aktif --}}
                     <span
-                        class="w-1 h-4 rounded-full shrink-0"
-                        style="background-color: var(--brand);"
+                        class="w-1 h-4 rounded-full shrink-0 bg-brand"
                         aria-hidden="true"
                     ></span>
                 @else

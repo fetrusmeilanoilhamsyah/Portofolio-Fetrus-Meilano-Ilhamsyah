@@ -23,7 +23,6 @@ class SetLocale
         $locale = $request->segment(1) === 'en' ? 'en' : 'id';
 
         App::setLocale($locale);
-        $request->session()->put('locale', $locale);
 
         return $next($request);
     }

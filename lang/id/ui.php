@@ -23,6 +23,7 @@ return [
     'close_menu' => 'Tutup menu',
     'command_palette' => 'Palet perintah',
     'open_to_work' => 'Terbuka untuk kesempatan kerja',
+    'aria_main_menu' => 'Menu utama',
 
     // Halaman
     'page_home' => 'Beranda',

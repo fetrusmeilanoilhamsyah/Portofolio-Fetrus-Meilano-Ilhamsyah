@@ -8,20 +8,19 @@
 >
     {{-- Ikon placeholder sederhana --}}
     <div
-        class="w-12 h-12 rounded-full flex items-center justify-center mb-4"
-        style="background-color: color-mix(in srgb, var(--ink) 8%, transparent);"
+        class="w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-black/5 dark:bg-white/10"
         aria-hidden="true"
     >
         {{-- Lucide: Inbox --}}
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
              fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-             stroke-linejoin="round" style="color: var(--ink-muted);">
+             stroke-linejoin="round" class="text-ink-muted">
             <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/>
             <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/>
         </svg>
     </div>
 
-    <p class="text-sm" style="color: var(--ink-muted);">
+    <p class="text-sm text-ink-muted">
         {{ $message ?? $slot ?? __('ui.empty_coming_soon') }}
     </p>
 </div>
