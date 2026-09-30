@@ -146,3 +146,44 @@ Tidak ada perbedaan yang ditemukan antara skema yang diimplementasikan dengan sp
 - **Optimasi Gambar Lanjutan:** Menambahkan rotasi orientasi EXIF dan pengecekan resolusi maksimal 24MP pada `ImageOptimizer`.
 - **Livewire Tests:** Menambahkan tes `ProjectResourceTest` untuk memvalidasi fungsi render, penambahan, pengubahan, hidrasi, dan aksi massal.
 
+### Penambahan Tahap 3b (tambahan terakhir)
+- **Halaman Profil Admin:** `->profile()` ditambahkan ke `AdminPanelProvider`. Panel kini memiliki halaman `/admin/profile` yang berisi form ganti nama, email, kata sandi, dan **seksi manajemen 2FA** (karena `multiFactorAuthentication` aktif, Filament menampilkan UI setup/nonaktifkan 2FA di sana).
+- **Perintah Reset 2FA:** `portfolio:reset-2fa` dibuat di `app/Console/Commands/Reset2faCommand.php` untuk kondisi terkunci.
+- **Tes Tambahan:** `ImageOptimizerTest` (3a & 3b, EXIF di-skip karena ekstensi tidak ada), tes profil di `AdminPanelTest`, tes reset 2FA di `Reset2faCommandTest`, dan tes tambahan di `ProjectResourceTest` (3c & 3d).
+
+---
+
+## Cara Menggunakan 2FA
+
+### Mengaktifkan 2FA
+1. Login ke `/admin` dengan email dan kata sandi admin.
+2. Klik nama pengguna di pojok kanan bawah sidebar, lalu pilih **Edit Profil** — atau akses langsung `/admin/profile`.
+3. Di bagian **Autentikasi Dua Faktor**, klik tombol **Set up** pada "App Authentication".
+4. Pindai kode QR dengan aplikasi autentikator (Google Authenticator, Authy, dll).
+5. Masukkan kode OTP 6 digit untuk mengonfirmasi.
+6. **Simpan kode pemulihan** yang ditampilkan — simpan di tempat yang aman dan terpisah dari perangkat.
+
+### Masuk dengan 2FA Aktif
+1. Masukkan email dan kata sandi seperti biasa.
+2. Masukkan kode OTP dari aplikasi autentikator saat diminta.
+
+### Pemulihan jika Perangkat Hilang
+1. **Gunakan kode pemulihan** (recovery code) yang sudah disimpan — masukkan di kolom OTP saat login.
+2. Setelah berhasil masuk, segera nonaktifkan 2FA di halaman profil, lalu aktifkan ulang dengan perangkat baru dan simpan kode pemulihan baru.
+
+### Jalan Terakhir: Reset via Server (jika perangkat DAN kode pemulihan hilang)
+Jalankan perintah ini di server melalui SSH atau akses terminal langsung:
+```
+php artisan portfolio:reset-2fa
+```
+Perintah akan meminta konfirmasi interaktif. Setelah reset, 2FA dinonaktifkan — admin dapat masuk hanya dengan email + kata sandi, lalu mengaktifkan ulang 2FA dari halaman profil.
+
+---
+
+## Catatan Teknis
+
+### Trait `FillsTranslatableAttributes`
+Trait ini (di `app/Filament/Concerns/FillsTranslatableAttributes.php`) ternyata **belum tentu dibutuhkan** pada spatie/laravel-translatable 6.14.1, karena versi tersebut mengembalikan array terjemahan saat serialisasi — Filament mungkin sudah memetakannya dengan benar tanpa trait ini. Trait dipertahankan karena:
+- Semua tes lolos dengan kehadirannya.
+- Tidak berbahaya (tidak mengubah data, hanya memastikan data diisi).
+- Menghapusnya memerlukan investigasi lebih lanjut yang di luar cakupan tahap ini.

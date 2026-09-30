@@ -82,4 +82,24 @@ class AdminPanelTest extends TestCase
         $this->assertNotEmpty($slug);
         $this->assertStringStartsWith('project-', $slug);
     }
+
+    public function test_admin_can_access_profile_page()
+    {
+        Config::set('portfolio.admin_email', 'admin@example.com');
+        $user = User::factory()->create(['email' => 'admin@example.com']);
+
+        $response = $this->actingAs($user)->get('/admin/profile');
+
+        $response->assertStatus(200);
+    }
+
+    public function test_non_admin_cannot_access_profile_page()
+    {
+        Config::set('portfolio.admin_email', 'admin@example.com');
+        $user = User::factory()->create(['email' => 'user@example.com']);
+
+        $response = $this->actingAs($user)->get('/admin/profile');
+
+        $response->assertStatus(403);
+    }
 }

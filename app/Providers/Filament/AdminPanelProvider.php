@@ -35,8 +35,9 @@ class AdminPanelProvider extends PanelProvider
                     400 => '#E8743F',
                     500 => '#C8501E',
                     600 => '#C8501E',
-                ] + \Filament\Support\Colors\Color::hex('#C8501E'),
+                ] + Color::hex('#C8501E'),
             ])
+            ->profile()
             ->multiFactorAuthentication(AppAuthentication::make()->recoverable())
             ->renderHook(
                 PanelsRenderHook::HEAD_START,
