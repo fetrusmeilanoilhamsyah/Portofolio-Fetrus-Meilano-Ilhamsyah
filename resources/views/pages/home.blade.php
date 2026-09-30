@@ -1,4 +1,23 @@
 <x-layouts.public :title="public_text($siteSetting?->name) ?? config('app.name')">
+    @push('head')
+        @if($siteSetting)
+            <script type="application/ld+json">
+                {
+                    "@context": "https://schema.org",
+                    "@type": "Person",
+                    "name": "{{ public_text($siteSetting->name) }}",
+                    "url": "{{ url('/') }}",
+                    @if($siteSetting->photo)
+                    "image": "{{ media_url($siteSetting->photo) }}",
+                    @endif
+                    @if($siteSetting->role)
+                    "jobTitle": "{{ public_text($siteSetting->role) }}",
+                    @endif
+                    "sameAs": {!! json_encode($socialLinks ?? []) !!}
+                }
+            </script>
+        @endif
+    @endpush
     @if($siteSetting)
         <div class="mb-16">
             @if(public_text($siteSetting->name))

@@ -11,7 +11,7 @@
 | 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Selesai |
 | 6 | Home dan About | Selesai |
 | 7 | Experience dan Projects | Selesai |
-| 8 | Media Sosial, Kontak, SEO | Belum |
+| 8 | Media Sosial, Kontak, SEO | Selesai |
 | 9 | Polesan, performa, keamanan, tes | Belum |
 | 10 | Persiapan deploy ke VPS | Belum |
 

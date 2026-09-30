@@ -1,4 +1,4 @@
-@props(['maxWidth' => 'max-w-3xl'])
+@props(['maxWidth' => 'max-w-3xl', 'description' => null, 'image' => null, 'isProject' => false])
 <!DOCTYPE html>
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
@@ -11,6 +11,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow">
     <title>{{ $title ?? (public_text($siteSetting?->name) ?? config('app.name', 'Portofolio')) }}</title>
+
+    <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+    <link rel="icon" href="{{ asset('favicon-32x32.png') }}" sizes="32x32" type="image/png">
+    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
+    @php
+        $metaDesc = $description ?? public_text($siteSetting?->intro);
+    @endphp
+    @if($metaDesc)
+        <meta name="description" content="{{ Str::limit(strip_tags($metaDesc), 160) }}">
+    @endif
+
+    {{-- Canonical --}}
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Hreflang --}}
+    @php
+        $routeName = request()->route()->getName();
+        $isEn = str_starts_with($routeName, 'en.');
+        $idRouteName = $isEn ? substr($routeName, 3) : $routeName;
+        $enRouteName = 'en.' . $idRouteName;
+        $params = request()->route()->parameters();
+    @endphp
+    @if(Route::has($idRouteName) && Route::has($enRouteName))
+        <link rel="alternate" hreflang="id" href="{{ route($idRouteName, $params) }}">
+        <link rel="alternate" hreflang="en" href="{{ route($enRouteName, $params) }}">
+        <link rel="alternate" hreflang="x-default" href="{{ route($idRouteName, $params) }}">
+    @endif
+
+    {{-- Open Graph --}}
+    <meta property="og:title" content="{{ $title ?? (public_text($siteSetting?->name) ?? config('app.name', 'Portofolio')) }}">
+    @if($metaDesc)
+        <meta property="og:description" content="{{ Str::limit(strip_tags($metaDesc), 160) }}">
+    @endif
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:type" content="{{ $isProject ? 'article' : 'website' }}">
+    @php
+        $ogImage = $image ? media_url($image) : ($siteSetting?->og_image ? media_url($siteSetting->og_image) : null);
+    @endphp
+    @if($ogImage)
+        <meta property="og:image" content="{{ $ogImage }}">
+    @endif
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $title ?? (public_text($siteSetting?->name) ?? config('app.name', 'Portofolio')) }}">
+    @if($metaDesc)
+        <meta name="twitter:description" content="{{ Str::limit(strip_tags($metaDesc), 160) }}">
+    @endif
+    @if($ogImage)
+        <meta name="twitter:image" content="{{ $ogImage }}">
+    @endif
 
     {{-- Skrip tema: cegah kedipan sebelum Alpine dimuat. Di-handle dengan nonce di tahap 9 --}}
     <script>

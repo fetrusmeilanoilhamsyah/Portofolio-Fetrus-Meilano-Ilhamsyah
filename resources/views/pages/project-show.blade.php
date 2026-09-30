@@ -1,4 +1,4 @@
-<x-layouts.public :title="$project->title . ' — ' . __('ui.page_projects') . ' — ' . config('app.name')">
+<x-layouts.public :title="$project->title . ' — ' . __('ui.page_projects') . ' — ' . config('app.name')" :description="$project->summary" :image="$project->cover_image" :isProject="true">
     <article class="max-w-3xl mx-auto">
         {{-- Header --}}
         <header class="mb-10">

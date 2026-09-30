@@ -62,4 +62,12 @@ return [
     'education' => 'Education',
 
     'present' => 'Present',
+
+    // Social & Contact
+    'section_accounts' => 'Accounts',
+    'section_channels' => 'Channels',
+    'section_contacts' => 'Contacts',
+    'btn_join' => 'Join',
+    'btn_copy' => 'Copy',
+    'copied' => 'Copied!',
 ];

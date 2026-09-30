@@ -62,4 +62,12 @@ return [
     'education' => 'Pendidikan',
 
     'present' => 'Sekarang',
+
+    // Social & Contact
+    'section_accounts' => 'Akun',
+    'section_channels' => 'Saluran',
+    'section_contacts' => 'Kontak',
+    'btn_join' => 'Bergabung',
+    'btn_copy' => 'Salin',
+    'copied' => 'Disalin!',
 ];

@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/sitemap.xml', [PublicController::class, 'sitemap'])->name('sitemap');
+Route::get('/robots.txt', [PublicController::class, 'robots'])->name('robots');
+
 // ─── Indonesia (default, tanpa prefix) ───────────────────────────────────────
 Route::middleware([SetLocale::class])->group(function () {
     Route::get('/', [PublicController::class, 'home'])->name('home');
