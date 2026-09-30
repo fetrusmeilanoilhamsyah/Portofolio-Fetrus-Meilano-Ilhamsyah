@@ -335,3 +335,5 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 ### Keputusan Penting
 - **IntersectionObserver:** Digunakan implementasi native JavaScript di `x-data="videoObserver()"` pada Alpine.js, ketimbang menambahkan package pihak ketiga `@alpinejs/intersect`, demi mematuhi aturan tidak menambah paket (tanpa izin).
 - **Tab URL State:** URL tab di-sync memanfaatkan history `pushState` agar perubahan tab langsung terefleksi ke address bar (contoh: `?tab=sertifikat`), yang berguna jika halaman dibagikan tanpa harus memuat ulang dari server.
+- **Batas Unggahan Video:** Mengubah batas bawaan Livewire `temporary_file_upload.rules` menjadi maksimal 25 MB (via `config/livewire.php`) dan form Filament menjadi 20 MB, karena batasan aslinya memblokir unggahan video wajar (16 MB). Batas `upload_max_filesize` dan `post_max_size` PHP di server lokal juga telah dinaikkan.
+- **Kutu (Bug) Enum Filament:** Memperbaiki *bug* pada `ProjectForm` yang sebelumnya menggunakan nilai asli *Enum Object* untuk validasi tampilan (membuat kolom unggah video sempat menghilang). Ini diperbaiki dengan pengecekan `instanceof \BackedEnum`.
