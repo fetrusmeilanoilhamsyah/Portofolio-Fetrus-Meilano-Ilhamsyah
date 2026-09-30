@@ -20,7 +20,7 @@
                     <div class="flex items-center gap-4 overflow-hidden">
                         @if($contact->icon)
                             <div class="text-primary-500 shrink-0">
-                                @svg($contact->icon, 'w-6 h-6')
+                                <x-svg-icon :name="$contact->icon" class="w-6 h-6" />
                             </div>
                         @endif
                         <div class="min-w-0">
@@ -34,10 +34,10 @@
                     
                     <button @click="copy" class="shrink-0 ml-4 p-2 text-primary-500 hover:text-accent-600 dark:hover:text-accent-400 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500" :aria-label="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'" :title="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'">
                         <template x-if="!copied">
-                            @svg('lucide-copy', 'w-5 h-5')
+                            <x-svg-icon name="copy" class="w-5 h-5" />
                         </template>
                         <template x-if="copied">
-                            @svg('lucide-check', 'w-5 h-5 text-green-500')
+                            <x-svg-icon name="check" class="w-5 h-5 text-green-500" />
                         </template>
                     </button>
                 </div>

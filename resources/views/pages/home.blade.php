@@ -1,20 +1,23 @@
 <x-layouts.public :title="public_text($siteSetting?->name) ?? config('app.name')">
     @push('head')
         @if($siteSetting)
-            <script type="application/ld+json">
-                {
-                    "@context": "https://schema.org",
-                    "@type": "Person",
-                    "name": "{{ public_text($siteSetting->name) }}",
-                    "url": "{{ url('/') }}",
-                    @if($siteSetting->photo)
-                    "image": "{{ media_url($siteSetting->photo) }}",
-                    @endif
-                    @if($siteSetting->role)
-                    "jobTitle": "{{ public_text($siteSetting->role) }}",
-                    @endif
-                    "sameAs": {!! json_encode($socialLinks ?? []) !!}
+            @php
+                $jsonLd = [
+                    "@context" => "https://schema.org",
+                    "@type" => "Person",
+                    "name" => public_text($siteSetting->name),
+                    "url" => url('/'),
+                ];
+                if ($siteSetting->photo) {
+                    $jsonLd["image"] = media_url($siteSetting->photo);
                 }
+                if ($siteSetting->role) {
+                    $jsonLd["jobTitle"] = public_text($siteSetting->role);
+                }
+                $jsonLd["sameAs"] = $socialLinks ?? [];
+            @endphp
+            <script type="application/ld+json">
+                {!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES) !!}
             </script>
         @endif
     @endpush

@@ -39,7 +39,7 @@ class SocialContactSeoTest extends TestCase
         $response = $this->get('/robots.txt');
 
         $response->assertStatus(200)
-            ->assertHeader('Content-Type', 'text/plain')
+            ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->assertSee('Disallow: /admin')
             ->assertSee('Disallow: /en/admin')
             ->assertSee('Allow: /')
@@ -51,7 +51,7 @@ class SocialContactSeoTest extends TestCase
         $channel = Link::factory()->create([
             'group' => LinkGroup::Saluran,
             'is_published' => true,
-            'icon' => null,
+            'icon' => 'lucide-link',
         ]);
 
         $publishedHighlight = LinkHighlight::factory()->create([
@@ -80,7 +80,7 @@ class SocialContactSeoTest extends TestCase
             'is_published' => true,
             'label' => 'WhatsApp Contact',
             'url' => 'https://wa.me/1234567890',
-            'icon' => null,
+            'icon' => 'lucide-link',
         ]);
 
         $response = $this->get('/contact');

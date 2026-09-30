@@ -13,7 +13,7 @@
                             <a href="{{ $account->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 p-4 rounded-lg border border-primary-200 dark:border-primary-800 hover:border-accent-500 dark:hover:border-accent-500 hover:shadow-sm transition-all group">
                                 @if($account->icon)
                                     <div class="text-primary-500 group-hover:text-accent-500 transition-colors">
-                                        @svg($account->icon, 'w-6 h-6')
+                                        <x-svg-icon :name="$account->icon" class="w-6 h-6" />
                                     </div>
                                 @endif
                                 <div>
@@ -38,7 +38,7 @@
                                     <div class="flex items-center gap-3">
                                         @if($channel->icon)
                                             <div class="text-primary-500">
-                                                @svg($channel->icon, 'w-8 h-8')
+                                                <x-svg-icon :name="$channel->icon" class="w-8 h-8" />
                                             </div>
                                         @endif
                                         <div>
@@ -50,7 +50,7 @@
                                     </div>
                                     <a href="{{ $channel->url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-accent-600 hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 rounded-lg transition-colors whitespace-nowrap">
                                         {{ __('ui.btn_join') }}
-                                        @svg('lucide-external-link', 'w-4 h-4 ml-2')
+                                        <x-svg-icon name="external-link" class="w-4 h-4 ml-2" />
                                     </a>
                                 </div>
                                 
