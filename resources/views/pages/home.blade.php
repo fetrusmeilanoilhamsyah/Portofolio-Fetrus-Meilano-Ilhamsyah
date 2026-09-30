@@ -1,22 +1,27 @@
-<x-layouts.public :title="$siteSetting?->name ?? config('app.name')">
+<x-layouts.public :title="public_text($siteSetting?->name) ?? config('app.name')">
     @if($siteSetting)
         <div class="mb-16">
-            <h1 class="text-3xl font-bold tracking-tight text-ink mb-2">{{ $siteSetting->name }}</h1>
-            @if($siteSetting->role)
-                <p class="text-lg font-medium text-brand mb-6">{{ $siteSetting->role }}</p>
+            @if(public_text($siteSetting->name))
+                <h1 class="text-3xl font-bold tracking-tight text-ink mb-2">{{ public_text($siteSetting->name) }}</h1>
+            @endif
+            @if(public_text($siteSetting->role))
+                <p class="text-lg font-medium text-brand-ink mb-6">{{ public_text($siteSetting->role) }}</p>
             @endif
             
-            @if($siteSetting->intro_home)
+            @if(public_text($siteSetting->intro_home))
                 <div class="max-w-2xl text-ink-muted">
-                    <x-prose :content="$siteSetting->intro_home" />
+                    <x-prose :content="public_text($siteSetting->intro_home)" />
                 </div>
             @endif
             
-            <div class="mt-8 flex gap-4">
-                <x-button as="a" href="{{ route('about') }}" variant="secondary">
+            <div class="mt-8 flex flex-wrap gap-4">
+                <x-button as="a" href="{{ localized_route('about') }}" variant="secondary">
                     {{ __('ui.page_about') }}
                 </x-button>
-                <x-button as="a" href="{{ route('projects') }}" variant="primary">
+                <x-button as="a" href="{{ localized_route('experience') }}" variant="secondary">
+                    {{ __('ui.experience') ?? 'Pengalaman' }}
+                </x-button>
+                <x-button as="a" href="{{ localized_route('projects') }}" variant="primary">
                     {{ __('ui.page_projects') }}
                 </x-button>
             </div>
@@ -46,7 +51,7 @@
             <section class="mb-12">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="text-xl font-bold text-ink">{{ __('ui.recent_projects') }}</h2>
-                    <a href="{{ route('projects') }}" class="text-sm font-medium text-brand hover:underline">
+                    <a href="{{ localized_route('projects') }}" class="text-sm font-medium text-brand-ink hover:underline">
                         {{ __('ui.view_all_projects') }} &rarr;
                     </a>
                 </div>

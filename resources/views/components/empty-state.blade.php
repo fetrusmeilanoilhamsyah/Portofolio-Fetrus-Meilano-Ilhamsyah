@@ -8,7 +8,7 @@
 >
     {{-- Ikon placeholder sederhana --}}
     <div
-        class="w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-black/5 dark:bg-white/10"
+        class="w-12 h-12 rounded-full flex items-center justify-center mb-4 bg-ink/5"
         aria-hidden="true"
     >
         {{-- Lucide: Inbox --}}

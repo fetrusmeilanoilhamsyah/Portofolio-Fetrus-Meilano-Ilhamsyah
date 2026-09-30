@@ -25,7 +25,7 @@ class ViewServiceProvider extends ServiceProvider
         View::composer(['components.layouts.public', 'pages.*'], function (\Illuminate\View\View $view) {
             static $siteSetting = false;
             if ($siteSetting === false) {
-                $siteSetting = \App\Models\SiteSetting::query()->first();
+                $siteSetting = SiteSetting::query()->first();
             }
             $view->with('siteSetting', $siteSetting);
         });

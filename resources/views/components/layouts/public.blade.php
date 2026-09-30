@@ -10,7 +10,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="index, follow">
-    <title>{{ $title ?? ($siteSetting?->name ?? config('app.name', 'Portofolio')) }}</title>
+    <title>{{ $title ?? (public_text($siteSetting?->name) ?? config('app.name', 'Portofolio')) }}</title>
 
     {{-- Skrip tema: cegah kedipan sebelum Alpine dimuat. Di-handle dengan nonce di tahap 9 --}}
     <script>
@@ -49,7 +49,7 @@
             href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
             class="text-sm font-semibold tracking-tight text-ink"
         >
-            {{ $siteSetting?->name ?? config('app.name', 'Portofolio') }}
+            {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
         </a>
 
         {{-- Tombol buka menu --}}
@@ -98,12 +98,12 @@
             >
                 <div class="flex items-center justify-between mb-6">
                     <span class="font-semibold text-base text-ink">
-                        {{ $siteSetting?->name ?? config('app.name', 'Portofolio') }}
+                        {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                     </span>
                     <button
                         type="button"
                         @click="open = false"
-                        class="p-1.5 rounded-md text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10"
+                        class="p-1.5 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5"
                         aria-label="{{ __('ui.close_menu') }}"
                     >
                         {{-- Lucide: X --}}
@@ -139,11 +139,11 @@
                         href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
                         class="block font-semibold text-lg leading-tight mb-1 text-ink"
                     >
-                        {{ $siteSetting?->name ?? config('app.name', 'Portofolio') }}
+                        {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                     </a>
                     @if($siteSetting)
                         <p class="text-sm text-ink-muted">
-                            {{ $siteSetting->getTranslation('role', app()->getLocale(), false) ?: $siteSetting->getTranslation('role', 'id', false) }}
+                            {{ public_text($siteSetting->role) }}
                         </p>
                         @if($siteSetting->open_to_work)
                             <div class="flex items-center gap-1.5 mt-2">

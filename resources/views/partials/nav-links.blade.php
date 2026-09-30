@@ -3,12 +3,12 @@
     $isMobile = $mobile ?? false;
 
     $links = [
-        ['route_id' => 'home',       'route_en' => 'en.home',       'label' => __('ui.nav_home')],
-        ['route_id' => 'about',      'route_en' => 'en.about',      'label' => __('ui.nav_about')],
-        ['route_id' => 'experience', 'route_en' => 'en.experience', 'label' => __('ui.nav_experience')],
-        ['route_id' => 'projects',   'route_en' => 'en.projects',   'label' => __('ui.nav_projects')],
-        ['route_id' => 'social',     'route_en' => 'en.social',     'label' => __('ui.nav_social')],
-        ['route_id' => 'contact',    'route_en' => 'en.contact',    'label' => __('ui.nav_contact')],
+        ['route' => 'home',       'label' => __('ui.nav_home')],
+        ['route' => 'about',      'label' => __('ui.nav_about')],
+        ['route' => 'experience', 'label' => __('ui.nav_experience')],
+        ['route' => 'projects',   'label' => __('ui.nav_projects')],
+        ['route' => 'social',     'label' => __('ui.nav_social')],
+        ['route' => 'contact',    'label' => __('ui.nav_contact')],
     ];
 @endphp
 
@@ -18,16 +18,15 @@
 >
     @foreach ($links as $link)
         @php
-            $routeName  = $locale === 'en' ? $link['route_en'] : $link['route_id'];
-            $url        = route($routeName);
-            $isActive   = request()->routeIs($link['route_id']) || request()->routeIs($link['route_en']);
+            $url        = localized_route($link['route']);
+            $isActive   = request()->routeIs($link['route']) || request()->routeIs('en.' . $link['route']);
         @endphp
         <li>
             <a
                 href="{{ $url }}"
                 @if($isMobile && ($closeMenu ?? false)) @click="open = false" @endif
                 aria-current="{{ $isActive ? 'page' : 'false' }}"
-                class="flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-colors {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10' }}"
+                class="flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-colors {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-ink/5' }}"
             >
                 @if($isActive)
                     {{-- Indikator aktif --}}

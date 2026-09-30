@@ -1,15 +1,15 @@
 <x-layouts.public :title="__('ui.page_about') . ' — ' . config('app.name')">
     <x-page-header :title="__('ui.page_about')" />
 
-    @if(!$siteSetting || (empty($siteSetting->about_body) && empty($siteSetting->photo) && empty($education)))
+    @if(!$siteSetting || (empty(public_text($siteSetting->about_body)) && empty($siteSetting->photo) && $education->isEmpty() && empty($siteSetting->skills)))
         <x-empty-state :message="__('ui.empty_coming_soon')" />
     @else
         <div class="flex flex-col md:flex-row gap-10 lg:gap-16 mb-16">
             {{-- Bagian kiri: Konten utama --}}
             <div class="flex-1 min-w-0">
-                @if($siteSetting->about_body)
+                @if(public_text($siteSetting->about_body))
                     <div class="text-ink-muted mb-10">
-                        <x-prose :content="$siteSetting->about_body" />
+                        <x-prose :content="public_text($siteSetting->about_body)" />
                     </div>
                 @endif
                 
@@ -26,7 +26,7 @@
                     <section class="mb-10">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-2xl font-bold text-ink">{{ __('ui.education') }}</h2>
-                            <a href="{{ route('experience') }}" class="text-sm font-medium text-brand hover:underline">
+                            <a href="{{ localized_route('experience') }}" class="text-sm font-medium text-brand-ink hover:underline">
                                 {{ __('ui.btn_view_all') }} &rarr;
                             </a>
                         </div>

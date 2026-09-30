@@ -22,6 +22,7 @@
 </head>
 <body class="min-h-dvh flex flex-col items-center justify-center px-4 bg-canvas text-ink">
     <div class="text-center max-w-md">
+        {{-- text-brand diizinkan di sini karena teks 404 berukuran 7xl (besar), sehingga kontras 3:1 (AA Large) sudah cukup --}}
         <p class="text-7xl font-bold mb-4 text-brand">404</p>
         <h1 class="text-xl font-semibold mb-2 text-ink">
             {{ __('ui.error_404_title') }}

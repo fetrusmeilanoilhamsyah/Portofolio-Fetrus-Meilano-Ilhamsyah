@@ -79,6 +79,8 @@ class ColorContrastTest extends TestCase
             'Light Mode: ink-muted on surf' => ['theme' => $lightTheme, 'fg' => 'ink-muted', 'bg' => 'surf'],
             'Light Mode: brand-ink on surf' => ['theme' => $lightTheme, 'fg' => 'brand-ink', 'bg' => 'surf'],
             'Light Mode: brand-fg on brand' => ['theme' => $lightTheme, 'fg' => 'brand-fg', 'bg' => 'brand'],
+            'Light Mode: ink-muted on canvas-muted' => ['theme' => $lightTheme, 'fg' => 'ink-muted', 'bg' => 'canvas-muted'],
+            'Light Mode: brand-ink on canvas-muted' => ['theme' => $lightTheme, 'fg' => 'brand-ink', 'bg' => 'canvas-muted'],
 
             'Dark Mode: ink on canvas' => ['theme' => $darkTheme, 'fg' => 'ink', 'bg' => 'canvas'],
             'Dark Mode: ink-muted on canvas' => ['theme' => $darkTheme, 'fg' => 'ink-muted', 'bg' => 'canvas'],
@@ -87,6 +89,8 @@ class ColorContrastTest extends TestCase
             'Dark Mode: ink-muted on surf' => ['theme' => $darkTheme, 'fg' => 'ink-muted', 'bg' => 'surf'],
             'Dark Mode: brand-ink on surf' => ['theme' => $darkTheme, 'fg' => 'brand-ink', 'bg' => 'surf'],
             'Dark Mode: brand-fg on brand' => ['theme' => $darkTheme, 'fg' => 'brand-fg', 'bg' => 'brand'],
+            'Dark Mode: ink-muted on canvas-muted' => ['theme' => $darkTheme, 'fg' => 'ink-muted', 'bg' => 'canvas-muted'],
+            'Dark Mode: brand-ink on canvas-muted' => ['theme' => $darkTheme, 'fg' => 'brand-ink', 'bg' => 'canvas-muted'],
         ];
 
         foreach ($scenarios as $name => $data) {

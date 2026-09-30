@@ -1,11 +1,11 @@
 @props(['project'])
 
-<x-card class="flex flex-col h-full overflow-hidden transition-shadow hover:shadow-md group">
+<x-card class="relative flex flex-col h-full overflow-hidden transition-colors hover:border-ink-muted group">
     @if($project->cover_image)
         <div class="relative w-full aspect-video bg-canvas-muted overflow-hidden border-b border-line">
             <img 
                 src="{{ media_url($project->cover_image) }}" 
-                alt="{{ $project->cover_alt ?? $project->title }}" 
+                alt="{{ filled($project->cover_alt) ? $project->cover_alt : $project->title }}" 
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 loading="lazy"
             >
@@ -22,8 +22,8 @@
             @endif
         </div>
         
-        <h3 class="text-lg font-bold text-ink mb-2 group-hover:text-brand transition-colors">
-            <a href="{{ route('projects.show', $project->slug) }}" class="focus:outline-none">
+        <h3 class="text-lg font-bold text-ink mb-2 group-hover:text-brand-ink transition-colors">
+            <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none">
                 <span class="absolute inset-0" aria-hidden="true"></span>
                 {{ $project->title }}
             </a>

@@ -15,7 +15,7 @@
     lang="{{ $otherLocale }}"
     aria-label="{{ __('ui.toggle_lang') }}: {{ $otherLongLabel }}"
     title="{{ __('ui.toggle_lang') }}: {{ $otherLongLabel }}"
-    class="flex items-center justify-center h-8 px-2 min-w-8 text-xs font-semibold rounded-md border border-line uppercase tracking-wide transition-colors text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10"
+    class="flex items-center justify-center h-8 px-2 min-w-8 text-xs font-semibold rounded-md border border-line uppercase tracking-wide transition-colors text-ink-muted hover:text-ink hover:bg-ink/5"
 >
     {{ $otherLabel }}
 </a>

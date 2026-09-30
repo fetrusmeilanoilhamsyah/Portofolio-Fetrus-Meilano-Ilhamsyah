@@ -12,7 +12,7 @@ class PublicController extends Controller
     public function home(): View
     {
         $featuredProjects = Project::published()->featured()->ordered()->take(3)->get();
-        $recentProjects = Project::published()->where('is_featured', false)->ordered()->take(3)->get();
+        $recentProjects = Project::published()->where('is_featured', false)->orderByDesc('published_at')->take(3)->get();
 
         return view('pages.home', compact('featuredProjects', 'recentProjects'));
     }

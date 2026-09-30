@@ -2,6 +2,8 @@
 @import '@fontsource-variable/plus-jakarta-sans';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
 @source '../../storage/framework/views/*.php';
 @source '../../app/**/*.php';
 @source '../../resources/views/**/*.blade.php';
@@ -45,6 +47,7 @@
 
     /* Semantic color aliases (menggunakan CSS vars agar bisa diubah oleh tema) */
     --color-canvas: var(--canvas);
+    --color-canvas-muted: var(--canvas-muted);
     --color-surf: var(--surf);
     --color-ink: var(--ink);
     --color-ink-muted: var(--ink-muted);
@@ -65,6 +68,7 @@
    ───────────────────────────────────────────── */
 :root {
     --canvas: #F6F3EE;
+    --canvas-muted: #EFEBE4;
     --surf: #FFFFFF;
     --ink: #1C1917;
     --ink-muted: #6B645C;
@@ -81,6 +85,7 @@
    ───────────────────────────────────────────── */
 html.dark {
     --canvas: #14110F;
+    --canvas-muted: #221E1B;
     --surf: #1D1A17;
     --ink: #EDE8E1;
     --ink-muted: #A39B90;
