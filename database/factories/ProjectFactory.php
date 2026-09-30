@@ -53,4 +53,12 @@ class ProjectFactory extends Factory
             'is_featured' => true,
         ]);
     }
+
+    public function withCover(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'cover_image' => 'covers/test-cover.jpg',
+            'cover_alt' => ['id' => 'Alt Cover ID', 'en' => 'Alt Cover EN'],
+        ]);
+    }
 }

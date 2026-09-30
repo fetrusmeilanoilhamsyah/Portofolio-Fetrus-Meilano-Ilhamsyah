@@ -10,6 +10,7 @@ use Filament\Actions\BulkAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Notifications\Notification;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -60,7 +61,26 @@ class ProjectsTable
                     BulkAction::make('publish')
                         ->label('Terbitkan')
                         ->icon('heroicon-o-check-circle')
-                        ->action(fn (Collection $records) => $records->each->update(['status' => ProjectStatus::Published])),
+                        ->action(function (Collection $records) {
+                            $skipped = [];
+                            foreach ($records as $record) {
+                                // cover_alt disimpan sebagai array json oleh spatie translatable
+                                $altId = $record->getTranslation('cover_alt', 'id', false);
+                                if (empty($record->cover_image) || empty($altId)) {
+                                    $skipped[] = $record->title;
+                                } else {
+                                    $record->update(['status' => ProjectStatus::Published->value]);
+                                }
+                            }
+
+                            if (count($skipped) > 0) {
+                                Notification::make()
+                                    ->warning()
+                                    ->title('Beberapa proyek dilewati')
+                                    ->body('Proyek berikut tidak diterbitkan karena tidak memiliki cover_image atau cover_alt.id: '.implode(', ', $skipped))
+                                    ->send();
+                            }
+                        }),
                     BulkAction::make('draft')
                         ->label('Jadikan Draft')
                         ->icon('heroicon-o-x-circle')

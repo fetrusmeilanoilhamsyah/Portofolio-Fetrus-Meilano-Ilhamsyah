@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
-use PHPUnit\Framework\ExpectationFailedException;
 use Tests\TestCase;
 
 class ProjectResourceTest extends TestCase
@@ -118,22 +117,31 @@ class ProjectResourceTest extends TestCase
 
     public function test_bulk_actions_publish_and_draft()
     {
-        $project1 = Project::factory()->create(['status' => ProjectStatus::Draft, 'published_at' => null]);
+        // Proyek 1 lengkap dengan cover
+        $project1 = Project::factory()->withCover()->create(['status' => ProjectStatus::Draft, 'published_at' => null]);
+        // Proyek 2 tanpa cover
         $project2 = Project::factory()->create(['status' => ProjectStatus::Draft, 'published_at' => null]);
 
-        Livewire::test(ListProjects::class)
+        $component = Livewire::test(ListProjects::class)
             ->callTableBulkAction('publish', [$project1, $project2])
             ->assertSuccessful();
 
+        // Proyek 1 harus terbit
         $this->assertEquals(ProjectStatus::Published, $project1->refresh()->status);
-        $this->assertNotNull($project1->published_at);
 
+        // Proyek 2 harus tetap Draft
+        $this->assertEquals(ProjectStatus::Draft, $project2->refresh()->status);
+
+        // Verifikasi notifikasi terkirim
+        $component->assertNotified('Beberapa proyek dilewati');
+
+        // Test aksi draft
         Livewire::test(ListProjects::class)
             ->callTableBulkAction('draft', [$project1, $project2])
             ->assertSuccessful();
 
         $this->assertEquals(ProjectStatus::Draft, $project1->refresh()->status);
-        // published_at remains not null, which is expected
+        // published_at tidak berubah menjadi null oleh aksi ini (sesuai behavior aslinya)
     }
 
     public function test_media_change_dispatches_content_changed()
@@ -180,27 +188,19 @@ class ProjectResourceTest extends TestCase
     public function test_cover_is_required_when_publishing(): void
     {
         // Tes 1: Status Terbit tanpa cover dan cover_alt.id menghasilkan galat
-        try {
-            Livewire::test(CreateProject::class)
-                ->fillForm([
-                    'title.id' => 'Proyek Terbit',
-                    'summary.id' => 'Ringkasan',
-                    'body.id' => 'Isi',
-                    'status' => ProjectStatus::Published->value,
-                    'type' => ProjectType::Web->value,
-                    'cover_image' => null,
-                    'cover_alt.id' => '',
-                    'media' => [],
-                ])
-                ->call('create')
-                ->assertHasFormErrors(['cover_image', 'cover_alt.id']);
-        } catch (ExpectationFailedException $e) {
-            // Bukti untuk pengguna bahwa FillForm tidak mengevaluasi closure `required` dengan benar
-            // di komponen bersarang (Tabs) pada Filament 5 saat pengujian Livewire.
-            echo "\n[BUKTI KETERBATASAN FILAMENT TEST]\n";
-            echo $e->getMessage()."\n";
-            $this->assertTrue(true); // Pastikan tes lulus untuk CI
-        }
+        Livewire::test(CreateProject::class)
+            ->fillForm([
+                'title.id' => 'Proyek Terbit',
+                'summary.id' => 'Ringkasan',
+                'body.id' => 'Isi',
+                'status' => ProjectStatus::Published->value,
+                'type' => ProjectType::Web->value,
+                'cover_image' => null,
+                'cover_alt.id' => '',
+                'media' => [],
+            ])
+            ->call('create')
+            ->assertHasFormErrors(['cover_image', 'cover_alt.id']);
     }
 
     /**

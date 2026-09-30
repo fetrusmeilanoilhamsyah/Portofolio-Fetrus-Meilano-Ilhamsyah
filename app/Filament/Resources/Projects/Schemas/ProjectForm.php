@@ -62,14 +62,16 @@ class ProjectForm
                                         'max.file' => 'Ukuran cover maksimal 5 MB.',
                                     ])
                                     ->required(function (Get $get) {
-                                        // dump('Cover Image required check, status: ' . $get('status'));
-                                        return $get('status') === ProjectStatus::Published->value;
+                                        $status = $get('status');
+
+                                        return $status === ProjectStatus::Published->value || $status === ProjectStatus::Published;
                                     }),
                                 TextInput::make('cover_alt.id')
                                     ->label('Cover Alt (ID)')
                                     ->required(function (Get $get) {
-                                        // dump('Cover Alt required check, status: ' . $get('status'));
-                                        return $get('status') === ProjectStatus::Published->value;
+                                        $status = $get('status');
+
+                                        return $status === ProjectStatus::Published->value || $status === ProjectStatus::Published;
                                     }),
                                 TextInput::make('cover_alt.en')
                                     ->label('Cover Alt (EN)'),

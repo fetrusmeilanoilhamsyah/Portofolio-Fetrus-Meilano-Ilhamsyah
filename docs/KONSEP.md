@@ -73,6 +73,7 @@ Tata letak dan alur UX mengikuti pola situs pribadi dengan sidebar kiri (desktop
 7. Tiap tahap ditutup dengan: jalankan `php artisan test` dan `vendor/bin/pint`, perbarui `docs/PROGRESS.md` (apa yang selesai, apa yang belum, keputusan penting), commit dengan pesan yang jelas, lalu berhenti dan laporkan cara saya mencobanya.
 8. Jangan menjalankan perintah apa pun di server produksi atau VPS.
 9. Sebelum mengimpor atau memakai kelas Filament, pastikan kelas itu ada di versi terpasang (cek `vendor/filament` atau `class_exists`). Jangan menulis API Filament dari ingatan versi lama. Setiap resource wajib punya tes yang merender halaman daftar, buat, dan ubah.
+10. Dilarang menyembunyikan tes yang gagal: jangan menangkap kegagalan asersi (try/catch ExpectationFailedException), jangan memakai assertTrue(true) sebagai pengganti asersi, jangan memakai markTestSkipped untuk kegagalan yang bisa diperbaiki. Kalau sebuah tes gagal, perbaiki penyebabnya atau laporkan dengan jujur bahwa belum bisa diselesaikan.
 
 ## Di luar cakupan (jangan dibuat kecuali diminta)
 Formulir kontak, komentar, buku tamu, login publik, chat, dasbor pantauan bot, integrasi TikTok atau Instagram, blog.
