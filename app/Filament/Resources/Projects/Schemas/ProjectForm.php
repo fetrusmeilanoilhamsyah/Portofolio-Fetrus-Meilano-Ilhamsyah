@@ -61,10 +61,16 @@ class ProjectForm
                                     ->validationMessages([
                                         'max.file' => 'Ukuran cover maksimal 5 MB.',
                                     ])
-                                    ->required(fn (Get $get) => $get('status') === ProjectStatus::Published->value),
+                                    ->required(function (Get $get) {
+                                        // dump('Cover Image required check, status: ' . $get('status'));
+                                        return $get('status') === ProjectStatus::Published->value;
+                                    }),
                                 TextInput::make('cover_alt.id')
                                     ->label('Cover Alt (ID)')
-                                    ->required(fn (Get $get) => $get('status') === ProjectStatus::Published->value),
+                                    ->required(function (Get $get) {
+                                        // dump('Cover Alt required check, status: ' . $get('status'));
+                                        return $get('status') === ProjectStatus::Published->value;
+                                    }),
                                 TextInput::make('cover_alt.en')
                                     ->label('Cover Alt (EN)'),
                             ])
@@ -153,7 +159,8 @@ class ProjectForm
                                     ->label('Status')
                                     ->options(ProjectStatus::class)
                                     ->default(ProjectStatus::Draft->value)
-                                    ->required(),
+                                    ->required()
+                                    ->live(),
                                 DateTimePicker::make('published_at')
                                     ->label('Tanggal Terbit')
                                     ->disabled()

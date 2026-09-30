@@ -187,3 +187,34 @@ Trait ini (di `app/Filament/Concerns/FillsTranslatableAttributes.php`) ternyata 
 - Semua tes lolos dengan kehadirannya.
 - Tidak berbahaya (tidak mengubah data, hanya memastikan data diisi).
 - Menghapusnya memerlukan investigasi lebih lanjut yang di luar cakupan tahap ini.
+  
+### Kebutuhan Server Produksi  
+Ekstensi PHP berikut wajib diaktifkan (via php.ini atau paket sistem) agar fitur berfungsi penuh:  
+- gd (dengan dukungan WebP): Diperlukan untuk memanipulasi, memotong, dan mengoptimasi gambar yang diunggah.  
+- exif: Diperlukan untuk membaca metadata orientasi kamera. Tanpa ini, foto portrait yang diambil dari ponsel akan tersimpan miring tanpa peringatan.  
+- mbstring & intl: Digunakan secara luas oleh Laravel dan Filament untuk penanganan string multi-bahasa.  
+- pdo_sqlite (atau pdo_mysql): Driver basis data.  
+Hasil composer check-platform-reqs:  
+`  
+composer-runtime-api 2.2.2      success                                       
+ext-ctype            *          success provided by symfony/polyfill-ctype    
+ext-dom              20031129   success                                       
+ext-fileinfo         8.4.25     success                                       
+ext-filter           8.4.25     success                                       
+ext-hash             8.4.25     success                                       
+ext-iconv            8.4.25     success                                       
+ext-intl             8.4.25     success                                       
+ext-json             8.4.25     success                                       
+ext-libxml           8.4.25     success                                       
+ext-mbstring         *          success provided by symfony/polyfill-mbstring 
+ext-openssl          8.4.25     success                                       
+ext-pcre             8.4.25     success                                       
+ext-phar             8.4.25     success                                       
+ext-session          8.4.25     success                                       
+ext-tokenizer        8.4.25     success                                       
+ext-xml              8.4.25     success                                       
+ext-xmlreader        8.4.25     success                                       
+ext-xmlwriter        8.4.25     success                                       
+ext-zip              1.22.8     success                                       
+php                  8.4.25     success                                       
+` 

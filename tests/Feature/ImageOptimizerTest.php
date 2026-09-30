@@ -56,24 +56,18 @@ class ImageOptimizerTest extends TestCase
 
     /**
      * 3b — ImageOptimizer menerapkan orientasi EXIF pada JPEG dengan orientasi 6
-     * (portrait diputar), sehingga dimensi output seharusnya tertukar.
-     *
-     * Dilewati jika ekstensi exif tidak tersedia.
+     * (portrait diputar), sehingga dimensi output seharusnya tertukar (landscape).
      */
     public function test_image_optimizer_applies_exif_orientation_6(): void
     {
-        if (! function_exists('exif_read_data')) {
-            $this->markTestSkipped('Ekstensi exif tidak tersedia di lingkungan ini; lewati tes orientasi EXIF.');
-        }
-
         Storage::fake('public');
 
         $optimizer = new ImageOptimizer;
 
         // Buat JPEG kecil (lebar 100, tinggi 200) dengan data EXIF Orientation = 6.
-        // Setelah diproses, dimensi output harus menjadi 200×100 (tertukar).
+        // Setelah diproses (rotasi -90), dimensi output harus menjadi 200x100.
         $tmpPath = sys_get_temp_dir().'/test_exif6.jpg';
-        $this->buildJpegWithExifOrientation6($tmpPath, 100, 200);
+        $this->buildJpegWithExifOrientation($tmpPath, 100, 200, 6);
 
         $file = new UploadedFile($tmpPath, 'exif6.jpg', 'image/jpeg', null, true);
 
@@ -86,8 +80,68 @@ class ImageOptimizerTest extends TestCase
         @unlink($tmpPath);
 
         $this->assertNotFalse($outInfo, 'Output WebP harus bisa dibaca');
-        // Orientasi 6 → rotasi -90° → lebar dan tinggi asli tertukar
-        $this->assertGreaterThan($outInfo[0], $outInfo[1], 'Setelah rotasi orientasi-6, tinggi harus lebih besar dari lebar (100×200 → 200 wide, 100 high setelah rotasi -90)');
+        // Orientasi 6: lebar 200, tinggi 100
+        $this->assertEquals(200, $outInfo[0], 'Lebar harus 200 setelah rotasi orientasi 6');
+        $this->assertEquals(100, $outInfo[1], 'Tinggi harus 100 setelah rotasi orientasi 6');
+    }
+
+    /**
+     * 3b — ImageOptimizer menerapkan orientasi EXIF pada JPEG dengan orientasi 8
+     * (portrait diputar arah sebaliknya), sehingga dimensi output tertukar (landscape).
+     */
+    public function test_image_optimizer_applies_exif_orientation_8(): void
+    {
+        Storage::fake('public');
+
+        $optimizer = new ImageOptimizer;
+
+        // Buat JPEG kecil (lebar 100, tinggi 200) dengan data EXIF Orientation = 8.
+        // Setelah diproses (rotasi 90), dimensi output harus menjadi 200x100.
+        $tmpPath = sys_get_temp_dir().'/test_exif8.jpg';
+        $this->buildJpegWithExifOrientation($tmpPath, 100, 200, 8);
+
+        $file = new UploadedFile($tmpPath, 'exif8.jpg', 'image/jpeg', null, true);
+
+        $outputPath = $optimizer->optimizeAndSave($file);
+
+        $diskPath = Storage::disk('public')->path($outputPath);
+        $outInfo = getimagesize($diskPath);
+
+        @unlink($tmpPath);
+
+        $this->assertNotFalse($outInfo, 'Output WebP harus bisa dibaca');
+        // Orientasi 8: lebar 200, tinggi 100
+        $this->assertEquals(200, $outInfo[0], 'Lebar harus 200 setelah rotasi orientasi 8');
+        $this->assertEquals(100, $outInfo[1], 'Tinggi harus 100 setelah rotasi orientasi 8');
+    }
+
+    /**
+     * 3b — ImageOptimizer tidak merotasi gambar dengan orientasi 1 (normal).
+     */
+    public function test_image_optimizer_keeps_orientation_1(): void
+    {
+        Storage::fake('public');
+
+        $optimizer = new ImageOptimizer;
+
+        // Buat JPEG kecil (lebar 100, tinggi 200) dengan data EXIF Orientation = 1.
+        // Tidak ada rotasi, dimensi output harus tetap 100x200.
+        $tmpPath = sys_get_temp_dir().'/test_exif1.jpg';
+        $this->buildJpegWithExifOrientation($tmpPath, 100, 200, 1);
+
+        $file = new UploadedFile($tmpPath, 'exif1.jpg', 'image/jpeg', null, true);
+
+        $outputPath = $optimizer->optimizeAndSave($file);
+
+        $diskPath = Storage::disk('public')->path($outputPath);
+        $outInfo = getimagesize($diskPath);
+
+        @unlink($tmpPath);
+
+        $this->assertNotFalse($outInfo, 'Output WebP harus bisa dibaca');
+        // Orientasi 1: lebar 100, tinggi 200
+        $this->assertEquals(100, $outInfo[0], 'Lebar harus tetap 100 untuk orientasi 1');
+        $this->assertEquals(200, $outInfo[1], 'Tinggi harus tetap 200 untuk orientasi 1');
     }
 
     // -------------------------------------------------------------------------
@@ -117,12 +171,11 @@ class ImageOptimizerTest extends TestCase
     }
 
     /**
-     * Buat JPEG kecil dengan metadata EXIF Orientation = 6 menggunakan GD + EXIF APP1 sederhana.
-     * Ini hanya berfungsi di lingkungan yang sudah memiliki ekstensi exif.
+     * Buat JPEG kecil dengan metadata EXIF Orientation kustom menggunakan GD + EXIF APP1 sederhana.
      */
-    private function buildJpegWithExifOrientation6(string $path, int $width, int $height): void
+    private function buildJpegWithExifOrientation(string $path, int $width, int $height, int $orientation): void
     {
-        // Buat JPEG tanpa EXIF dulu, lalu sisipkan APP1 marker dengan Orientation = 6.
+        // Buat JPEG tanpa EXIF dulu, lalu sisipkan APP1 marker dengan Orientation.
         $img = imagecreatetruecolor($width, $height);
         $blue = imagecolorallocate($img, 0, 0, 255);
         imagefilledrectangle($img, 0, 0, $width, $height, $blue);
@@ -132,7 +185,7 @@ class ImageOptimizerTest extends TestCase
         $jpegData = ob_get_clean();
         imagedestroy($img);
 
-        // Sisipkan APP1 EXIF dengan Orientation = 6.
+        // Sisipkan APP1 EXIF dengan Orientation.
         // Struktur: FF E1 (length 2 byte) "Exif\0\0" + TIFF header + IFD dengan tag Orientation.
         // Kita memakai little-endian (II) TIFF header.
         $tiff = 'II';                       // byte order: little-endian
@@ -140,11 +193,11 @@ class ImageOptimizerTest extends TestCase
         $tiff .= pack('V', 8);              // offset to IFD
         $tiff .= pack('v', 1);             // IFD count: 1 entry
         // IFD entry: tag(2) type(2) count(4) value(4)
-        // Orientation tag = 0x0112, type SHORT (3), count 1, value 6
+        // Orientation tag = 0x0112, type SHORT (3), count 1, value = $orientation
         $tiff .= pack('v', 0x0112);        // tag
         $tiff .= pack('v', 3);             // type SHORT
         $tiff .= pack('V', 1);             // count
-        $tiff .= pack('v', 6)."\x00\x00"; // value = 6, padded to 4 bytes
+        $tiff .= pack('v', $orientation)."\x00\x00"; // value = $orientation, padded to 4 bytes
         $tiff .= pack('V', 0);             // next IFD offset = 0 (end)
 
         $exifHeader = "Exif\x00\x00".$tiff;
