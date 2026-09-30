@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\LinkGroup;
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\LinkFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,7 +24,7 @@ use Spatie\Translatable\HasTranslations;
 class Link extends Model
 {
     /** @use HasFactory<LinkFactory> */
-    use HasFactory, HasTranslations;
+    use DispatchesContentChanged, HasFactory, HasTranslations;
 
     public array $translatable = ['note'];
 

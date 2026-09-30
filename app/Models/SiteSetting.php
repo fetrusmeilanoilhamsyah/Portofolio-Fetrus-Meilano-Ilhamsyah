@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\SiteSettingFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,7 +25,7 @@ use Spatie\Translatable\HasTranslations;
 class SiteSetting extends Model
 {
     /** @use HasFactory<SiteSettingFactory> */
-    use HasFactory, HasTranslations;
+    use DispatchesContentChanged, HasFactory, HasTranslations;
 
     public array $translatable = ['role', 'intro_home', 'about_body', 'open_to_work_note'];
 

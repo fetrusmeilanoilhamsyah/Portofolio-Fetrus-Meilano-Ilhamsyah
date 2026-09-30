@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ExperienceKind;
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\ExperienceFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +26,7 @@ use Spatie\Translatable\HasTranslations;
 class Experience extends Model
 {
     /** @use HasFactory<ExperienceFactory> */
-    use HasFactory, HasTranslations;
+    use DispatchesContentChanged, HasFactory, HasTranslations;
 
     public array $translatable = ['title', 'description'];
 

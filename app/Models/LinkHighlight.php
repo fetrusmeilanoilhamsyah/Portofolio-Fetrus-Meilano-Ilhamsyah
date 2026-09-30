@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\LinkHighlightFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +23,7 @@ use Spatie\Translatable\HasTranslations;
 class LinkHighlight extends Model
 {
     /** @use HasFactory<LinkHighlightFactory> */
-    use HasFactory, HasTranslations;
+    use DispatchesContentChanged, HasFactory, HasTranslations;
 
     public array $translatable = ['title', 'summary'];
 

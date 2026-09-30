@@ -77,7 +77,7 @@ class ProjectsTable
                                 Notification::make()
                                     ->warning()
                                     ->title('Beberapa proyek dilewati')
-                                    ->body('Proyek berikut tidak diterbitkan karena tidak memiliki cover_image atau cover_alt.id: '.implode(', ', $skipped))
+                                    ->body('Proyek berikut tidak diterbitkan karena tidak punya cover atau teks alternatif cover: '.implode(', ', $skipped))
                                     ->send();
                             }
                         }),

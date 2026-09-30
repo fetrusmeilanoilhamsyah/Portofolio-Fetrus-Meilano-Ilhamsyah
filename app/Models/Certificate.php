@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DispatchesContentChanged;
 use Database\Factories\CertificateFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Builder;
@@ -25,7 +26,7 @@ use Spatie\Translatable\HasTranslations;
 class Certificate extends Model
 {
     /** @use HasFactory<CertificateFactory> */
-    use HasFactory, HasTranslations;
+    use DispatchesContentChanged, HasFactory, HasTranslations;
 
     public array $translatable = ['alt'];
 
