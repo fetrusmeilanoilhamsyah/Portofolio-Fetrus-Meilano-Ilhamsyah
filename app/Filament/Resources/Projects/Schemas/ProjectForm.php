@@ -121,18 +121,18 @@ class ProjectForm
                                             ->live()
                                             ->afterStateUpdated(fn ($state, callable $set) => $set('path', null)),
                                         FileUpload::make('path')
-                                            ->label(fn (Get $get) => $get('kind') === MediaKind::Video->value ? 'File Video' : 'File Gambar')
+                                            ->label(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? 'File Video' : 'File Gambar')
                                             ->disk('public')
                                             ->visibility('public')
-                                            ->visible(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
-                                            ->required(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
-                                            ->acceptedFileTypes(fn (Get $get) => $get('kind') === MediaKind::Video->value ? ['video/mp4'] : ['image/*'])
-                                            ->maxSize(fn (Get $get) => $get('kind') === MediaKind::Video->value ? 8192 : 5120)
+                                            ->visible(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
+                                            ->required(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
+                                            ->acceptedFileTypes(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? ['video/mp4'] : ['image/*'])
+                                            ->maxSize(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? 20480 : 5120)
                                             ->validationMessages([
-                                                'max.file' => 'Ukuran file melebihi batas (Gambar max 5MB, Video max 8MB).',
+                                                'max.file' => 'Ukuran file melebihi batas (Gambar max 5MB, Video max 20MB).',
                                             ])
                                             ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Get $get) {
-                                                if ($get('kind') === MediaKind::Image->value) {
+                                                if (($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Image->value) {
                                                     return app(ImageOptimizer::class)->optimizeAndSave($file, 'media');
                                                 }
 
@@ -141,15 +141,15 @@ class ProjectForm
                                         TextInput::make('url')
                                             ->label('URL Embed')
                                             ->url()
-                                            ->visible(fn (Get $get) => $get('kind') === MediaKind::Embed->value)
-                                            ->required(fn (Get $get) => $get('kind') === MediaKind::Embed->value),
+                                            ->visible(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Embed->value)
+                                            ->required(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Embed->value),
                                         TextInput::make('alt.id')
                                             ->label('Alt Teks (ID)')
-                                            ->required(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
-                                            ->visible(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value])),
+                                            ->required(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
+                                            ->visible(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value])),
                                         TextInput::make('alt.en')
                                             ->label('Alt Teks (EN)')
-                                            ->visible(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value])),
+                                            ->visible(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value])),
                                         TextInput::make('caption.id')
                                             ->label('Caption (ID)'),
                                         TextInput::make('caption.en')
