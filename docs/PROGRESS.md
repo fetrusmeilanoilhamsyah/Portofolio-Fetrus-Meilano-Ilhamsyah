@@ -10,7 +10,7 @@
 | 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Selesai |
 | 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Selesai |
 | 6 | Home dan About | Selesai |
-| 7 | Experience dan Projects | Belum |
+| 7 | Experience dan Projects | Selesai |
 | 8 | Media Sosial, Kontak, SEO | Belum |
 | 9 | Polesan, performa, keamanan, tes | Belum |
 | 10 | Persiapan deploy ke VPS | Belum |
@@ -310,3 +310,28 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - **View Composer**: Mengingat variabel `$siteSetting` diperlukan baik di `layouts.public` maupun di view `pages.*`, saya mengubah View Composer (di `ViewServiceProvider`) agar melakukan bind ke `['components.layouts.public', 'pages.*']`. Untuk menghindari eksekusi kueri berulang, kueri di-cache dengan static variable di dalam penutup (closure) composer.
 - **Keahlian (Skills)**: Tidak menggunakan diagram batang atau angka tingkat penguasaan sesuai arahan. Hanya badge/tag rapi berdasarkan kelompok keahlian.
 - **Batasan Kolom Layout**: Layout kontainer utama diatur dengan parameter `$maxWidth` (default `max-w-3xl`) agar bagian utama situs terpusat alami, tetapi dapat diperbesar untuk halaman lain jika dibutuhkan nantinya.
+
+## Tahap 7 — Experience dan Projects ✅ SELESAI
+
+**Selesai pada:** 2026-09-30
+
+### Yang Selesai
+- [x] Status tabel tahap 7 telah diselesaikan.
+- [x] Halaman `/experience` dengan dua tab: Pengalaman dan Sertifikat. Diimplementasikan menggunakan state URL via Alpine.js (`?tab=`) dan pushState, serta bisa diakses via keyboard.
+- [x] Tab Pengalaman: Menampilkan riwayat kerja, magang, organisasi, dan pendidikan dalam timeline vertikal, diurutkan menurut `started_at` DESC.
+- [x] Tab Sertifikat: Menampilkan grid sertifikat dengan filter kategori dan pencarian client-side via Alpine.js. Klik sertifikat akan memunculkan modal (bisa ditutup dengan escape dan fokus kembali).
+- [x] Halaman `/projects`: Menampilkan daftar proyek yang terbit dengan filter tipe (hanya menampilkan tipe yang memiliki proyek) dan pencarian client-side via Alpine.js. Diurutkan menurut `sort_order` lalu `published_at` DESC.
+- [x] Halaman `/projects/{slug}`: Menampilkan detail proyek.
+- [x] Tombol tautan proyek ditampilkan secara kondisional (Coba Bot, Kunjungi Situs, Demo, Lihat Kode) bergantung isi kolom.
+- [x] Galeri media proyek: Gambar memakai aspek rasio, Video dimuat dengan `preload="none"`, di-pause saat keluar layar via native `IntersectionObserver`, dan dimainkan saat tampil di viewport. Embed iframe hanya dimuat saat elemen diklik.
+- [x] Navigasi proyek sebelumnya dan berikutnya diimplementasikan berbasis urutan `sort_order` lalu `published_at` DESC.
+- [x] Proyek draft dilarang untuk publik (mengembalikan halaman empty state / 404).
+- [x] Semua kartu list dan item proyek memiliki empty state wajar.
+- [x] Tes khusus dibuat di `ExperienceProjectTest` untuk asersi bahwa: proyek dan sertifikat draft tidak muncul, filter kategori bekerja baik, dan tampilan link kondisional sukses di-render.
+- [x] Rute Public `test_project_show_returns_200` diperbaiki untuk menampung validasi `firstOrFail()`.
+- [x] `php artisan test` 116/116 passing (hijau).
+- [x] `vendor/bin/pint` dijalankan.
+
+### Keputusan Penting
+- **IntersectionObserver:** Digunakan implementasi native JavaScript di `x-data="videoObserver()"` pada Alpine.js, ketimbang menambahkan package pihak ketiga `@alpinejs/intersect`, demi mematuhi aturan tidak menambah paket (tanpa izin).
+- **Tab URL State:** URL tab di-sync memanfaatkan history `pushState` agar perubahan tab langsung terefleksi ke address bar (contoh: `?tab=sertifikat`), yang berguna jika halaman dibagikan tanpa harus memuat ulang dari server.

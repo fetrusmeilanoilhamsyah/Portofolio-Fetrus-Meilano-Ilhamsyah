@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Project;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -58,9 +59,10 @@ class PublicRoutesTest extends TestCase
         ];
     }
 
-    /** Halaman proyek individual tidak error 500 (slug tidak ditemukan → 200 dengan empty state). */
+    /** Halaman proyek individual mengembalikan 200 jika ada. */
     public function test_project_show_returns_200(): void
     {
+        $project = Project::factory()->published()->create(['slug' => 'contoh-proyek']);
         $response = $this->get('/projects/contoh-proyek');
         $response->assertStatus(200);
     }
@@ -68,6 +70,7 @@ class PublicRoutesTest extends TestCase
     /** Versi EN halaman proyek individual. */
     public function test_en_project_show_returns_200(): void
     {
+        $project = Project::factory()->published()->create(['slug' => 'example-project']);
         $response = $this->get('/en/projects/example-project');
         $response->assertStatus(200);
     }
