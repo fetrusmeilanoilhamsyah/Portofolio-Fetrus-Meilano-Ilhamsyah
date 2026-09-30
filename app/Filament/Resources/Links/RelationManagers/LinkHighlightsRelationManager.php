@@ -96,7 +96,7 @@ class LinkHighlightsRelationManager extends RelationManager
                         return $data;
                     }),
             ])
-            ->actions([
+            ->recordActions([
                 EditAction::make()
                     ->mutateRecordDataUsing(function (array $data): array {
                         // Mutate record data before filling form for editing
@@ -109,17 +109,12 @@ class LinkHighlightsRelationManager extends RelationManager
                     }),
                 DeleteAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
             ])
             ->reorderable('sort_order')
             ->defaultSort('sort_order');
-    }
-
-    protected function canCreate(): bool
-    {
-        return $this->getOwnerRecord()->group === LinkGroup::Saluran->value || $this->getOwnerRecord()->group === LinkGroup::Saluran;
     }
 }

@@ -54,6 +54,8 @@ class ProjectForm
                                 FileUpload::make('cover_image')
                                     ->label('Cover')
                                     ->image()
+                                    ->disk('public')
+                                    ->visibility('public')
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'covers');
@@ -120,6 +122,8 @@ class ProjectForm
                                             ->afterStateUpdated(fn ($state, callable $set) => $set('path', null)),
                                         FileUpload::make('path')
                                             ->label(fn (Get $get) => $get('kind') === MediaKind::Video->value ? 'File Video' : 'File Gambar')
+                                            ->disk('public')
+                                            ->visibility('public')
                                             ->visible(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
                                             ->required(fn (Get $get) => in_array($get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
                                             ->acceptedFileTypes(fn (Get $get) => $get('kind') === MediaKind::Video->value ? ['video/mp4'] : ['image/*'])

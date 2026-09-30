@@ -36,6 +36,8 @@ class ExperienceForm
                                 FileUpload::make('logo')
                                     ->label('Logo')
                                     ->image()
+                                    ->disk('public')
+                                    ->visibility('public')
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'experiences');

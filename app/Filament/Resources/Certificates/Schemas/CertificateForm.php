@@ -48,6 +48,8 @@ class CertificateForm
                                 FileUpload::make('image')
                                     ->label('Gambar Sertifikat')
                                     ->image()
+                                    ->disk('public')
+                                    ->visibility('public')
                                     ->maxSize(5120)
                                     ->required()
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
@@ -60,6 +62,9 @@ class CertificateForm
                                     ->label('Teks Alternatif (EN)'),
                                 FileUpload::make('file')
                                     ->label('File PDF (Opsional)')
+                                    ->disk('public')
+                                    ->visibility('public')
+                                    ->directory('certificates')
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->maxSize(5120),
                             ]),

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\MediaKind;
 use App\Enums\ProjectStatus;
 use App\Enums\ProjectType;
 use App\Events\ContentChanged;
@@ -10,6 +11,7 @@ use App\Filament\Resources\Projects\Pages\EditProject;
 use App\Filament\Resources\Projects\Pages\ListProjects;
 use App\Filament\Resources\Projects\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectMedia;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -142,6 +144,40 @@ class ProjectResourceTest extends TestCase
 
         $this->assertEquals(ProjectStatus::Draft, $project1->refresh()->status);
         // published_at tidak berubah menjadi null oleh aksi ini (sesuai behavior aslinya)
+    }
+
+    public function test_regression_project_media_retained_on_edit_without_changes()
+    {
+        Storage::fake('public');
+        Storage::fake('local');
+
+        $project = Project::factory()->create([
+            'cover_image' => 'projects/fake-cover.jpg',
+        ]);
+
+        ProjectMedia::factory()->create([
+            'project_id' => $project->id,
+            'path' => 'projects/fake-media.jpg',
+            'kind' => MediaKind::Image,
+        ]);
+
+        // Letakkan file di disk public
+        Storage::disk('public')->put('projects/fake-cover.jpg', 'content');
+        Storage::disk('public')->put('projects/fake-media.jpg', 'content');
+
+        Livewire::test(EditProject::class, ['record' => $project->getRouteKey()])
+            ->assertSuccessful()
+            ->assertFormSet([
+                'cover_image' => 'projects/fake-cover.jpg',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertEquals('projects/fake-cover.jpg', $project->refresh()->cover_image);
+        $this->assertEquals('projects/fake-media.jpg', $project->media()->first()->path);
+
+        Storage::disk('public')->assertExists('projects/fake-cover.jpg');
+        Storage::disk('public')->assertExists('projects/fake-media.jpg');
     }
 
     public function test_media_change_dispatches_content_changed()

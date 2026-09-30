@@ -9,6 +9,7 @@ use App\Filament\Resources\Experiences\Pages\ListExperiences;
 use App\Models\Experience;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -71,5 +72,27 @@ class ExperienceResourceTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertEquals('Posisi Baru', $experience->refresh()->getTranslation('title', 'id'));
+    }
+
+    public function test_regression_experience_logo_retained_on_edit_without_changes()
+    {
+        Storage::fake('public');
+
+        $experience = Experience::factory()->create([
+            'logo' => 'experiences/fake-logo.jpg',
+        ]);
+
+        Storage::disk('public')->put('experiences/fake-logo.jpg', 'content');
+
+        Livewire::test(EditExperience::class, ['record' => $experience->getRouteKey()])
+            ->assertSuccessful()
+            ->assertFormSet([
+                'logo' => 'experiences/fake-logo.jpg',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $this->assertEquals('experiences/fake-logo.jpg', $experience->refresh()->logo);
+        Storage::disk('public')->assertExists('experiences/fake-logo.jpg');
     }
 }

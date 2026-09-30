@@ -94,12 +94,17 @@ class SiteSettings extends Page implements HasForms
                                 FileUpload::make('photo')
                                     ->label('Foto Profil')
                                     ->image()
+                                    ->disk('public')
+                                    ->visibility('public')
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'site');
                                     }),
                                 FileUpload::make('cv_file')
                                     ->label('File CV (PDF)')
+                                    ->disk('public')
+                                    ->visibility('public')
+                                    ->directory('cv')
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->maxSize(5120),
                             ]),
@@ -125,6 +130,8 @@ class SiteSettings extends Page implements HasForms
                                 FileUpload::make('og_image')
                                     ->label('Gambar OG (Share Image)')
                                     ->image()
+                                    ->disk('public')
+                                    ->visibility('public')
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'site');

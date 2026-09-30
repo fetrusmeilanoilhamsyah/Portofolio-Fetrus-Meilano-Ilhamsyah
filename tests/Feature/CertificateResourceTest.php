@@ -80,4 +80,33 @@ class CertificateResourceTest extends TestCase
 
         $this->assertEquals('Alt Baru', $certificate->refresh()->getTranslation('alt', 'id'));
     }
+
+    public function test_regression_certificate_file_retained_on_edit_without_changes()
+    {
+        Storage::fake('public');
+
+        $certificate = Certificate::factory()->create([
+            'image' => 'certificates/fake-image.jpg',
+            'file' => 'certificates/fake-file.pdf',
+        ]);
+
+        Storage::disk('public')->put('certificates/fake-image.jpg', 'content');
+        Storage::disk('public')->put('certificates/fake-file.pdf', 'content');
+
+        Livewire::test(EditCertificate::class, ['record' => $certificate->getRouteKey()])
+            ->assertSuccessful()
+            ->assertFormSet([
+                'image' => 'certificates/fake-image.jpg',
+                'file' => 'certificates/fake-file.pdf',
+            ])
+            ->call('save')
+            ->assertHasNoFormErrors();
+
+        $certificate->refresh();
+        $this->assertEquals('certificates/fake-image.jpg', $certificate->image);
+        $this->assertEquals('certificates/fake-file.pdf', $certificate->file);
+
+        Storage::disk('public')->assertExists('certificates/fake-image.jpg');
+        Storage::disk('public')->assertExists('certificates/fake-file.pdf');
+    }
 }

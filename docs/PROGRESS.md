@@ -7,7 +7,7 @@
 | 1 | Fondasi proyek dan file konsep | Selesai |
 | 2 | Database dan model | Selesai |
 | 3 | Panel admin bagian 1: login, keamanan, Proyek | Selesai |
-| 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Belum |
+| 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Selesai |
 | 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Belum |
 | 6 | Home dan About | Belum |
 | 7 | Experience dan Projects | Belum |
@@ -247,4 +247,5 @@ php                  8.4.25     success
 - **RelationManager Translasi:** Menggunakan metode `mutateRecordDataUsing` pada `EditAction` untuk mengatur ulang properti array terjemahan pada form modal tabel Sorotan.
 - **Datalist Kategori:** Alih-alih membuat relasi Tag untuk sertifikat, instruksi "bebas tapi disarankan" diselesaikan memakai form `TextInput` dengan datalist yang dipopulasi otomatis (pluck) dari entri unik yang sudah ada di database.
 - **Widget Dasbor:** Widget stat bawaan dihilangkan sesuai permintaan, diganti dengan Widget kustom yang menyajikan pintasan sederhana sesuai prioritas alur kerja admin.
+
 

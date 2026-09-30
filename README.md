@@ -36,10 +36,13 @@ php artisan key:generate
 New-Item -ItemType File -Force database/database.sqlite
 php artisan migrate
 
-# 5. Install dependensi Node
+# 5. Buat symlink untuk penyimpanan file (WAJIB agar gambar tampil)
+php artisan storage:link
+
+# 6. Install dependensi Node
 npm install
 
-# 6. Build aset (untuk produksi)
+# 7. Build aset (untuk produksi)
 npm run build
 
 # Atau, jalankan dev server dengan hot-reload
