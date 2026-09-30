@@ -1,4 +1,4 @@
-<x-layouts.public :title="__('ui.page_about') . ' — ' . config('app.name')">
+<x-layouts.public :title="__('ui.page_about') . ' — ' . (public_text($siteSetting?->name) ?? config('app.name'))">
     <x-page-header :title="__('ui.page_about')" />
 
     @if(!$siteSetting || (empty(public_text($siteSetting->about_body)) && empty($siteSetting->photo) && $education->isEmpty() && empty($siteSetting->skills)))
@@ -67,7 +67,7 @@
                     <div class="rounded-xl overflow-hidden bg-canvas-muted border border-line aspect-square max-w-[240px] md:max-w-none mx-auto md:mx-0">
                         <img 
                             src="{{ media_url($siteSetting->photo) }}" 
-                            alt="{{ $siteSetting->name }}" 
+                            alt="{{ public_text($siteSetting->name) ?? config('app.name') }}" 
                             class="w-full h-full object-cover"
                             loading="lazy"
                         >

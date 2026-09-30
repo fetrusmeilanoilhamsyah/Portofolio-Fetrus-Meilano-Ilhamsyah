@@ -19,7 +19,7 @@
                     {{ __('ui.page_about') }}
                 </x-button>
                 <x-button as="a" href="{{ localized_route('experience') }}" variant="secondary">
-                    {{ __('ui.experience') ?? 'Pengalaman' }}
+                    {{ __('ui.page_experience') }}
                 </x-button>
                 <x-button as="a" href="{{ localized_route('projects') }}" variant="primary">
                     {{ __('ui.page_projects') }}
