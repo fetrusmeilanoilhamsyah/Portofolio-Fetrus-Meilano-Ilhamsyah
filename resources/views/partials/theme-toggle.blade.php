@@ -9,7 +9,7 @@
     @click="$store.theme.toggle()"
     :aria-label="$store.theme.isDark ? '{{ __('ui.theme_light') }}' : '{{ __('ui.theme_dark') }}'"
     :title="$store.theme.isDark ? '{{ __('ui.theme_light') }}' : '{{ __('ui.theme_dark') }}'"
-    class="p-2 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10"
+    class="flex items-center justify-center w-8 h-8 rounded-md border border-line transition-colors text-ink-muted hover:text-ink hover:bg-black/5 dark:hover:bg-white/10"
 >
     {{-- Ikon matahari (mode gelap aktif → tampilkan matahari untuk beralih ke terang) --}}
     <svg x-show="$store.theme.isDark" xmlns="http://www.w3.org/2000/svg" width="16" height="16"

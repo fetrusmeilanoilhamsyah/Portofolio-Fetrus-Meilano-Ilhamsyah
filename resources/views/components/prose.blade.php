@@ -1,5 +1,5 @@
 @props([
-    'markdown' => '',
+    'content' => '',
 ])
 
 {{--
@@ -12,21 +12,10 @@
       yang aman via CommonMark — gunakan {!! !!} secara sengaja di sini.
 --}}
 @php
-    use League\CommonMark\CommonMarkConverter;
-    use League\CommonMark\Environment\Environment;
-    use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
-    use League\CommonMark\Extension\GithubFlavoredMarkdown\GithubFlavoredMarkdownExtension;
-
-    $environment = new Environment([
-        'html_input'         => 'strip',       // hapus HTML mentah
-        'allow_unsafe_links' => false,          // tolak javascript: dan data: URLs
-        'max_nesting_level'  => 25,
+    $rendered = \Illuminate\Support\Str::markdown($content ?? $markdown ?? '', [
+        'html_input'         => 'strip',
+        'allow_unsafe_links' => false,
     ]);
-    $environment->addExtension(new CommonMarkCoreExtension());
-    $environment->addExtension(new GithubFlavoredMarkdownExtension());
-
-    $converter  = new CommonMarkConverter(environment: $environment);
-    $rendered   = $converter->convert($markdown)->getContent();
 @endphp
 
 <div

@@ -52,4 +52,14 @@ return [
     'btn_primary' => 'View',
     'btn_secondary' => 'Details',
     'btn_view_all' => 'View all',
+
+    // Home dan About
+    'featured_projects' => 'Featured Projects',
+    'recent_projects' => 'Recent Projects',
+    'view_all_projects' => 'View all projects',
+    'download_cv' => 'Download CV',
+    'skills' => 'Skills',
+    'education' => 'Education',
+
+    'present' => 'Present',
 ];

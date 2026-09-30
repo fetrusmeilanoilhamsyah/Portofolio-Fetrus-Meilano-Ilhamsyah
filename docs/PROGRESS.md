@@ -1,4 +1,4 @@
-﻿# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
+# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
 
 ## Daftar Tahap
 
@@ -9,7 +9,7 @@
 | 3 | Panel admin bagian 1: login, keamanan, Proyek | Selesai |
 | 4 | Panel admin bagian 2: Pengalaman, Sertifikat, Tautan, Pengaturan situs | Selesai |
 | 5 | Layout publik dan sistem desain (termasuk i18n dan tema) | Selesai |
-| 6 | Home dan About | Belum |
+| 6 | Home dan About | Selesai |
 | 7 | Experience dan Projects | Belum |
 | 8 | Media Sosial, Kontak, SEO | Belum |
 | 9 | Polesan, performa, keamanan, tes | Belum |
@@ -256,7 +256,7 @@ php                  8.4.25     success
 **Selesai pada:** 2026-09-30
 
 ### Yang Selesai
-- [x] Token desain (warna, font, radius) didefinisikan via direktif @theme di pp.css (Tailwind v4).
+- [x] Token desain (warna, font, radius) didefinisikan via direktif @theme di app.css (Tailwind v4).
 - [x] Sistem tema (terang/gelap) berbasis class .dark pada <html>, dikelola dengan Alpine.js store (`.theme`), persisten di localStorage, mengikuti sistem, dan script pencegah kedipan di <head>.
 - [x] Layout utama desktop: sidebar kiri dengan navigasi, identitas dari SiteSetting, toggle tema/bahasa.
 - [x] Layout utama mobile: bilah atas dengan panel geser Alpine.js, trap focus dengan @alpinejs/focus.
@@ -266,8 +266,12 @@ php                  8.4.25     success
 - [x] View Composer mendaftarkan data SiteSetting ke layout secara efisien (satu kueri).
 - [x] Halaman welcome dihapus.
 - [x] Skrip sebaris dihapus dan diganti utility class CSS.
-- [x] Helper global media_url(?string ) menggunakan disk public didaftarkan lewat composer.json secara standar.
+- [x] Helper global media_url(?string $path) menggunakan disk public didaftarkan lewat composer.json secara standar.
 - [x] Pengujian komprehensif (kontras warna, rute, locale switcher, helper).
+
+
+### Koreksi 4b dan 5b
+- Memperbaiki salah ketik di laporan Tahap 5 akibat karakter kontrol (app.css, \.theme, \).
 
 ### Laporan Kontras Warna (WCAG AA Validation)
 Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
@@ -287,3 +291,22 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 ### Keputusan Penting
 - Pemanggilan SiteSetting::current() dihindari pada View untuk mencegah penulisan database (side effect). View Composer digunakan dengan SiteSetting::query()->first().
 - Logika toggle bahasa diekstraksi ke LocaleSwitcher untuk menangani route parameter dan query string dengan aman.
+
+## Tahap 6 — Home dan About ✅ SELESAI
+
+**Selesai pada:** 2026-09-30
+
+### Yang Selesai
+- [x] Merapikan tahap 5: mengoreksi karakter kontrol di PROGRESS.md, memperbaiki komentar SetLocale, menyembunyikan tombol Palet Perintah (TODO tahap 9), dan merapikan layout grid di `<main>` (menggunakan properti `maxWidth` pada `x-layouts.public`).
+- [x] Perbaikan tampilan tombol toggle tema (`theme-toggle`) dan bahasa (`lang-toggle`) di sidebar menjadi kotak batas halus, agar tidak tampak sekadar teks.
+- [x] Halaman Home: menampilkan intro dari pengaturan situs, daftar proyek unggulan (maksimal 3, filter `published`, `featured`, `ordered`), dan proyek terbaru (maksimal 3, yang tidak unggulan).
+- [x] Halaman About: menampilkan teks markdown tentang, tombol unduh CV (jika ada file), ringkasan keterampilan dari pengaturan situs, dan ringkasan pendidikan terbaru (filter `kind=pendidikan`).
+- [x] Tampilan _empty state_ untuk skenario belum ada data di beranda maupun about.
+- [x] Semua elemen teks antarmuka ditarik dari `ui.php` dengan fallback bahasa otomatis.
+- [x] Komponen UI tambahan: `x-project-card` untuk tampilan grid dan `x-project-list-item` untuk tampilan daftar (list).
+- [x] Pengujian fitur: HomeAboutTest memastikan rute publik (home dan about) mengabaikan konten draft, menampilkan data sesuai, dan menangani ketiadaan CV dengan elegan. Tes php artisan test berjalan lancar dan semua lolos (hijau).
+
+### Keputusan Penting
+- **View Composer**: Mengingat variabel `$siteSetting` diperlukan baik di `layouts.public` maupun di view `pages.*`, saya mengubah View Composer (di `ViewServiceProvider`) agar melakukan bind ke `['components.layouts.public', 'pages.*']`. Untuk menghindari eksekusi kueri berulang, kueri di-cache dengan static variable di dalam penutup (closure) composer.
+- **Keahlian (Skills)**: Tidak menggunakan diagram batang atau angka tingkat penguasaan sesuai arahan. Hanya badge/tag rapi berdasarkan kelompok keahlian.
+- **Batasan Kolom Layout**: Layout kontainer utama diatur dengan parameter `$maxWidth` (default `max-w-3xl`) agar bagian utama situs terpusat alami, tetapi dapat diperbesar untuk halaman lain jika dibutuhkan nantinya.

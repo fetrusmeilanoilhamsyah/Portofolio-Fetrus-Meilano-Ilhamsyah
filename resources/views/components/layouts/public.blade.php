@@ -1,3 +1,4 @@
+@props(['maxWidth' => 'max-w-3xl'])
 <!DOCTYPE html>
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
@@ -170,7 +171,7 @@
                 </nav>
 
                 {{-- Tombol palet perintah (belum berfungsi) --}}
-                <div class="mt-auto">
+                <div class="mt-auto hidden"> <!-- TODO tahap 9 -->
                     <button
                         type="button"
                         disabled
@@ -193,10 +194,12 @@
         {{-- ═══ KONTEN UTAMA ═══ --}}
         <main
             id="main-content"
-            class="flex-1 min-w-0 px-5 py-8 md:px-8 lg:px-12 xl:px-16 max-w-[860px]"
+            class="flex-1 min-w-0 px-5 py-8 md:px-8 lg:px-12 xl:px-16"
             tabindex="-1"
         >
-            {{ $slot }}
+            <div class="mx-auto w-full {{ $maxWidth }}">
+                {{ $slot }}
+            </div>
         </main>
 
     </div>

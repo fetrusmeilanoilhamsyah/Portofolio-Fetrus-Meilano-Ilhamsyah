@@ -52,4 +52,14 @@ return [
     'btn_primary' => 'Lihat',
     'btn_secondary' => 'Detail',
     'btn_view_all' => 'Lihat semua',
+
+    // Home dan About
+    'featured_projects' => 'Proyek Unggulan',
+    'recent_projects' => 'Proyek Terbaru',
+    'view_all_projects' => 'Lihat semua proyek',
+    'download_cv' => 'Unduh CV',
+    'skills' => 'Keahlian',
+    'education' => 'Pendidikan',
+
+    'present' => 'Sekarang',
 ];

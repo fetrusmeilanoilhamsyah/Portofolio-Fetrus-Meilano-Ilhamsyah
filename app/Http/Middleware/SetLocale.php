@@ -12,9 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * - Indonesia (id): default, tanpa prefix — /about, /projects, dll.
  * - Inggris (en): dengan prefix /en — /en/about, /en/projects, dll.
- *
- * Pilihan bahasa juga disimpan di session ('locale') agar toggle bahasa
- * dapat mempertahankan halaman yang sedang dibuka.
  */
 class SetLocale
 {
