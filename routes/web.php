@@ -1,7 +1,37 @@
 <?php
 
+use App\Http\Controllers\PublicController;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+/*
+|--------------------------------------------------------------------------
+| Rute Publik
+|--------------------------------------------------------------------------
+|
+| Bahasa Indonesia: default, tanpa prefix (/about, /projects, dll.)
+| Bahasa Inggris: dengan prefix /en (/en/about, /en/projects, dll.)
+|
+*/
+
+// ─── Indonesia (default, tanpa prefix) ───────────────────────────────────────
+Route::middleware([SetLocale::class])->group(function () {
+    Route::get('/', [PublicController::class, 'home'])->name('home');
+    Route::get('/about', [PublicController::class, 'about'])->name('about');
+    Route::get('/experience', [PublicController::class, 'experience'])->name('experience');
+    Route::get('/projects', [PublicController::class, 'projects'])->name('projects');
+    Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('projects.show');
+    Route::get('/social', [PublicController::class, 'social'])->name('social');
+    Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+});
+
+// ─── Inggris (prefix /en) ─────────────────────────────────────────────────────
+Route::prefix('en')->middleware([SetLocale::class])->group(function () {
+    Route::get('/', [PublicController::class, 'home'])->name('en.home');
+    Route::get('/about', [PublicController::class, 'about'])->name('en.about');
+    Route::get('/experience', [PublicController::class, 'experience'])->name('en.experience');
+    Route::get('/projects', [PublicController::class, 'projects'])->name('en.projects');
+    Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('en.projects.show');
+    Route::get('/social', [PublicController::class, 'social'])->name('en.social');
+    Route::get('/contact', [PublicController::class, 'contact'])->name('en.contact');
 });

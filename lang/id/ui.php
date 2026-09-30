@@ -1,0 +1,54 @@
+<?php
+
+return [
+    // Navigasi
+    'nav_home' => 'Beranda',
+    'nav_about' => 'Tentang',
+    'nav_experience' => 'Pengalaman',
+    'nav_projects' => 'Proyek',
+    'nav_social' => 'Media Sosial',
+    'nav_contact' => 'Kontak',
+
+    // Tema & bahasa
+    'toggle_theme' => 'Ganti tema',
+    'theme_light' => 'Mode terang',
+    'theme_dark' => 'Mode gelap',
+    'toggle_lang' => 'Ganti bahasa',
+    'lang_id' => 'Indonesia',
+    'lang_en' => 'English',
+
+    // Aksesibilitas
+    'skip_to_content' => 'Lewati ke konten utama',
+    'open_menu' => 'Buka menu',
+    'close_menu' => 'Tutup menu',
+    'command_palette' => 'Palet perintah',
+    'open_to_work' => 'Terbuka untuk kesempatan kerja',
+
+    // Halaman
+    'page_home' => 'Beranda',
+    'page_about' => 'Tentang Saya',
+    'page_experience' => 'Pengalaman',
+    'page_projects' => 'Proyek',
+    'page_social' => 'Media Sosial',
+    'page_contact' => 'Kontak',
+
+    // Status kosong
+    'empty_state' => 'Belum ada isi di sini.',
+    'empty_coming_soon' => 'Halaman ini sedang disiapkan.',
+
+    // Error
+    'error_404_title' => 'Halaman tidak ditemukan',
+    'error_404_body' => 'Halaman yang kamu cari tidak ada atau sudah dipindahkan.',
+    'error_500_title' => 'Terjadi kesalahan',
+    'error_500_body' => 'Ada yang tidak beres di server. Silakan coba lagi nanti.',
+    'back_home' => 'Kembali ke beranda',
+
+    // Tab pengalaman
+    'tab_experience' => 'Pengalaman',
+    'tab_certificates' => 'Sertifikat',
+
+    // Tombol
+    'btn_primary' => 'Lihat',
+    'btn_secondary' => 'Detail',
+    'btn_view_all' => 'Lihat semua',
+];
