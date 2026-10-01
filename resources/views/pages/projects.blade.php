@@ -37,7 +37,7 @@
                     <div class="bg-canvas border border-line rounded-xl relative flex flex-col h-full overflow-hidden transition-colors hover:border-ink-muted group">
                         <template x-if="p.cover">
                             <div class="relative w-full aspect-video bg-canvas-muted overflow-hidden border-b border-line">
-                                <img :src="p.cover" :alt="p.cover_alt" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy">
+                                <img :src="p.cover" :alt="p.cover_alt" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="225">
                             </div>
                         </template>
                         

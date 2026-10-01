@@ -222,13 +222,13 @@
                     @include('partials.nav-links', ['mobile' => false])
                 </nav>
 
-                {{-- Tombol palet perintah (belum berfungsi) --}}
-                <div class="mt-auto hidden"> <!-- TODO tahap 9 -->
+                {{-- Tombol palet perintah --}}
+                <div class="mt-auto">
                     <button
                         type="button"
-                        disabled
+                        @click="$dispatch('open-palette')"
                         aria-label="{{ __('ui.command_palette') }}"
-                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-not-allowed text-ink-muted border-line bg-canvas"
+                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-pointer text-ink-muted border-line bg-canvas hover:bg-ink/5 transition-colors"
                     >
                         {{-- Lucide: Command --}}
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
@@ -236,7 +236,7 @@
                              stroke-linejoin="round" aria-hidden="true">
                             <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>
                         </svg>
-                        <span>{{ __('ui.command_palette') }}</span>
+                        <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>
                         <kbd class="ml-auto text-xs font-mono px-1.5 py-0.5 rounded border border-line text-[0.6875rem]">⌘K</kbd>
                     </button>
                 </div>
@@ -255,6 +255,8 @@
         </main>
 
     </div>
+    
+    <x-command-palette />
 
     @stack('scripts')
 </body>

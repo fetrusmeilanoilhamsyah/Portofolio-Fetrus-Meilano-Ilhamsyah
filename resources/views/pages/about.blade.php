@@ -36,7 +36,7 @@
                                     <div class="mt-1">
                                         <div class="w-10 h-10 rounded bg-canvas-muted border border-line flex items-center justify-center overflow-hidden shrink-0">
                                             @if($edu->logo)
-                                                <img src="{{ media_url($edu->logo) }}" alt="{{ $edu->organization }}" class="w-full h-full object-cover">
+                                                <img src="{{ media_url($edu->logo) }}" alt="{{ $edu->organization }}" class="w-full h-full object-cover" width="40" height="40" loading="lazy">
                                             @else
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-muted"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                                             @endif
@@ -69,6 +69,8 @@
                             src="{{ media_url($siteSetting->photo) }}" 
                             alt="{{ public_text($siteSetting->name) ?? config('app.name') }}" 
                             class="w-full h-full object-cover"
+                            width="400"
+                            height="400"
                             loading="lazy"
                         >
                     </div>

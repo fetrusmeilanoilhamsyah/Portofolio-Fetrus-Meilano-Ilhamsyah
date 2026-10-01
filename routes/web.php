@@ -1,7 +1,11 @@
 <?php
 
+use App\Http\Controllers\CommandPaletteController;
 use App\Http\Controllers\PublicController;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +30,9 @@ Route::middleware([SetLocale::class])->group(function () {
     Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('projects.show');
     Route::get('/social', [PublicController::class, 'social'])->name('social');
     Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+
+    // API endpoint for Command Palette
+    Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('command-palette');
 });
 
 // ─── Inggris (prefix /en) ─────────────────────────────────────────────────────
@@ -37,4 +44,14 @@ Route::prefix('en')->middleware([SetLocale::class])->group(function () {
     Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('en.projects.show');
     Route::get('/social', [PublicController::class, 'social'])->name('en.social');
     Route::get('/contact', [PublicController::class, 'contact'])->name('en.contact');
+
+    // API endpoint for Command Palette
+    Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('en.command-palette');
 });
+
+// CSP Report Endpoint
+Route::post('/api/csp-report', function (Request $request) {
+    Log::warning('CSP Violation:', $request->all());
+
+    return response()->json(['status' => 'ok']);
+})->withoutMiddleware([VerifyCsrfToken::class]);

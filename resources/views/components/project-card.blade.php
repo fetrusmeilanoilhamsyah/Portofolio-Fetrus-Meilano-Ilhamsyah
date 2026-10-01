@@ -7,6 +7,8 @@
                 src="{{ media_url($project->cover_image) }}" 
                 alt="{{ filled($project->cover_alt) ? $project->cover_alt : $project->title }}" 
                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                width="400"
+                height="225"
                 loading="lazy"
             >
         </div>

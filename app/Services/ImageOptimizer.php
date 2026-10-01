@@ -21,6 +21,7 @@ class ImageOptimizer
         // SVG tidak didukung oleh GD/getimagesize dan tidak perlu dioptimasi
         if ($file->getMimeType() === 'image/svg+xml') {
             $path = $file->store($directory, 'public');
+
             return $path;
         }
 
@@ -34,18 +35,18 @@ class ImageOptimizer
             if ($content === false) {
                 throw new InvalidArgumentException('Gagal membaca file gambar.');
             }
-            
+
             $image = @imagecreatefromstring($content);
             if ($image === false) {
                 return $file->store($directory, 'public');
             }
-            
+
             $origWidth = imagesx($image);
             $origHeight = imagesy($image);
             $imageType = -1; // Unknown but successfully read by imagecreatefromstring
         } else {
             [$origWidth, $origHeight, $imageType] = $info;
-            
+
             if ($origWidth * $origHeight > 24000000) {
                 throw new InvalidArgumentException('Gambar terlalu besar (lebih dari 24 megapiksel). Harap perkecil gambar Anda sebelum mengunggah.');
             }
@@ -57,7 +58,7 @@ class ImageOptimizer
                 IMAGETYPE_GIF => @imagecreatefromgif($sourcePath),
                 default => false,
             };
-            
+
             if ($image === false) {
                 // Tipe dikenali getimagesize tapi gagal diproses, bypass optimasi
                 return $file->store($directory, 'public');

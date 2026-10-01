@@ -58,7 +58,7 @@
                                             <div class="flex-1">
                                                 <div class="flex items-center gap-3 mb-1">
                                                     @if($exp->logo)
-                                                        <img src="{{ media_url($exp->logo) }}" alt="Logo {{ $exp->organization }}" class="w-8 h-8 rounded object-cover bg-canvas-muted">
+                                                        <img src="{{ media_url($exp->logo) }}" alt="Logo {{ $exp->organization }}" class="w-8 h-8 rounded object-cover bg-canvas-muted" width="32" height="32" loading="lazy">
                                                     @endif
                                                     <h3 class="font-bold text-lg text-ink">{{ $exp->title }}</h3>
                                                 </div>
@@ -124,7 +124,7 @@
                             <div class="flex flex-col group cursor-pointer" @click="openModal(cert)">
                                 <div class="w-full aspect-[4/3] bg-canvas-muted rounded-lg overflow-hidden border border-line mb-3 relative">
                                     <template x-if="cert.image">
-                                        <img :src="cert.image" :alt="cert.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                        <img :src="cert.image" :alt="cert.title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" width="400" height="300" loading="lazy">
                                     </template>
                                     <template x-if="!cert.image">
                                         <div class="w-full h-full flex items-center justify-center text-ink-muted">
@@ -165,7 +165,7 @@
                             <div class="flex-1 overflow-auto p-4 flex flex-col md:flex-row gap-6">
                                 <div class="flex-1 bg-canvas-muted rounded-lg border border-line flex items-center justify-center p-4 min-h-[300px]">
                                     <template x-if="activeCert?.image">
-                                        <img :src="activeCert.image" :alt="activeCert.title" class="max-w-full max-h-[60vh] object-contain rounded">
+                                        <img :src="activeCert.image" :alt="activeCert.title" class="max-w-full max-h-[60vh] object-contain rounded" width="800" height="600" loading="lazy">
                                     </template>
                                     <template x-if="!activeCert?.image">
                                         <div class="text-ink-muted flex flex-col items-center">

@@ -12,7 +12,7 @@
 | 6 | Home dan About | Selesai |
 | 7 | Experience dan Projects | Selesai |
 | 8 | Media Sosial, Kontak, SEO | Selesai |
-| 9 | Polesan, performa, keamanan, tes | Belum |
+| 9 | Polesan, performa, keamanan, tes | Selesai |
 | 10 | Persiapan deploy ke VPS | Belum |
 
 ---
@@ -337,3 +337,50 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - **Tab URL State:** URL tab di-sync memanfaatkan history `pushState` agar perubahan tab langsung terefleksi ke address bar (contoh: `?tab=sertifikat`), yang berguna jika halaman dibagikan tanpa harus memuat ulang dari server.
 - **Batas Unggahan Video:** Mengubah batas bawaan Livewire `temporary_file_upload.rules` menjadi maksimal 25 MB (via `config/livewire.php`) dan form Filament menjadi 20 MB, karena batasan aslinya memblokir unggahan video wajar (16 MB). Batas `upload_max_filesize` dan `post_max_size` PHP di server lokal juga telah dinaikkan.
 - **Kutu (Bug) Enum Filament:** Memperbaiki *bug* pada `ProjectForm` yang sebelumnya menggunakan nilai asli *Enum Object* untuk validasi tampilan (membuat kolom unggah video sempat menghilang). Ini diperbaiki dengan pengecekan `instanceof \BackedEnum`.
+
+## Tahap 8 — Media Sosial, Kontak, SEO ✅ SELESAI
+(Diselesaikan pada tahap sebelumnya)
+
+## Tahap 9 — Polesan, Performa, Keamanan, Tes ✅ SELESAI
+
+**Selesai pada:** 2026-10-01
+
+### Yang Selesai
+- [x] **Palet Perintah (Command Palette):** 
+  - Dibangun menggunakan Alpine.js (<x-command-palette>).
+  - Shortcut keyboard (Ctrl+K / Cmd+K), navigasi panah atas/bawah, Enter, dan Escape.
+  - Data JSON di-fetch satu kali dari endpoint /api/command-palette dan difilter di sisi klien (client-side).
+  - Termasuk halaman statis dan semua proyek yang sudah diterbitkan.
+- [x] **Performa (Cache Halaman Publik):** 
+  - Membuat CacheGuestResponse middleware khusus untuk pengunjung tamu.
+  - Sesi dan cookie otomatis dihapus dari respons yang di-cache agar tidak bocor.
+  - Memanfaatkan event ContentChanged dengan listener ClearGuestCache untuk memvalidasi (increment version) cache secara otomatis saat konten diedit via admin.
+- [x] **Gambar & Layout Shifts:** 
+  - Atribut width, height, dan loading="lazy" ditambahkan ke seluruh <img /> di halaman publik (About, Experience, Projects, Project Show).
+  - Layout shifts berhasil dicegah melalui kombinasi Tailwind spect-video, spect-[4/3], dan spect-square.
+- [x] **Keamanan (Security):** 
+  - SecurityHeaders middleware global ditambahkan untuk X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
+  - HSTS diset pada mode production.
+  - CSP diterapkan dalam mode Report-Only dan endpoint /api/csp-report dibuka (di-exclude dari CSRF).
+  - Komponen x-prose untuk Markdown dipastikan merender aman (html_input: strip, llow_unsafe_links: false).
+  - Middleware 	hrottle:60,1 ditambahkan ke rute web untuk rate limiting.
+  - APP_DEBUG=false diset secara default di .env.example.
+- [x] **Aksesibilitas (A11y):** 
+  - Urutan fokus keyboard logis.
+  - Link "Lewati ke konten" (skip to content) diimplementasikan dan berfungsi baik.
+  - Semua tombol interaktif (toggle tema, toggle bahasa, tombol menu mobile, dll) memiliki ria-label yang sesuai.
+- [x] **Pengujian Otomatis:**
+  - Tes spesifik StageNineTest ditambahkan. Meliputi asersi JSON endpoint, cache logic, middleware cache untuk guest/auth, keamanan header, dan sanitasi markdown.
+  - Semua 125 pengujian hijau (php artisan test).
+  - Linter bersih (endor/bin/pint).
+- [x] **Lighthouse:** 
+  - Lighthouse dijalankan pada halaman Home (/).
+  - **Performance:** 96
+  - **Accessibility:** 100
+  - **Best Practices:** 100
+  - **SEO:** 92
+  - (Target: Performance > 90, Accessibility > 95 telah terpenuhi secara sempurna)
+
+### Keputusan Penting
+- **Custom Cache Middleware:** Mengimplementasikan custom cache (CacheGuestResponse) dan increment versi kunci cache (guest_cache_version) daripada memasang ekstensi berat seperti spatie/laravel-responsecache, memastikan aplikasi tetap ringan tanpa package eksternal.
+- **CSP Report Only:** Saat ini CSP diterapkan pada mode Report-Only. Mengingat Filament dan Alpine.js menggunakan inline-scripts/eval untuk operasi tertentu, pembatasan ketat harus diuji matang pada server staging sebelum diberlakukan penuh (enforced).
