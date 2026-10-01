@@ -49,12 +49,12 @@
    CSS CUSTOM PROPERTIES — Tema Terang (default)
    ───────────────────────────────────────────── */
 :root {
-    --canvas: #F6F3EE;
-    --canvas-muted: #EFEBE4;
+    --canvas: #FFFFFF;
+    --canvas-muted: #F3F4F6;
     --surf: #FFFFFF;
-    --ink: #1C1917;
-    --ink-muted: #6B645C;
-    --line: #E3DDD3;
+    --ink: #111827;
+    --ink-muted: #4B5563;
+    --line: #E5E7EB;
     --brand: #C8501E;
     --brand-hover: #A63F14;
     --brand-fg: #FFFFFF;
@@ -66,15 +66,15 @@
    CSS CUSTOM PROPERTIES — Tema Gelap
    ───────────────────────────────────────────── */
 html.dark {
-    --canvas: #14110F;
-    --canvas-muted: #221E1B;
-    --surf: #1D1A17;
-    --ink: #EDE8E1;
-    --ink-muted: #A39B90;
-    --line: #3A332E;
+    --canvas: #09090B;
+    --canvas-muted: #18181B;
+    --surf: #09090B;
+    --ink: #FAFAFA;
+    --ink-muted: #A1A1AA;
+    --line: #27272A;
     --brand: #E8743F;
     --brand-hover: #C85F2A;
-    --brand-fg: #14110F;
+    --brand-fg: #09090B;
     --brand-ink: #E8743F;
     --ok: #4ade80;
 }
