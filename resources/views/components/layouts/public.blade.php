@@ -49,6 +49,9 @@
     <meta property="og:type" content="{{ $isProject ? 'article' : 'website' }}">
     @php
         $ogImage = $image ? media_url($image) : ($siteSetting?->og_image ? media_url($siteSetting->og_image) : null);
+        if ($ogImage && !str_starts_with($ogImage, 'http://') && !str_starts_with($ogImage, 'https://')) {
+            $ogImage = url($ogImage);
+        }
     @endphp
     @if($ogImage)
         <meta property="og:image" content="{{ $ogImage }}">

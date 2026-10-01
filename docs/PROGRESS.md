@@ -339,7 +339,32 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - **Kutu (Bug) Enum Filament:** Memperbaiki *bug* pada `ProjectForm` yang sebelumnya menggunakan nilai asli *Enum Object* untuk validasi tampilan (membuat kolom unggah video sempat menghilang). Ini diperbaiki dengan pengecekan `instanceof \BackedEnum`.
 
 ## Tahap 8 — Media Sosial, Kontak, SEO ✅ SELESAI
-(Diselesaikan pada tahap sebelumnya)
+
+**Selesai pada:** 2026-10-01
+
+### Yang Selesai
+- [x] Halaman `/social`: Menampilkan tautan akun dan saluran dengan sorotan, sesuai dengan konfigurasi yang diterbitkan di panel admin.
+- [x] Halaman `/contact`: Menampilkan kontak dengan tombol salin (copy to clipboard) yang interaktif tanpa formulir pengiriman email.
+- [x] SEO Metadata: Menerapkan meta deskripsi, Open Graph, Twitter card, canonical URL, dan hreflang di semua halaman publik melalui `<x-layouts.public>`.
+- [x] Peta Situs & Robots: Menambahkan `robots.txt` dan `sitemap.xml` dinamis.
+- [x] Favicons: Menerapkan favicon (SVG, PNG, Apple Touch Icon).
+- [x] Warna tema dan layout konsisten menggunakan CSS variable dari `@theme`.
+
+### Keputusan Penting
+- **Pengambilan SEO Media:** URL untuk `og:image` dipastikan selalu dalam bentuk URL absolut (lengkap dengan `http`/`https`).
+- **Komponen UI:** Halaman dirapikan agar konsisten menggunakan komponen internal `<x-card>` dan `<x-button>`.
+
+## Koreksi 6b dan 8b ✅ SELESAI
+
+**Selesai pada:** 2026-10-01
+
+### Yang Selesai
+- [x] Menghapus token warna `primary-*` dan `accent-*` yang tidak terdefinisi dan menggantinya dengan `ink`, `surf`, `line`, dan `brand`. Menambahkan pengujian `DesignGuardTest` agar kelas-kelas terlarang (`rounded-xl/2xl/3xl`, `shadow-*`, `backdrop-blur`) tidak kembali.
+- [x] Video dibatasi maksimal 8 MB dengan kompresi lokal (menggunakan `ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -preset fast -c:a aac -b:a 128k output.mp4`). Di production, butuh `upload_max_filesize` dan `post_max_size` PHP minimal 10M atau 12M.
+- [x] Membatasi unggahan gambar hanya untuk format JPEG, PNG, WEBP, GIF, dan AVIF (menghapus celah bypass SVG dan PDF di optimasi gambar).
+- [x] Memperbaiki sematan (embed) dengan attribute `sandbox`, `referrerpolicy`, dan memastikan parameter tautan hanya untuk host yang diizinkan (Youtube, Vimeo, Streamable).
+- [x] Menerapkan `x-cloak` alih-alih `style="display: none;"` pada modal pengalaman kerja.
+- [x] Memperbaiki `robots.txt` dengan menghapus `Disallow: /en/admin` (rute tersebut tidak valid, cukup `/admin`).
 
 ## Tahap 9 — Polesan, Performa, Keamanan, Tes ✅ SELESAI
 

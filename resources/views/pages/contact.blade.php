@@ -6,7 +6,7 @@
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             @foreach($contacts as $contact)
-                <div x-data="{ 
+                <x-card :padding="false" x-data="{ 
                         copied: false, 
                         copy() { 
                             navigator.clipboard.writeText('{{ $contact->url }}').then(() => {
@@ -15,32 +15,33 @@
                             });
                         } 
                     }" 
-                    class="flex items-center justify-between p-4 bg-white dark:bg-primary-900/50 border border-primary-200 dark:border-primary-800 rounded-xl hover:border-accent-300 dark:hover:border-accent-700 transition-colors">
+                    class="flex items-center justify-between p-4 hover:border-brand transition-colors cursor-pointer"
+                    @click="copy">
                     
                     <div class="flex items-center gap-4 overflow-hidden">
                         @if($contact->icon)
-                            <div class="text-primary-500 shrink-0">
+                            <div class="text-ink-muted shrink-0">
                                 <x-svg-icon :name="$contact->icon" class="w-6 h-6" />
                             </div>
                         @endif
                         <div class="min-w-0">
-                            <h3 class="font-medium text-primary-900 dark:text-primary-100 truncate">{{ $contact->label }}</h3>
-                            <p class="text-sm text-primary-600 dark:text-primary-400 truncate">{{ $contact->url }}</p>
+                            <h3 class="font-medium text-ink truncate">{{ public_text($contact->label) }}</h3>
+                            <p class="text-sm text-ink-muted truncate">{{ public_text($contact->url) }}</p>
                             @if($contact->note)
-                                <p class="text-xs text-primary-500 mt-1 truncate">{{ $contact->note }}</p>
+                                <p class="text-xs text-brand-ink mt-1 truncate">{{ public_text($contact->note) }}</p>
                             @endif
                         </div>
                     </div>
                     
-                    <button @click="copy" class="shrink-0 ml-4 p-2 text-primary-500 hover:text-accent-600 dark:hover:text-accent-400 hover:bg-primary-50 dark:hover:bg-primary-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500" :aria-label="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'" :title="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'">
+                    <button type="button" class="shrink-0 ml-4 p-2 text-ink-muted hover:text-brand-hover hover:bg-ink/5 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand" :aria-label="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'" :title="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'">
                         <template x-if="!copied">
                             <x-svg-icon name="copy" class="w-5 h-5" />
                         </template>
                         <template x-if="copied">
-                            <x-svg-icon name="check" class="w-5 h-5 text-green-500" />
+                            <x-svg-icon name="check" class="w-5 h-5 text-ok" />
                         </template>
                     </button>
-                </div>
+                </x-card>
             @endforeach
         </div>
     @endif

@@ -41,9 +41,25 @@ class SocialContactSeoTest extends TestCase
         $response->assertStatus(200)
             ->assertHeader('Content-Type', 'text/plain; charset=UTF-8')
             ->assertSee('Disallow: /admin')
-            ->assertSee('Disallow: /en/admin')
+            ->assertDontSee('Disallow: /en/admin')
             ->assertSee('Allow: /')
             ->assertSee('Sitemap: '.route('sitemap'));
+    }
+
+    public function test_og_image_is_absolute_url()
+    {
+        $project = Project::factory()->create([
+            'status' => ProjectStatus::Published,
+            'slug' => 'seo-project-test',
+            'cover_image' => 'covers/test.webp',
+        ]);
+
+        $response = $this->get('/projects/'.$project->slug);
+
+        $response->assertStatus(200);
+        $content = $response->getContent();
+
+        $this->assertMatchesRegularExpression('/<meta\s+property="og:image"\s+content="https?:\/\/[^"]+covers\/test\.webp"/', $content);
     }
 
     public function test_saluran_page_hides_draft_highlights()

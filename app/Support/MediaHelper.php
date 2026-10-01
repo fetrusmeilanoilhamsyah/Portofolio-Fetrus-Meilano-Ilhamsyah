@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
  *
  * Contoh:
  *   media_url('covers/img_abc123.webp')
- *   // => 'http://localhost/storage/covers/img_abc123.webp'
+ *   // => '/storage/covers/img_abc123.webp'
  *
  *   media_url(null)  // => null
  *   media_url('')    // => null

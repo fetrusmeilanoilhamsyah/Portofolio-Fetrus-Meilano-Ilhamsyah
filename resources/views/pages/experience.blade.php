@@ -132,7 +132,7 @@
                                         </div>
                                     </template>
                                     <div class="absolute inset-0 bg-ink/0 group-hover:bg-ink/10 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                        <div class="bg-canvas/90 px-3 py-1.5 rounded-full text-xs font-medium text-ink shadow-sm backdrop-blur-sm transform translate-y-2 group-hover:translate-y-0 transition-all">Lihat detail</div>
+                                        <div class="bg-canvas/90 px-3 py-1.5 rounded-full text-xs font-medium text-ink transform translate-y-2 group-hover:translate-y-0 transition-all">Lihat detail</div>
                                     </div>
                                 </div>
                                 <h3 class="font-bold text-sm text-ink group-hover:text-brand-ink transition-colors line-clamp-2" x-text="cert.title"></h3>
@@ -143,13 +143,13 @@
                     </div>
                     
                     {{-- Empty State Search --}}
-                    <div x-show="filteredCertificates.length === 0" style="display: none;" class="py-12 text-center text-ink-muted">
+                    <div x-show="filteredCertificates.length === 0" x-cloak class="py-12 text-center text-ink-muted">
                         Pencarian tidak menemukan hasil.
                     </div>
 
                     {{-- Modal --}}
-                    <div x-show="activeCert !== null" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" @keydown.escape.window="closeModal()" aria-modal="true" role="dialog" aria-labelledby="modal-title">
-                        <div class="bg-canvas border border-line rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden" @click.outside="closeModal()">
+                    <div x-show="activeCert !== null" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60" @keydown.escape.window="closeModal()" aria-modal="true" role="dialog" aria-labelledby="modal-title">
+                        <div class="bg-canvas border border-line rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden" @click.outside="closeModal()">
                             {{-- Modal Header --}}
                             <div class="flex items-start justify-between p-4 border-b border-line">
                                 <div class="pr-4">

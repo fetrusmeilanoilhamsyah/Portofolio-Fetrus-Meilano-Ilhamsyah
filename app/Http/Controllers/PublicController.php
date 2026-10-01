@@ -106,7 +106,7 @@ class PublicController extends Controller
 
     public function robots(): Response
     {
-        $content = "User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /en/admin\n\nSitemap: ".route('sitemap')."\n";
+        $content = "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ".route('sitemap')."\n";
 
         return response($content, 200, ['Content-Type' => 'text/plain']);
     }

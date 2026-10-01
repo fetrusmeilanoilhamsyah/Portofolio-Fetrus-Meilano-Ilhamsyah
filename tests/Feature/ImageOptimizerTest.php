@@ -17,6 +17,27 @@ class ImageOptimizerTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * Pastikan SVG langsung ditolak demi keamanan (tidak ada optimasi, tidak ada upload).
+     */
+    public function test_image_optimizer_rejects_svg(): void
+    {
+        $optimizer = new ImageOptimizer;
+
+        $tmpPath = sys_get_temp_dir().'/test.svg';
+        file_put_contents($tmpPath, '<svg></svg>');
+        $file = new UploadedFile($tmpPath, 'test.svg', 'image/svg+xml', null, true);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('File SVG tidak diizinkan untuk alasan keamanan');
+
+        try {
+            $optimizer->optimizeAndSave($file);
+        } finally {
+            @unlink($tmpPath);
+        }
+    }
+
+    /**
      * 3a — ImageOptimizer menolak gambar di atas 24 megapiksel.
      *
      * Strategi: buat berkas PNG minimal dengan header IHDR yang menyatakan dimensi besar

@@ -126,10 +126,10 @@ class ProjectForm
                                             ->visibility('public')
                                             ->visible(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
                                             ->required(fn (Get $get) => in_array($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind'), [MediaKind::Image->value, MediaKind::Video->value]))
-                                            ->acceptedFileTypes(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? ['video/mp4'] : ['image/*'])
-                                            ->maxSize(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? 20480 : 5120)
+                                            ->acceptedFileTypes(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? ['video/mp4'] : ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'])
+                                            ->maxSize(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Video->value ? 8192 : 5120)
                                             ->validationMessages([
-                                                'max.file' => 'Ukuran file melebihi batas (Gambar max 5MB, Video max 20MB).',
+                                                'max.file' => 'Ukuran file melebihi batas (Gambar max 5MB, Video maksimal 8MB).',
                                             ])
                                             ->saveUploadedFileUsing(function (TemporaryUploadedFile $file, Get $get) {
                                                 if (($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Image->value) {
@@ -141,6 +141,20 @@ class ProjectForm
                                         TextInput::make('url')
                                             ->label('URL Embed')
                                             ->url()
+                                            ->rules([
+                                                function () {
+                                                    return function (string $attribute, $value, \Closure $fail) {
+                                                        if (! $value) {
+                                                            return;
+                                                        }
+                                                        $host = parse_url($value, PHP_URL_HOST);
+                                                        $allowed = ['www.youtube-nocookie.com', 'www.youtube.com', 'player.vimeo.com', 'streamable.com'];
+                                                        if (! in_array($host, $allowed)) {
+                                                            $fail('Host URL tidak diizinkan. Gunakan YouTube, Vimeo, atau Streamable.');
+                                                        }
+                                                    };
+                                                },
+                                            ])
                                             ->visible(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Embed->value)
                                             ->required(fn (Get $get) => ($get('kind') instanceof \BackedEnum ? $get('kind')->value : $get('kind')) === MediaKind::Embed->value),
                                         TextInput::make('alt.id')

@@ -18,11 +18,8 @@ class ImageOptimizer
             throw new InvalidArgumentException('File bukan gambar.');
         }
 
-        // SVG tidak didukung oleh GD/getimagesize dan tidak perlu dioptimasi
         if ($file->getMimeType() === 'image/svg+xml') {
-            $path = $file->store($directory, 'public');
-
-            return $path;
+            throw new InvalidArgumentException('File SVG tidak diizinkan untuk alasan keamanan.');
         }
 
         $sourcePath = $file->getRealPath();

@@ -64,7 +64,7 @@
             {{-- Bagian kanan: Foto dan Keahlian --}}
             <aside class="w-full md:w-64 lg:w-72 shrink-0 space-y-10">
                 @if($siteSetting->photo)
-                    <div class="rounded-xl overflow-hidden bg-canvas-muted border border-line aspect-square max-w-[240px] md:max-w-none mx-auto md:mx-0">
+                    <div class="rounded-lg overflow-hidden bg-canvas-muted border border-line aspect-square max-w-[240px] md:max-w-none mx-auto md:mx-0">
                         <img 
                             src="{{ media_url($siteSetting->photo) }}" 
                             alt="{{ public_text($siteSetting->name) ?? config('app.name') }}" 

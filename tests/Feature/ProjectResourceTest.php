@@ -89,7 +89,7 @@ class ProjectResourceTest extends TestCase
 
         $project->media()->create([
             'kind' => 'embed',
-            'url' => 'http://example.com',
+            'url' => 'https://www.youtube.com/embed/xxxx',
             'alt' => ['id' => 'Alt ID', 'en' => 'Alt EN'],
             'caption' => ['id' => 'Cap ID', 'en' => 'Cap EN'],
         ]);
@@ -190,7 +190,7 @@ class ProjectResourceTest extends TestCase
 
         Event::fake([ContentChanged::class]);
         // Update only media
-        $project->media()->create(['kind' => 'embed', 'url' => 'http://test.com']);
+        $project->media()->create(['kind' => 'embed', 'url' => 'https://www.youtube.com/embed/xxxx']);
 
         Event::assertDispatched(ContentChanged::class);
     }
@@ -278,7 +278,7 @@ class ProjectResourceTest extends TestCase
 
         $project->media()->create([
             'kind' => 'embed',
-            'url' => 'http://example.com/embed',
+            'url' => 'https://www.youtube.com/embed/xxxx',
             'alt' => ['id' => 'Alt Bahasa ID', 'en' => 'Alt English'],
             'caption' => ['id' => 'Keterangan ID', 'en' => 'Caption EN'],
             'sort_order' => 0,

@@ -34,7 +34,7 @@
             {{-- Grid --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <template x-for="p in filteredProjects" :key="p.id">
-                    <div class="bg-canvas border border-line rounded-xl relative flex flex-col h-full overflow-hidden transition-colors hover:border-ink-muted group">
+                    <div class="bg-canvas border border-line rounded-lg relative flex flex-col h-full overflow-hidden transition-colors hover:border-ink-muted group">
                         <template x-if="p.cover">
                             <div class="relative w-full aspect-video bg-canvas-muted overflow-hidden border-b border-line">
                                 <img :src="p.cover" :alt="p.cover_alt" class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" loading="lazy" width="400" height="225">

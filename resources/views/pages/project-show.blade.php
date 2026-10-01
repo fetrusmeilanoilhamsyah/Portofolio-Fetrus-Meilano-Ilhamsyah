@@ -65,7 +65,7 @@
         @if($project->media->isNotEmpty())
             <div class="mb-12 space-y-6">
                 @foreach($project->media as $media)
-                    <figure class="rounded-xl overflow-hidden border border-line bg-canvas-muted">
+                    <figure class="rounded-lg overflow-hidden border border-line bg-canvas-muted">
                         @if($media->kind->value === 'image')
                             <div class="w-full aspect-video">
                                 <img 
@@ -84,20 +84,20 @@
                                     src="{{ media_url($media->path) }}"
                                     class="w-full h-full object-contain"
                                     loop muted playsinline preload="none"
-                                    {{ $media->poster ? 'poster='.media_url($media->poster) : '' }}
+                                    @if($media->poster) poster="{{ media_url($media->poster) }}" @endif
                                 ></video>
                             </div>
                         @elseif($media->kind->value === 'embed')
                             <div class="w-full aspect-video bg-canvas relative" x-data="{ loaded: false }">
                                 <template x-if="loaded">
-                                    <iframe src="{{ $media->url }}" class="w-full h-full border-0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
+                                    <iframe src="{{ $media->url }}" class="w-full h-full border-0" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-presentation allow-popups" referrerpolicy="strict-origin-when-cross-origin" loading="lazy" title="{{ __('ui.video_player') ?? 'Video Player' }}"></iframe>
                                 </template>
-                                <div x-show="!loaded" class="absolute inset-0 flex flex-col items-center justify-center cursor-pointer hover:bg-canvas-muted transition-colors group" @click="loaded = true">
-                                    <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                                <button type="button" x-show="!loaded" class="absolute inset-0 w-full flex flex-col items-center justify-center cursor-pointer hover:bg-canvas-muted transition-colors group" @click="loaded = true" aria-label="{{ __('ui.load_interactive_media') ?? 'Muat Media Interaktif' }}">
+                                    <div class="w-16 h-16 bg-brand text-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"/></svg>
                                     </div>
-                                    <span class="mt-4 text-sm font-medium text-ink">Muat Media Interaktif</span>
-                                </div>
+                                    <span class="mt-4 text-sm font-medium text-ink">{{ __('ui.load_interactive_media') ?? 'Muat Media Interaktif' }}</span>
+                                </button>
                             </div>
                         @endif
                         
@@ -121,7 +121,7 @@
         {{-- Pagination --}}
         <nav class="border-t border-line mt-12 pt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             @if($prevProject)
-                <a href="{{ localized_route('projects.show', [$prevProject->slug]) }}" class="flex-1 p-4 rounded-xl border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-start text-left">
+                <a href="{{ localized_route('projects.show', [$prevProject->slug]) }}" class="flex-1 p-4 rounded-lg border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-start text-left">
                     <span class="text-xs text-ink-muted mb-1 font-medium tracking-wider uppercase">Proyek Sebelumnya</span>
                     <span class="font-bold text-ink group-hover:text-brand-ink">{{ $prevProject->title }}</span>
                 </a>
@@ -130,7 +130,7 @@
             @endif
 
             @if($nextProject)
-                <a href="{{ localized_route('projects.show', [$nextProject->slug]) }}" class="flex-1 p-4 rounded-xl border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-end text-right">
+                <a href="{{ localized_route('projects.show', [$nextProject->slug]) }}" class="flex-1 p-4 rounded-lg border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-end text-right">
                     <span class="text-xs text-ink-muted mb-1 font-medium tracking-wider uppercase">Proyek Berikutnya</span>
                     <span class="font-bold text-ink group-hover:text-brand-ink">{{ $nextProject->title }}</span>
                 </a>

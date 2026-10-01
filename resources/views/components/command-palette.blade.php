@@ -10,7 +10,7 @@
     <div 
         x-show="isOpen" 
         x-transition.opacity.duration.200ms
-        class="fixed inset-0 bg-stone-900/50 dark:bg-black/60 backdrop-blur-sm z-50"
+        class="fixed inset-0 bg-stone-900/50 dark:bg-black/60 z-50"
         @click="close()"
     ></div>
 
@@ -23,7 +23,7 @@
         x-transition:leave="transition ease-in duration-150"
         x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-95"
-        class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-full max-w-xl bg-surface rounded-xl shadow-2xl overflow-hidden z-50 border border-line flex flex-col"
+        class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/4 w-full max-w-xl bg-surface rounded-lg overflow-hidden z-50 border border-line flex flex-col"
         @click.stop
     >
         <!-- Search Input -->
@@ -49,7 +49,7 @@
 
         <!-- Loading State -->
         <div x-show="isLoading" class="p-6 text-center text-muted flex flex-col items-center">
-            <i data-lucide="loader-2" class="w-6 h-6 animate-spin mb-2 text-accent"></i>
+            <i data-lucide="loader-2" class="w-6 h-6 animate-spin mb-2 text-brand-ink"></i>
             <span>{{ __('ui.loading', ['default' => 'Loading...']) }}</span>
         </div>
 
@@ -62,12 +62,12 @@
                         <a 
                             :href="result.url"
                             class="flex items-center gap-3 px-4 py-3 cursor-pointer group"
-                            :class="selectedIndex === index ? 'bg-line/50 text-accent' : 'text-text hover:bg-line/30'"
+                            :class="selectedIndex === index ? 'bg-line/50 text-brand-ink' : 'text-text hover:bg-line/30'"
                             @mouseenter="selectedIndex = index"
                             @click="navigate()"
                             :id="'palette-item-' + index"
                         >
-                            <div class="p-2 rounded-lg bg-surface border border-line group-hover:border-accent/30 shrink-0">
+                            <div class="p-2 rounded-lg bg-surface border border-line group-hover:border-brand/30 shrink-0">
                                 <i :data-lucide="result.icon" class="w-4 h-4"></i>
                             </div>
                             <div class="flex-1 min-w-0">
