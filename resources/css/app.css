@@ -1,4 +1,4 @@
-﻿@import 'tailwindcss';
+@import 'tailwindcss';
 @import '@fontsource-variable/plus-jakarta-sans';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -25,25 +25,7 @@
     --radius-lg: 8px;
     --radius-xl: 12px;
 
-    /* Warna terang (light mode defaults) */
-    --color-bg: #F6F3EE;
-    --color-surface: #FFFFFF;
-    --color-text: #1C1917;
-    --color-text-muted: #6B645C;
-    --color-border: #E3DDD3;
-    
-    
-    
 
-    /* Warna gelap (digunakan via CSS var di kelas .dark) */
-    
-    
-    
-    
-    
-    
-    
-    
 
     /* Semantic color aliases (menggunakan CSS vars agar bisa diubah oleh tema) */
     --color-canvas: var(--canvas);

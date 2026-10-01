@@ -49,12 +49,22 @@ class GuestCacheTest extends TestCase
         $response1->assertStatus(200);
         $response1->assertHeader('X-Cache', 'MISS');
         $response1->assertHeaderMissing('Set-Cookie');
+        $response1->assertHeader('X-Content-Type-Options', 'nosniff');
+        $response1->assertHeader('X-Frame-Options', 'SAMEORIGIN');
+        $response1->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response1->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), browsing-topics=()');
+        $response1->assertHeader('Content-Security-Policy-Report-Only');
 
         // 2nd request HIT (same HTML, 200, no Set-Cookie)
         $response2 = $this->get('/sitemap.xml');
         $response2->assertStatus(200);
         $response2->assertHeader('X-Cache', 'HIT');
         $response2->assertHeaderMissing('Set-Cookie');
+        $response2->assertHeader('X-Content-Type-Options', 'nosniff');
+        $response2->assertHeader('X-Frame-Options', 'SAMEORIGIN');
+        $response2->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response2->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), browsing-topics=()');
+        $response2->assertHeader('Content-Security-Policy-Report-Only');
 
         $this->assertEquals($response1->getContent(), $response2->getContent());
     }

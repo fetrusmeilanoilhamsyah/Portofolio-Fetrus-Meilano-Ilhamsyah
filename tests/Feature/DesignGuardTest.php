@@ -29,6 +29,7 @@ class DesignGuardTest extends TestCase
                 '/\bbackdrop-blur(?:-[a-z0-9]+)?\b/' => 'Glassmorphism (backdrop-blur) found',
                 '/\bshadow-(?!none\b)[a-z0-9-]+\b/' => 'Shadow found',
                 '/\brounded-(?:xl|2xl|3xl)\b/' => 'Large rounded corners found',
+                '/\sstyle\s*=\s*["\']/' => 'Static inline style attribute found (use Tailwind or x-cloak instead)',
             ];
 
             foreach ($patterns as $pattern => $message) {

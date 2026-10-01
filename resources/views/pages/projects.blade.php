@@ -74,7 +74,7 @@
             </div>
             
             {{-- Empty State Search --}}
-            <div x-show="filteredProjects.length === 0" style="display: none;" class="py-12 text-center text-ink-muted">
+            <div x-show="filteredProjects.length === 0" x-cloak class="py-12 text-center text-ink-muted">
                 Pencarian tidak menemukan hasil.
             </div>
         </div>

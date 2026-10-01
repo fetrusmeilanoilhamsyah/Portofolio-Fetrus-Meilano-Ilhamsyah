@@ -165,6 +165,41 @@ class ImageOptimizerTest extends TestCase
         $this->assertEquals(200, $outInfo[1], 'Tinggi harus tetap 200 untuk orientasi 1');
     }
 
+    public function test_image_optimizer_rejects_pdf(): void
+    {
+        $optimizer = new ImageOptimizer;
+        $tmpPath = sys_get_temp_dir().'/test.pdf';
+        file_put_contents($tmpPath, '%PDF-1.4');
+        $file = new UploadedFile($tmpPath, 'test.pdf', 'application/pdf', null, true);
+
+        $this->expectException(InvalidArgumentException::class);
+
+        try {
+            $optimizer->optimizeAndSave($file);
+        } finally {
+            @unlink($tmpPath);
+        }
+    }
+
+    public function test_image_optimizer_handles_broken_png_without_fatal_error(): void
+    {
+        Storage::fake('public');
+        $optimizer = new ImageOptimizer;
+
+        $tmpPath = sys_get_temp_dir().'/broken.png';
+        $signature = "\x89PNG\r\n\x1a\n";
+        $ihdrData = pack('N', 100).pack('N', 100)."\x08\x02\x00\x00\x00";
+        $ihdr = pack('N', strlen($ihdrData)).'IHDR'.$ihdrData.pack('N', crc32('IHDR'.$ihdrData));
+        file_put_contents($tmpPath, $signature.$ihdr.'BROKENDATA');
+
+        $file = new UploadedFile($tmpPath, 'broken.png', 'image/png', null, true);
+
+        $result = $optimizer->optimizeAndSave($file);
+        $this->assertIsString($result);
+
+        @unlink($tmpPath);
+    }
+
     // -------------------------------------------------------------------------
     // Helper: buat PNG minimal dengan IHDR menyatakan dimensi tertentu
     // -------------------------------------------------------------------------

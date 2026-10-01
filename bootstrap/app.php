@@ -26,8 +26,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(prepend: [
             StripGuestCookies::class,
         ], append: [
-            CacheGuestResponse::class,
             SecurityHeaders::class,
+            CacheGuestResponse::class,
         ]);
         $middleware->api(append: [
             SecurityHeaders::class,

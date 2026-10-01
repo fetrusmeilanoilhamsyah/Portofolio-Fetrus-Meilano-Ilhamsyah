@@ -26,9 +26,7 @@ class CacheGuestResponse
         $queryString = $tab ? "?tab={$tab}" : '';
         $cacheKey = 'guest_response_'.$version.'_'.sha1($request->path().$queryString);
 
-        if (Cache::has($cacheKey)) {
-            $cached = Cache::get($cacheKey);
-
+        if ($cached = Cache::get($cacheKey)) {
             return response($cached['content'], $cached['status'])
                 ->header('Content-Type', $cached['content_type'])
                 ->header('X-Cache', 'HIT');

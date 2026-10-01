@@ -81,4 +81,8 @@ return [
     'btn_join' => 'Join',
     'btn_copy' => 'Copy',
     'copied' => 'Copied!',
+    'palette_results' => 'results found',
+    'search_placeholder' => 'Search pages and projects...',
+    'loading' => 'Loading...',
+    'no_results' => 'No results found.',
 ];

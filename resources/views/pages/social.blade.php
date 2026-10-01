@@ -17,7 +17,7 @@
                                     </div>
                                 @endif
                                 <div>
-                                    <h3 class="font-medium text-ink group-hover:text-brand-ink-hover transition-colors">{{ public_text($account->label) }}</h3>
+                                    <h3 class="font-medium text-ink group-hover:text-brand-hover transition-colors">{{ public_text($account->label) }}</h3>
                                     @if($account->note)
                                         <p class="text-sm text-ink-muted">{{ public_text($account->note) }}</p>
                                     @endif
@@ -37,7 +37,7 @@
                                 <div class="p-6 border-b border-line flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                     <div class="flex items-center gap-3">
                                         @if($channel->icon)
-                                            <div class="text-brand-ink-ink">
+                                            <div class="text-brand-ink">
                                                 <x-svg-icon :name="$channel->icon" class="w-8 h-8" />
                                             </div>
                                         @endif
@@ -61,7 +61,7 @@
                                                 <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
                                                     <h4 class="font-medium text-ink">
                                                         @if($highlight->url)
-                                                            <a href="{{ $highlight->url }}" target="_blank" rel="noopener noreferrer" class="hover:text-brand-ink-hover transition-colors">
+                                                            <a href="{{ $highlight->url }}" target="_blank" rel="noopener noreferrer" class="hover:text-brand-hover transition-colors">
                                                                 {{ public_text($highlight->title) }}
                                                             </a>
                                                         @else

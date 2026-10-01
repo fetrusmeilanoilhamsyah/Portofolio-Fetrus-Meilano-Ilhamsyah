@@ -96,6 +96,7 @@ class SiteSettings extends Page implements HasForms
                                     ->image()
                                     ->disk('public')
                                     ->visibility('public')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'])
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'site');
@@ -132,6 +133,7 @@ class SiteSettings extends Page implements HasForms
                                     ->image()
                                     ->disk('public')
                                     ->visibility('public')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/avif'])
                                     ->maxSize(5120)
                                     ->saveUploadedFileUsing(function (TemporaryUploadedFile $file) {
                                         return app(ImageOptimizer::class)->optimizeAndSave($file, 'site');

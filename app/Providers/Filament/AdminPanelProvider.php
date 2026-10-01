@@ -10,7 +10,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -29,11 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => [
-                    400 => '#E8743F',
-                    500 => '#C8501E',
-                    600 => '#C8501E',
-                ] + Color::hex('#C8501E'),
+                'primary' => '#C8501E',
             ])
             ->profile()
             ->multiFactorAuthentication(AppAuthentication::make()->recoverable())

@@ -20,10 +20,10 @@ class TranslationTest extends TestCase
             $files = File::allFiles($dir);
             foreach ($files as $file) {
                 $content = $file->getContents();
-                // Match __('ui.something') or trans('ui.something') or @lang('ui.something')
-                preg_match_all("/__\(['\"]ui\.([a-zA-Z0-9_]+)['\"]\)/", $content, $matches1);
-                preg_match_all("/trans\(['\"]ui\.([a-zA-Z0-9_]+)['\"]\)/", $content, $matches2);
-                preg_match_all("/@lang\(['\"]ui\.([a-zA-Z0-9_]+)['\"]\)/", $content, $matches3);
+                // Match __('ui.something') or trans('ui.something') or @lang('ui.something'), even if they have arguments
+                preg_match_all("/__\(['\"]ui\.([a-zA-Z0-9_]+)['\"]/", $content, $matches1);
+                preg_match_all("/trans\(['\"]ui\.([a-zA-Z0-9_]+)['\"]/", $content, $matches2);
+                preg_match_all("/@lang\(['\"]ui\.([a-zA-Z0-9_]+)['\"]/", $content, $matches3);
 
                 $found = array_merge($matches1[1], $matches2[1], $matches3[1]);
                 foreach ($found as $key) {

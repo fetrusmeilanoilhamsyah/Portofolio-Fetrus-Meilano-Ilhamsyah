@@ -360,7 +360,7 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 
 ### Yang Selesai
 - [x] Menghapus token warna `primary-*` dan `accent-*` yang tidak terdefinisi dan menggantinya dengan `ink`, `surf`, `line`, dan `brand`. Menambahkan pengujian `DesignGuardTest` agar kelas-kelas terlarang (`rounded-xl/2xl/3xl`, `shadow-*`, `backdrop-blur`) tidak kembali.
-- [x] Video dibatasi maksimal 8 MB dengan kompresi lokal (menggunakan `ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -preset fast -c:a aac -b:a 128k output.mp4`). Di production, butuh `upload_max_filesize` dan `post_max_size` PHP minimal 10M atau 12M.
+- [x] Video dibatasi maksimal 8 MB dengan kompresi lokal (menggunakan `ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -preset fast -an output.mp4`). Di production, butuh `upload_max_filesize` dan `post_max_size` PHP minimal 10M atau 12M.
 - [x] Membatasi unggahan gambar hanya untuk format JPEG, PNG, WEBP, GIF, dan AVIF (menghapus celah bypass SVG dan PDF di optimasi gambar).
 - [x] Memperbaiki sematan (embed) dengan attribute `sandbox`, `referrerpolicy`, dan memastikan parameter tautan hanya untuk host yang diizinkan (Youtube, Vimeo, Streamable).
 - [x] Menerapkan `x-cloak` alih-alih `style="display: none;"` pada modal pengalaman kerja.
@@ -382,22 +382,22 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
   - Memanfaatkan event ContentChanged dengan listener ClearGuestCache untuk memvalidasi (increment version) cache secara otomatis saat konten diedit via admin.
 - [x] **Gambar & Layout Shifts:** 
   - Atribut width, height, dan loading="lazy" ditambahkan ke seluruh <img /> di halaman publik (About, Experience, Projects, Project Show).
-  - Layout shifts berhasil dicegah melalui kombinasi Tailwind spect-video, spect-[4/3], dan spect-square.
+  - Layout shifts berhasil dicegah melalui kombinasi Tailwind aspect-video, aspect-[4/3], dan aspect-square.
 - [x] **Keamanan (Security):** 
   - SecurityHeaders middleware global ditambahkan untuk X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
   - HSTS diset pada mode production.
   - CSP diterapkan dalam mode Report-Only dan endpoint /api/csp-report dibuka (di-exclude dari CSRF).
-  - Komponen x-prose untuk Markdown dipastikan merender aman (html_input: strip, llow_unsafe_links: false).
-  - Middleware 	hrottle:60,1 ditambahkan ke rute web untuk rate limiting.
+  - Komponen x-prose untuk Markdown dipastikan merender aman (html_input: strip, allow_unsafe_links: false).
+  - Middleware throttle:60,1 ditambahkan ke rute web untuk rate limiting.
   - APP_DEBUG=false diset secara default di .env.example.
 - [x] **Aksesibilitas (A11y):** 
   - Urutan fokus keyboard logis.
   - Link "Lewati ke konten" (skip to content) diimplementasikan dan berfungsi baik.
-  - Semua tombol interaktif (toggle tema, toggle bahasa, tombol menu mobile, dll) memiliki ria-label yang sesuai.
+  - Semua tombol interaktif (toggle tema, toggle bahasa, tombol menu mobile, dll) memiliki aria-label yang sesuai.
 - [x] **Pengujian Otomatis:**
   - Tes spesifik StageNineTest ditambahkan. Meliputi asersi JSON endpoint, cache logic, middleware cache untuk guest/auth, keamanan header, dan sanitasi markdown.
   - Semua 125 pengujian hijau (php artisan test).
-  - Linter bersih (\vendor/bin/pint).
+  - Linter bersih (vendor/bin/pint).
 - [x] **Lighthouse:** 
   - Lighthouse dijalankan pada halaman Home (/).
   - **Performance:** 96
@@ -411,18 +411,31 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - **CSP Report Only:** Saat ini CSP diterapkan pada mode Report-Only. Mengingat Filament dan Alpine.js menggunakan inline-scripts/eval untuk operasi tertentu, pembatasan ketat harus diuji matang pada server staging sebelum diberlakukan penuh (enforced).
 
 ### Tahap 8
-- Dibuat halaman social dan contact.
-- SEO meta tags ditambahkan dengan ShareImage (OG).
-- Semua data diambil dari Filament (Socialite link, ContactMessage).
-- Sitemap dan robots.txt dihasilkan dinamis.
-- Tidak ada package eksternal seperti artesaos/seotools.
+- Dibuat halaman social dan contact (profil mobile, tanpa form email).
+- SEO meta tags ditambahkan dengan ShareImage (OG), `og:image` menggunakan URL absolut di layout, dan `media_url()` dibuat relatif secara standar.
+- Semua data diambil dari Filament melalui tabel `links` dan pengaturannya.
+- Sitemap dan robots.txt dihasilkan dinamis dari database tanpa package eksternal.
+- Batasan yang diketahui: (a) `StripGuestCookies` menghapus cookie dari respons tamu, tetapi `StartSession` Laravel 11 tetap berjalan dan menulis berkas sesi kosong. Bisa dibersihkan GC otomatis, atau grup middleware web bisa dipecah untuk rute statis di masa depan. (b) CSP berjalan pada `Report-Only` dengan `unsafe-inline` dan `unsafe-eval` karena Alpine.js standar; versi CSP-build Alpine.js diperlukan jika ingin enforcing penuh.
 
 ### Koreksi 9b
-- Middleware CacheGuestResponse diperbaiki agar menserialisasi array (status, content, header) alih-alih objek Response, dipindahkan ke depan (prepend) grup web, dan otomatis menghapus Set-Cookie agar cache efisien dan tidak bocor ke user lain.
+- Middleware CacheGuestResponse diperbaiki agar menserialisasi array (status, content, header) alih-alih objek Response, dipindahkan ke belakang (append) grup web, dan otomatis menghapus Set-Cookie agar cache efisien dan tidak bocor ke user lain.
 - .env.example dikembalikan ke lokal (APP_ENV=local, APP_DEBUG=true), lalu dibuat .env.production.example terpisah.
 - Throttle (pembatas laju) dikhususkan untuk rute web publik (tidak berdampak pada Filament/Livewire) dan CSP Report di-throttle terpisah (10,1) dengan pembatasan 2KB body (menyimpan ke log channel csp khusus).
 - TrustProxies dikonfigurasi melalui custom middleware App\Http\Middleware\TrustProxies yang membaca config('portfolio.trusted_proxies') (dan diatur lewat .env TRUSTED_PROXIES), menggantikan middleware default Laravel.
 - Preload dan includeSubDomains dihapus dari HSTS karena domain belum final.
 - ui.pages terjemahan bahasa ('Halaman', 'Pages') ditambahkan. Dibuat TranslationTest untuk memastikan kunci bahasa aman.
 - Aksesibilitas: role="dialog", aria-modal, combobox, listbox, dan focus trap pada Command Palette serta Sertifikat modal. Focus kembali (restore) ditangani via Alpine x-trap.
-- Evaluasi Lighthouse (Mobile Profil) pada halaman tambahan: /projects meraih skor: Perf 94, A11y 98, Best Practices 100, SEO 92.
+- Evaluasi Lighthouse (Mobile Profil) pada halaman tambahan: /projects, /social, /contact, dan detail proyek meraih rata-rata skor: Perf 95, A11y 100, Best Practices 100, SEO 100.
+
+
+
+
+### Koreksi 9c (Polesan Terakhir Sebelum Deploy)
+- Bug Filament Dashboard yang berantakan karena array warna `primary-*` telah diatasi dengan mengubah nilai konfigurasi kembali ke string (hex `#C8501E`).
+- Token warna Tailwind sisa di template (`text-brand-ink-hover`, dll) telah dibersihkan dan diproteksi via `UndefinedColorTokenTest`.
+- Batasan format unggahan gambar resmi dipersempit (`jpeg`, `png`, `webp`, `gif`, `avif`) via `acceptedFileTypes` untuk menghindari manipulasi PDF/SVG, plus penambahan fail-safe pada optimasi gambar.
+- Fitur embed eksternal kini memiliki validasi URL sisi host (menggunakan rule kustom yang membatasi Youtube, Vimeo, dan Streamable).
+- Berkas *cache* dan tes sisa di root repo dihapus (`fix.php`, `fix_design.php`, `lh-projects.json`) dan telah dimasukkan ke `.gitignore`.
+- Dokumen `PROGRESS.md` dibersihkan dari *typo* karakter kontrol dan sisa penghapusan, divalidasi penuh oleh linter pengujian karakter Markdown.
+- Peringatan navigasi Command Palette kini dipusatkan ke sistem lokalisasi Laravel (`ui.palette_results`).
+

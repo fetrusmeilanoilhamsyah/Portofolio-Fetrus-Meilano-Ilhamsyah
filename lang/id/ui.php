@@ -81,4 +81,8 @@ return [
     'btn_join' => 'Bergabung',
     'btn_copy' => 'Salin',
     'copied' => 'Disalin!',
+    'palette_results' => 'hasil ditemukan',
+    'search_placeholder' => 'Cari halaman dan proyek...',
+    'loading' => 'Memuat...',
+    'no_results' => 'Tidak ada hasil ditemukan.',
 ];

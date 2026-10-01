@@ -56,7 +56,7 @@
         </div>
 
         <!-- Announce results -->
-        <div class="sr-only" aria-live="polite" x-text="results.length + ' results found'"></div>
+        <div class="sr-only" aria-live="polite" x-text="results.length + ' ' + '{{ __('ui.palette_results') }}'"></div>
 
         <!-- Loading State -->
         <div x-show="isLoading" class="p-6 text-center text-muted flex flex-col items-center">
