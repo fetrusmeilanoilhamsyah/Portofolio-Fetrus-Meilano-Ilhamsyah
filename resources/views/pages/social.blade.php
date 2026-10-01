@@ -1,5 +1,5 @@
 <x-layouts.public :title="__('ui.page_social') . ' — ' . config('app.name')">
-    <x-page-header :title="__('ui.page_social')" />
+    <x-page-header :title="__('ui.page_social')" :subtitle="__('ui.sub_social')" />
 
     @if($accounts->isEmpty() && $channels->isEmpty())
         <x-empty-state :message="__('ui.empty_state')" />

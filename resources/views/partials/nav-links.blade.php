@@ -3,17 +3,17 @@
     $isMobile = $mobile ?? false;
 
     $links = [
-        ['route' => 'home',       'label' => __('ui.nav_home')],
-        ['route' => 'about',      'label' => __('ui.nav_about')],
-        ['route' => 'experience', 'label' => __('ui.nav_experience')],
-        ['route' => 'projects',   'label' => __('ui.nav_projects')],
-        ['route' => 'social',     'label' => __('ui.nav_social')],
-        ['route' => 'contact',    'label' => __('ui.nav_contact')],
+        ['route' => 'home',       'label' => __('ui.nav_home'),       'icon' => 'home'],
+        ['route' => 'about',      'label' => __('ui.nav_about'),      'icon' => 'user'],
+        ['route' => 'experience', 'label' => __('ui.nav_experience'), 'icon' => 'briefcase'],
+        ['route' => 'projects',   'label' => __('ui.nav_projects'),   'icon' => 'folder'],
+        ['route' => 'social',     'label' => __('ui.nav_social'),     'icon' => 'share-2'],
+        ['route' => 'contact',    'label' => __('ui.nav_contact'),    'icon' => 'mail'],
     ];
 @endphp
 
 <ul
-    class="{{ $isMobile ? 'flex flex-col gap-1' : 'flex flex-col gap-0.5' }}"
+    class="flex flex-col gap-3"
     role="list"
 >
     @foreach ($links as $link)
@@ -26,17 +26,9 @@
                 href="{{ $url }}"
                 @if($isMobile && ($closeMenu ?? false)) @click="open = false" @endif
                 aria-current="{{ $isActive ? 'page' : 'false' }}"
-                class="flex items-center gap-2 px-3 py-2 text-sm rounded-md font-medium transition-colors {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-ink/5' }}"
+                class="flex items-center gap-3 px-3 h-[40px] text-sm rounded-md font-medium transition-all duration-200 ease-out active:scale-[0.98] active:opacity-80 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-ink/5' }}"
             >
-                @if($isActive)
-                    {{-- Indikator aktif --}}
-                    <span
-                        class="w-1 h-4 rounded-full shrink-0 bg-brand"
-                        aria-hidden="true"
-                    ></span>
-                @else
-                    <span class="w-1 h-4 shrink-0" aria-hidden="true"></span>
-                @endif
+                <x-svg-icon :name="$link['icon']" class="w-[18px] h-[18px] shrink-0 {{ $isActive ? 'text-brand-ink' : '' }}" stroke-width="1.75" aria-hidden="true" />
                 {{ $link['label'] }}
             </a>
         </li>

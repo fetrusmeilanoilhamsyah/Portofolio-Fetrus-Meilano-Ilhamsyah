@@ -21,68 +21,97 @@
             </script>
         @endif
     @endpush
-    @if($siteSetting)
-        <div class="mb-16">
-            @if(public_text($siteSetting->name))
-                <h1 class="text-3xl font-bold tracking-tight text-ink mb-2">{{ public_text($siteSetting->name) }}</h1>
-            @endif
-            @if(public_text($siteSetting->role))
-                <p class="text-lg font-medium text-brand-ink mb-6">{{ public_text($siteSetting->role) }}</p>
-            @endif
-            
-            @if(public_text($siteSetting->intro_home))
-                <div class="max-w-2xl text-ink-muted">
-                    <x-prose :content="public_text($siteSetting->intro_home)" />
-                </div>
-            @endif
-            
-            <div class="mt-8 flex flex-wrap gap-4">
-                <x-button as="a" href="{{ localized_route('about') }}" variant="secondary">
-                    {{ __('ui.page_about') }}
-                </x-button>
-                <x-button as="a" href="{{ localized_route('experience') }}" variant="secondary">
-                    {{ __('ui.page_experience') }}
-                </x-button>
-                <x-button as="a" href="{{ localized_route('projects') }}" variant="primary">
-                    {{ __('ui.page_projects') }}
-                </x-button>
-            </div>
-        </div>
-    @endif
+    @php
+        $intro = $siteSetting ? public_text($siteSetting->intro_home) : null;
+        if ($intro && str_contains($intro, '[ISI:')) {
+            $intro = null;
+        }
+        $isEmpty = !$siteSetting || (empty(public_text($siteSetting->name)) && empty(public_text($siteSetting->role)) && empty($intro));
+    @endphp
 
-    @if($featuredProjects->isEmpty() && $recentProjects->isEmpty())
-        @if(!$siteSetting)
-            <x-page-header :title="__('ui.page_home')" />
-        @endif
+    @if($isEmpty && $featuredProjects->isEmpty() && $recentProjects->isEmpty())
         <x-empty-state :message="__('ui.empty_coming_soon')" />
     @else
-        @if($featuredProjects->isNotEmpty())
-            <section class="mb-16">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-ink">{{ __('ui.featured_projects') }}</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($featuredProjects as $project)
-                        <x-project-card :project="$project" />
-                    @endforeach
-                </div>
-            </section>
-        @endif
+        <div class="space-y-16">
+            {{-- Hero Block --}}
+            @if($siteSetting && (!empty(public_text($siteSetting->name)) || !empty(public_text($siteSetting->role)) || !empty($intro)))
+                <div class="flex flex-col-reverse sm:flex-row items-start gap-8 sm:gap-12">
+                    <div class="flex-1 min-w-0">
+                        @if($siteSetting->location)
+                            <div class="text-xs font-semibold tracking-wider uppercase text-ink-muted mb-3">
+                                {{ $siteSetting->location }}
+                            </div>
+                        @endif
+                        
+                        @if(public_text($siteSetting->name))
+                            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4 leading-tight">
+                                {{ public_text($siteSetting->name) }}
+                            </h1>
+                        @endif
+                        
+                        @if(public_text($siteSetting->role))
+                            <p class="text-lg md:text-xl text-ink-muted mb-6 font-medium leading-relaxed max-w-2xl">
+                                {{ public_text($siteSetting->role) }}
+                            </p>
+                        @endif
+                        
+                        @if($intro)
+                            <div class="max-w-prose text-ink-muted mb-8 leading-relaxed">
+                                <x-prose :content="$intro" />
+                            </div>
+                        @endif
+                        
+                        <div class="flex flex-wrap items-center gap-4">
+                            <x-button as="a" href="{{ localized_route('projects') }}" variant="primary">
+                                {{ __('ui.page_projects') }}
+                            </x-button>
+                            <x-button as="a" href="{{ localized_route('about') }}" variant="primary">
+                                {{ __('ui.page_about') }}
+                            </x-button>
+                            <x-button as="a" href="{{ localized_route('contact') }}" variant="primary">
+                                {{ __('ui.page_contact') }}
+                            </x-button>
+                        </div>
+                    </div>
 
-        @if($recentProjects->isNotEmpty())
-            <section class="mb-12">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-xl font-bold text-ink">{{ __('ui.recent_projects') }}</h2>
-                    <a href="{{ localized_route('projects') }}" class="text-sm font-medium text-brand-ink hover:underline">
-                        {{ __('ui.view_all_projects') }} &rarr;
-                    </a>
+                    @if($siteSetting->photo)
+                        <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 shrink-0 rounded-lg overflow-hidden bg-canvas border border-line">
+                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
+                        </div>
+                    @endif
                 </div>
-                <div class="space-y-2">
-                    @foreach($recentProjects as $project)
-                        <x-project-list-item :project="$project" />
-                    @endforeach
-                </div>
-            </section>
-        @endif
+            @endif
+
+            {{-- Proyek Unggulan --}}
+            @if($featuredProjects->isNotEmpty())
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-ink">{{ __('ui.featured_projects') }}</h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        @foreach($featuredProjects as $project)
+                            <x-project-card :project="$project" />
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+
+            {{-- Proyek Terbaru --}}
+            @if($recentProjects->isNotEmpty())
+                <section>
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-ink">{{ __('ui.recent_projects') }}</h2>
+                        <a href="{{ localized_route('projects') }}" class="text-sm font-medium text-brand-ink hover:underline">
+                            {{ __('ui.view_all_projects') }} &rarr;
+                        </a>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        @foreach($recentProjects as $project)
+                            <x-project-list-item :project="$project" />
+                        @endforeach
+                    </div>
+                </section>
+            @endif
+        </div>
     @endif
 </x-layouts.public>

@@ -1,30 +1,23 @@
 @props(['project'])
 
-<div class="group relative flex flex-col sm:flex-row gap-4 sm:gap-6 p-4 -mx-4 rounded-lg transition-colors hover:bg-ink/5">
-    @if($project->cover_image)
-        <div class="shrink-0 w-full sm:w-48 aspect-video sm:aspect-[4/3] rounded-md overflow-hidden bg-canvas-muted border border-line">
+<div class="group relative flex gap-4 p-3 -mx-3 rounded-lg transition-all duration-200 ease-out hover:bg-ink/5 active:scale-[0.99] active:opacity-90">
+    <div class="shrink-0 w-[72px] h-[72px] rounded-md overflow-hidden bg-canvas-muted border border-line flex items-center justify-center">
+        @if($project->cover_image)
             <img 
                 src="{{ media_url($project->cover_image) }}" 
                 alt="{{ filled($project->cover_alt) ? $project->cover_alt : $project->title }}" 
-                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                width="400"
-                height="300"
+                class="w-full h-full object-cover"
+                width="72"
+                height="72"
                 loading="lazy"
             >
-        </div>
-    @endif
+        @else
+            <x-svg-icon name="folder" class="w-6 h-6 text-ink-muted/50" />
+        @endif
+    </div>
     
-    <div class="flex flex-col flex-1 justify-center">
-        <div class="flex items-center gap-2 mb-2">
-            <x-tag>{{ $project->type->label() }}</x-tag>
-            @if($project->started_at)
-                <span class="text-xs text-ink-muted">
-                    {{ $project->started_at->translatedFormat('F Y') }}
-                </span>
-            @endif
-        </div>
-        
-        <h3 class="text-lg font-bold text-ink mb-2 group-hover:text-brand-ink transition-colors">
+    <div class="flex flex-col flex-1 justify-center min-w-0">
+        <h3 class="text-base font-semibold text-ink mb-1 group-hover:text-brand-ink transition-colors truncate">
             <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none">
                 <span class="absolute inset-0" aria-hidden="true"></span>
                 {{ $project->title }}
@@ -32,18 +25,17 @@
         </h3>
         
         @if($project->summary)
-            <p class="text-sm text-ink-muted mb-3 line-clamp-2">
+            <p class="text-sm text-ink-muted mb-2 line-clamp-2">
                 {{ $project->summary }}
             </p>
         @endif
         
-        <div class="flex flex-wrap gap-1.5 mt-auto">
-            @if(is_array($project->stack))
-                @foreach(array_slice($project->stack, 0, 5) as $tech)
-                    <span class="text-xs text-ink-muted bg-canvas-muted px-2 py-0.5 rounded border border-line">
-                        {{ $tech }}
-                    </span>
-                @endforeach
+        <div class="flex items-center gap-2 mt-auto">
+            <span class="rounded-md bg-ink/5 px-2 py-0.5 text-xs text-ink-muted">{{ $project->type->label() }}</span>
+            @if($project->started_at)
+                <span class="text-xs text-ink-muted">
+                    {{ $project->started_at->translatedFormat('Y') }}
+                </span>
             @endif
         </div>
     </div>

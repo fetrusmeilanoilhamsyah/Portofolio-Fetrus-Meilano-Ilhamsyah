@@ -1,5 +1,5 @@
 <x-layouts.public :title="__('ui.page_contact') . ' — ' . config('app.name')">
-    <x-page-header :title="__('ui.page_contact')" />
+    <x-page-header :title="__('ui.page_contact')" :subtitle="__('ui.sub_contact')" />
 
     @if($contacts->isEmpty())
         <x-empty-state :message="__('ui.empty_state')" />

@@ -23,7 +23,8 @@
         <meta name="description" content="{{ Str::limit(strip_tags($metaDesc), 160) }}">
     @endif
 
-    {{-- Canonical --}}
+    {{-- Canonical & View Transitions --}}
+    <meta name="view-transition" content="same-origin" />
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Hreflang --}}
@@ -149,19 +150,36 @@
             <nav
                 x-ref="mobileMenu"
                 tabindex="-1"
-                class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 focus:outline-none bg-surf"
+                class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 gap-6 focus:outline-none bg-surf"
             >
-                <div class="flex items-center justify-between mb-6">
-                    <span class="font-semibold text-base text-ink">
-                        {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
-                    </span>
+                <div class="flex items-start justify-between">
+                    {{-- Identitas --}}
+                    <div class="flex items-center gap-3">
+                        @if($siteSetting?->photo)
+                            <img src="{{ media_url($siteSetting->photo) }}" width="48" height="48" alt="{{ public_text($siteSetting->name) }}" class="w-12 h-12 rounded-lg object-cover shrink-0">
+                        @else
+                            <div class="w-12 h-12 rounded-lg bg-brand/10 text-brand-ink flex items-center justify-center font-bold shrink-0">
+                                {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
+                            </div>
+                        @endif
+                        <div>
+                            <span class="block font-semibold text-base leading-tight mb-0.5 text-ink">
+                                {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
+                            </span>
+                            @if($siteSetting)
+                                <p class="text-sm text-ink-muted line-clamp-2">
+                                    {{ public_text($siteSetting->role) }}
+                                </p>
+                            @endif
+                        </div>
+                    </div>
+                    
                     <button
                         type="button"
                         @click="open = false"
                         class="p-1.5 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5"
                         aria-label="{{ __('ui.close_menu') }}"
                     >
-                        {{-- Lucide: X --}}
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                              stroke-linejoin="round" aria-hidden="true">
@@ -170,11 +188,35 @@
                     </button>
                 </div>
 
-                @include('partials.nav-links', ['mobile' => true, 'closeMenu' => true])
-
-                <div class="mt-auto pt-6 border-t border-line flex items-center gap-3">
+                {{-- Toggle bahasa & tema --}}
+                <div class="flex items-center gap-3">
                     @include('partials.theme-toggle')
                     @include('partials.lang-toggle')
+                </div>
+
+                @include('partials.nav-links', ['mobile' => true, 'closeMenu' => true])
+
+                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
+                    {{-- Ikon akun --}}
+                    @php
+                        $sidebarLinks = \App\Models\Link::published()->where('group', \App\Enums\LinkGroup::Akun)->whereNotNull('icon')->limit(5)->get();
+                    @endphp
+                    @if($sidebarLinks->isNotEmpty())
+                        <div class="flex items-center gap-1">
+                            @foreach($sidebarLinks as $sLink)
+                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
+                                    <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    {{-- Unduh CV --}}
+                    @if($siteSetting?->cv_file)
+                        <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full px-3 py-2 text-sm font-medium rounded-md bg-brand hover:bg-brand-hover active:scale-95 transition-all duration-150 text-brand-fg">
+                            {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
+                        </a>
+                    @endif
                 </div>
             </nav>
         </div>
@@ -189,33 +231,31 @@
             <div class="flex flex-col flex-1 p-6 gap-6">
 
                 {{-- Identitas --}}
-                <div>
-                    <a
-                        href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-                        class="block font-semibold text-lg leading-tight mb-1 text-ink"
-                    >
-                        {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
-                    </a>
-                    @if($siteSetting)
-                        <p class="text-sm text-ink-muted">
-                            {{ public_text($siteSetting->role) }}
-                        </p>
-                        @if($siteSetting->open_to_work)
-                            <div class="flex items-center gap-1.5 mt-2">
-                                <span
-                                    class="inline-block w-2 h-2 rounded-full bg-ok"
-                                    aria-hidden="true"
-                                ></span>
-                                <span class="text-xs text-ink-muted font-medium">
-                                    {{ __('ui.open_to_work') }}
-                                </span>
-                            </div>
-                        @endif
+                <div class="flex items-center gap-3">
+                    @if($siteSetting?->photo)
+                        <img src="{{ media_url($siteSetting->photo) }}" width="48" height="48" alt="{{ public_text($siteSetting->name) }}" class="w-12 h-12 rounded-lg object-cover shrink-0">
+                    @else
+                        <div class="w-12 h-12 rounded-lg bg-brand/10 text-brand-ink flex items-center justify-center font-bold shrink-0">
+                            {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
+                        </div>
                     @endif
+                    <div>
+                        <a
+                            href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
+                            class="block font-semibold text-base leading-tight mb-0.5 text-ink"
+                        >
+                            {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
+                        </a>
+                        @if($siteSetting)
+                            <p class="text-sm text-ink-muted line-clamp-2">
+                                {{ public_text($siteSetting->role) }}
+                            </p>
+                        @endif
+                    </div>
                 </div>
 
                 {{-- Toggle bahasa & tema --}}
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-3">
                     @include('partials.theme-toggle')
                     @include('partials.lang-toggle')
                 </div>
@@ -225,20 +265,37 @@
                     @include('partials.nav-links', ['mobile' => false])
                 </nav>
 
-                {{-- Tombol palet perintah --}}
-                <div class="mt-auto">
+                {{-- Bagian bawah sidebar --}}
+                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
+                    {{-- Ikon akun --}}
+                    @php
+                        $sidebarLinks = \App\Models\Link::published()->where('group', \App\Enums\LinkGroup::Akun)->whereNotNull('icon')->limit(5)->get();
+                    @endphp
+                    @if($sidebarLinks->isNotEmpty())
+                        <div class="flex items-center gap-1">
+                            @foreach($sidebarLinks as $sLink)
+                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
+                                    <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    {{-- Unduh CV --}}
+                    @if($siteSetting?->cv_file)
+                        <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full px-3 py-2 text-sm font-medium rounded-md bg-brand hover:bg-brand-hover active:scale-95 transition-all duration-150 text-brand-fg">
+                            {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
+                        </a>
+                    @endif
+
+                    {{-- Tombol palet perintah --}}
                     <button
                         type="button"
                         @click="$dispatch('open-palette')"
                         aria-label="{{ __('ui.command_palette') }}"
-                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-pointer text-ink-muted border-line bg-canvas hover:bg-ink/5 transition-colors"
+                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-pointer text-ink-muted border-line bg-canvas hover:bg-ink/5 active:scale-95 transition-all duration-150"
                     >
-                        {{-- Lucide: Command --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true">
-                            <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3"/>
-                        </svg>
+                        <x-svg-icon name="lucide-command" class="w-3.5 h-3.5" aria-hidden="true" />
                         <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>
                         <kbd class="ml-auto text-xs font-mono px-1.5 py-0.5 rounded border border-line text-[0.6875rem]">⌘K</kbd>
                     </button>
@@ -249,7 +306,7 @@
         {{-- ═══ KONTEN UTAMA ═══ --}}
         <main
             id="main-content"
-            class="flex-1 min-w-0 px-5 py-8 md:px-8 lg:px-12 xl:px-16"
+            class="flex-1 min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
             tabindex="-1"
         >
             <div class="mx-auto w-full {{ $maxWidth }}">

@@ -1,5 +1,5 @@
 <x-layouts.public :title="__('ui.page_about') . ' — ' . (public_text($siteSetting?->name) ?? config('app.name'))">
-    <x-page-header :title="__('ui.page_about')" />
+    <x-page-header :title="__('ui.page_about')" :subtitle="__('ui.sub_about')" />
 
     @if(!$siteSetting || (empty(public_text($siteSetting->about_body)) && empty($siteSetting->photo) && $education->isEmpty() && empty($siteSetting->skills)))
         <x-empty-state :message="__('ui.empty_coming_soon')" />
@@ -77,24 +77,67 @@
                 @endif
 
                 @if($siteSetting->skills && is_array($siteSetting->skills) && count($siteSetting->skills) > 0)
-                    <section>
+                    @php
+                        $skillData = [];
+                        $totalSkills = 0;
+                        foreach($siteSetting->skills as $sg) {
+                            $items = array_filter(array_map('trim', explode(',', $sg['items'] ?? '')));
+                            if(count($items) > 0) {
+                                $skillData[] = [
+                                    'group' => trim($sg['group']),
+                                    'items' => array_values($items),
+                                ];
+                                $totalSkills += count($items);
+                            }
+                        }
+                    @endphp
+                    <section x-data="{ 
+                        active: 'Semua',
+                        groups: {{ Js::from($skillData) }}
+                    }">
                         <h2 class="text-xl font-bold text-ink mb-6">{{ __('ui.skills') }}</h2>
-                        <div class="space-y-6">
-                            @foreach($siteSetting->skills as $skillGroup)
-                                <div>
-                                    <h3 class="text-sm font-bold text-ink mb-3 uppercase tracking-wider">{{ $skillGroup['group'] }}</h3>
-                                    <ul class="flex flex-wrap gap-2">
-                                        @php
-                                            $items = array_map('trim', explode(',', $skillGroup['items'] ?? ''));
-                                        @endphp
-                                        @foreach(array_filter($items) as $item)
-                                            <li class="text-sm px-2.5 py-1 rounded-md bg-canvas-muted border border-line text-ink-muted">
-                                                {{ $item }}
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endforeach
+                        
+                        {{-- Filter Buttons --}}
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <button 
+                                @click="active = 'Semua'" 
+                                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ease-out active:scale-[0.97] active:opacity-90 border"
+                                :class="active === 'Semua' ? 'bg-brand text-brand-fg border-brand-hover' : 'bg-canvas text-ink-muted border-line hover:bg-ink/5'"
+                            >
+                                Semua 
+                                <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                                      :class="active === 'Semua' ? 'bg-black/20 text-brand-fg' : 'bg-ink/10 text-ink-muted'">{{ $totalSkills }}</span>
+                            </button>
+                            
+                            <template x-for="g in groups" :key="g.group">
+                                <button 
+                                    @click="active = g.group" 
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ease-out active:scale-[0.97] active:opacity-90 border"
+                                    :class="active === g.group ? 'bg-brand text-brand-fg border-brand-hover' : 'bg-canvas text-ink-muted border-line hover:bg-ink/5'"
+                                >
+                                    <span x-text="g.group"></span>
+                                    <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                                          :class="active === g.group ? 'bg-black/20 text-brand-fg' : 'bg-ink/10 text-ink-muted'"
+                                          x-text="g.items.length"></span>
+                                </button>
+                            </template>
+                        </div>
+
+                        {{-- Skills Cloud --}}
+                        <div class="flex flex-wrap gap-2">
+                            <template x-for="g in groups" :key="g.group">
+                                <template x-for="skill in g.items" :key="skill">
+                                    <div 
+                                        x-show="active === 'Semua' || active === g.group"
+                                        x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 scale-90"
+                                        x-transition:enter-end="opacity-100 scale-100"
+                                        class="inline-flex items-center px-3 py-1.5 rounded-full bg-canvas border border-line text-xs font-medium text-ink hover:border-brand/40 hover:-translate-y-0.5 transition-all cursor-default"
+                                    >
+                                        <span x-text="skill"></span>
+                                    </div>
+                                </template>
+                            </template>
                         </div>
                     </section>
                 @endif

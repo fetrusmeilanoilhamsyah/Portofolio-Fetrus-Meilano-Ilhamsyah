@@ -439,3 +439,25 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - Dokumen `PROGRESS.md` dibersihkan dari *typo* karakter kontrol dan sisa penghapusan, divalidasi penuh oleh linter pengujian karakter Markdown.
 - Peringatan navigasi Command Palette kini dipusatkan ke sistem lokalisasi Laravel (`ui.palette_results`).
 
+
+
+### Tahap 9d (Poles Tampilan Publik)
+- Memperbaiki .gitignore menjadi UTF-8 tanpa BOM.
+- Menyempurnakan layout sidebar desktop dan bilah atas mobile dengan identitas foto/inisial, ikon navigasi Lucide (home, user, briefcase, folder, share-2, mail), toggle bahasa & tema gabungan, serta daftar ikon media sosial terbawah.
+- Menambahkan subjudul pada halaman melalui berkas bahasa (id dan en).
+- Merapikan desain halaman beranda (Hero Layout) dan menyederhanakan ruang kosong (empty state).
+- Mengurangi bayangan pada project-card dan memperbaiki kontras garis --line mode gelap menjadi #3A332E agar memenuhi standar WCAG (1.4:1+).
+- Menertibkan nilai jarak elemen (scale: 4, 8, 12, 16, 24, 32, 48, 64) di CSS dan HTML.
+- Memperkenalkan efek animasi slide up memudar CSS dasar yang menghormati prefers-reduced-motion.
+- Menambahkan StageNineDTest yang menegaskan integritas perubahan pada tahap ini.
+- Menghapus label "Terbuka untuk bekerja" atas permintaan perbaikan.
+- Mengimplementasikan View Transitions API (native) dan active state (scale-95) untuk responsivitas klik navigasi ringan, tanpa melanggar prinsip anti-bloat di KONSEP.md.
+- Memperbarui desain kartu Proyek dan Sertifikat menjadi lebih menonjol (dengan peniti 'Unggulan', badge daftar teknologi, dan pembungkus kartu tegas), meniru struktur referensi namun tetap patuh pada identitas flat terakota di KONSEP.md (tanpa bayangan, sudut 8px).
+- Mengubah tombol Unduh CV, Ganti Tema, dan Ganti Bahasa menjadi warna aksen utama (oranye/terracotta) agar lebih jelas.
+- Memperbarui bagian Keahlian (Skills) di halaman Tentang Saya menjadi komponen interaktif dengan Alpine.js (bisa difilter per kategori, dilengkapi animasi transisi, dan desain tag kapsul layaknya referensi modern).
+- Memperkaya tampilan kosong di Beranda (Home) dengan menampilkan foto profil (->photo) di sebelah teks pada desktop, dan di atas teks pada mobile, tetap mematuhi desain bersih sesuai KONSEP.md (tanpa bentuk bulat besar).
+- Mengubah tombol Ganti Tema dan Ganti Bahasa menjadi kapsul (*pill*) terkotak (*segmented control*). Hanya indikator aktif yang berwarna oranye, memberikan nuansa saklar yang jelas. Saat diklik, indikator bergeser halus sebelum navigasi dieksekusi.
+- Memperkaya tampilan Beranda (Home) dengan menampilkan foto profil di sebelah kanan (desktop) / atas (mobile) dari teks perkenalan, serta mewarnai semua tombol tindakan (Navigasi, Pagination Proyek, CV) dengan warna primer oranye solid.
+- **Penyempurnaan Rasa Taktil (Tactile Feel):** Mengganti animasi klik kaku (scale-95 dan duration-150) di seluruh tombol, kartu, dan tautan navigasi dengan animasi yang jauh lebih halus dan alami (scale-[0.97] hingga [0.99], ctive:opacity-90, duration-200 ease-out).
+- **Optimalisasi Render Kartu & SEO:** Mengubah arsitektur *grid* daftar Proyek dan Sertifikat yang semula menggunakan perenderan *client-side* Alpine.js (<template x-for>) menjadi *server-side* murni (Blade @foreach). Penyembunyian kartu saat mode pencarian kini diserahkan pada x-show. Hasilnya, ketiadaan *delay* saat kemunculan (*rendering*) kartu dan keterbacaan penuh oleh mesin pencari.
+- **Presisi Timeline Pengalaman:** Memperbaiki sistem *margin/padding* pada *timeline* riwayat pengalaman. Garis tepi kini masuk sejauh 8px (*indent*) agar elemen titik bundar (node) tampil utuh pada perangkat *mobile* berlayar sempit, serta jarak antar teks yang sebelumnya terlampau longgar kini diatur lebih kompak.

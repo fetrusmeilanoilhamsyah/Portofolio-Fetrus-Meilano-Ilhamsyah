@@ -44,6 +44,13 @@ return [
     'page_social' => 'Media Sosial',
     'page_contact' => 'Kontak',
 
+    // Subjudul
+    'sub_about' => 'Mengenal saya lebih dekat lewat latar belakang dan hal-hal yang saya kerjakan.',
+    'sub_experience' => 'Jejak perjalanan karier, organisasi, pendidikan, serta sertifikasi.',
+    'sub_projects' => 'Kumpulan karya yang pernah saya bangun, teliti, atau kembangkan.',
+    'sub_social' => 'Temukan profil publik dan karya saya di platform lain.',
+    'sub_contact' => 'Sapa saya lewat email atau pesan pribadi kapan saja.',
+
     // Status kosong
     'empty_state' => 'Belum ada isi di sini.',
     'empty_coming_soon' => 'Halaman ini sedang disiapkan.',
@@ -65,6 +72,7 @@ return [
     'btn_view_all' => 'Lihat semua',
 
     // Home dan About
+    'featured' => 'Unggulan',
     'featured_projects' => 'Proyek Unggulan',
     'recent_projects' => 'Proyek Terbaru',
     'view_all_projects' => 'Lihat semua proyek',

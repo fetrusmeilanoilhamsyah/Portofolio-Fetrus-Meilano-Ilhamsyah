@@ -44,6 +44,13 @@ return [
     'page_social' => 'Social',
     'page_contact' => 'Contact',
 
+    // Subtitles
+    'sub_about' => 'Get to know me better through my background and the things I do.',
+    'sub_experience' => 'A trail of my career, organization, education, and certifications.',
+    'sub_projects' => 'A collection of works I have built, researched, or developed.',
+    'sub_social' => 'Find my public profiles and works on other platforms.',
+    'sub_contact' => 'Say hello via email or direct message anytime.',
+
     // Empty state
     'empty_state' => 'Nothing here yet.',
     'empty_coming_soon' => 'This page is being prepared.',
@@ -65,6 +72,7 @@ return [
     'btn_view_all' => 'View all',
 
     // Home dan About
+    'featured' => 'Featured',
     'featured_projects' => 'Featured Projects',
     'recent_projects' => 'Recent Projects',
     'view_all_projects' => 'View all projects',

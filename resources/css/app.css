@@ -71,7 +71,7 @@ html.dark {
     --surf: #1D1A17;
     --ink: #EDE8E1;
     --ink-muted: #A39B90;
-    --line: #2C2723;
+    --line: #3A332E;
     --brand: #E8743F;
     --brand-hover: #C85F2A;
     --brand-fg: #14110F;
@@ -115,23 +115,20 @@ body {
                     border-color var(--transition-base);
     }
 
-    .slide-in-left {
-        animation: slideInLeft var(--transition-base) ease both;
-    }
-
-    .fade-in {
-        animation: fadeIn var(--transition-fast) ease both;
+    #main-content {
+        animation: fadeSlideUp 160ms ease-out both;
     }
 }
 
-@keyframes slideInLeft {
-    from { transform: translateX(-100%); opacity: 0; }
-    to   { transform: translateX(0);    opacity: 1; }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+@keyframes fadeSlideUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(4px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
 }
 
 /* ─────────────────────────────────────────────

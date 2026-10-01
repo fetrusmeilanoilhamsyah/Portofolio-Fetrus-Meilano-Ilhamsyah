@@ -121,18 +121,18 @@
         {{-- Pagination --}}
         <nav class="border-t border-line mt-12 pt-8 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
             @if($prevProject)
-                <a href="{{ localized_route('projects.show', [$prevProject->slug]) }}" class="flex-1 p-4 rounded-lg border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-start text-left">
-                    <span class="text-xs text-ink-muted mb-1 font-medium tracking-wider uppercase">Proyek Sebelumnya</span>
-                    <span class="font-bold text-ink group-hover:text-brand-ink">{{ $prevProject->title }}</span>
+                <a href="{{ localized_route('projects.show', [$prevProject->slug]) }}" class="flex-1 p-4 rounded-lg transition-all duration-150 group flex flex-col items-start text-left bg-brand hover:bg-brand-hover active:scale-95">
+                    <span class="text-[11px] mb-1 font-bold tracking-wider uppercase text-brand-fg/70">Proyek Sebelumnya</span>
+                    <span class="font-bold text-brand-fg">{{ $prevProject->title }}</span>
                 </a>
             @else
                 <div class="flex-1"></div>
             @endif
 
             @if($nextProject)
-                <a href="{{ localized_route('projects.show', [$nextProject->slug]) }}" class="flex-1 p-4 rounded-lg border border-line hover:border-brand hover:bg-canvas-muted transition-all group flex flex-col items-end text-right">
-                    <span class="text-xs text-ink-muted mb-1 font-medium tracking-wider uppercase">Proyek Berikutnya</span>
-                    <span class="font-bold text-ink group-hover:text-brand-ink">{{ $nextProject->title }}</span>
+                <a href="{{ localized_route('projects.show', [$nextProject->slug]) }}" class="flex-1 p-4 rounded-lg transition-all duration-150 group flex flex-col items-end text-right bg-brand hover:bg-brand-hover active:scale-95">
+                    <span class="text-[11px] mb-1 font-bold tracking-wider uppercase text-brand-fg/70">Proyek Berikutnya</span>
+                    <span class="font-bold text-brand-fg">{{ $nextProject->title }}</span>
                 </a>
             @else
                 <div class="flex-1"></div>

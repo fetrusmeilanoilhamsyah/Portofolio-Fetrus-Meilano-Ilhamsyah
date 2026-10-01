@@ -3,7 +3,7 @@
     'subtitle' => null,
 ])
 
-<header class="mb-8">
+<header class="mb-10">
     <h1 class="text-2xl md:text-3xl font-semibold tracking-tight text-ink">
         {{ $title }}
     </h1>

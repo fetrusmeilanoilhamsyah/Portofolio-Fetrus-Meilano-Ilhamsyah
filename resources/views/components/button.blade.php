@@ -8,7 +8,7 @@
 @php
     $tag = $href ? 'a' : 'button';
 
-    $baseClasses = 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-colors focus-visible:outline-none';
+    $baseClasses = 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-out active:scale-[0.97] active:opacity-90 focus-visible:outline-none';
     
     $primaryClasses = 'bg-brand text-brand-fg hover:bg-brand-hover';
     $secondaryClasses = 'bg-transparent text-ink border border-line hover:bg-ink/5 hover:border-ink/30';
