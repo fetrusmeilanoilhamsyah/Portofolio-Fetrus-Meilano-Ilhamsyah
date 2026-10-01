@@ -12,4 +12,7 @@ return [
     |
     */
     'admin_email' => env('ADMIN_EMAIL', ''),
+
+    // Trusted Proxies untuk membaca IP asli di belakang Cloudflare/Nginx
+    'trusted_proxies' => env('TRUSTED_PROXIES') ? explode(',', env('TRUSTED_PROXIES')) : [],
 ];

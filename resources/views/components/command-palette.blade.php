@@ -16,6 +16,10 @@
 
     <!-- Modal -->
     <div 
+        x-trap.inert.noscroll="isOpen"
+        role="dialog"
+        aria-modal="true"
+        aria-label="{{ __('ui.command_palette') }}"
         x-show="isOpen" 
         x-transition:enter="transition ease-out duration-200"
         x-transition:enter-start="opacity-0 scale-95"
@@ -32,6 +36,10 @@
             <input 
                 x-ref="searchInput"
                 type="text" 
+                role="combobox"
+                aria-expanded="true"
+                aria-controls="palette-results"
+                :aria-activedescendant="'palette-item-' + selectedIndex"
                 x-model="searchQuery"
                 @input="search()"
                 @keydown.down.prevent="selectNext()"
@@ -47,6 +55,9 @@
             </div>
         </div>
 
+        <!-- Announce results -->
+        <div class="sr-only" aria-live="polite" x-text="results.length + ' results found'"></div>
+
         <!-- Loading State -->
         <div x-show="isLoading" class="p-6 text-center text-muted flex flex-col items-center">
             <i data-lucide="loader-2" class="w-6 h-6 animate-spin mb-2 text-brand-ink"></i>
@@ -54,12 +65,14 @@
         </div>
 
         <!-- Results -->
-        <div x-show="!isLoading" class="max-h-80 overflow-y-auto overscroll-contain py-2" x-ref="resultsContainer">
+        <div id="palette-results" role="listbox" x-show="!isLoading" class="max-h-80 overflow-y-auto overscroll-contain py-2" x-ref="resultsContainer">
             
             <template x-if="results.length > 0">
                 <div>
                     <template x-for="(result, index) in results" :key="result.id">
                         <a 
+                            role="option"
+                            :aria-selected="selectedIndex === index"
                             :href="result.url"
                             class="flex items-center gap-3 px-4 py-3 cursor-pointer group"
                             :class="selectedIndex === index ? 'bg-line/50 text-brand-ink' : 'text-text hover:bg-line/30'"

@@ -148,7 +148,7 @@
                     </div>
 
                     {{-- Modal --}}
-                    <div x-show="activeCert !== null" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60" @keydown.escape.window="closeModal()" aria-modal="true" role="dialog" aria-labelledby="modal-title">
+                    <div x-trap.inert.noscroll="activeCert !== null" x-show="activeCert !== null" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/60" @keydown.escape.window="closeModal()" aria-modal="true" role="dialog" aria-labelledby="modal-title">
                         <div class="bg-canvas border border-line rounded-lg w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden" @click.outside="closeModal()">
                             {{-- Modal Header --}}
                             <div class="flex items-start justify-between p-4 border-b border-line">

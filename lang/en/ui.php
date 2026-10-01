@@ -25,7 +25,18 @@ return [
     'open_to_work' => 'Open to work',
     'aria_main_menu' => 'Main menu',
 
+    // Palette & Media
+    'home' => 'Home',
+    'about' => 'About',
+    'experience' => 'Experience',
+    'projects' => 'Projects',
+    'social' => 'Social',
+    'contact' => 'Contact',
+    'video_player' => 'Video Player',
+    'load_interactive_media' => 'Load Interactive Media',
+
     // Pages
+    'pages' => 'Pages',
     'page_home' => 'Home',
     'page_about' => 'About Me',
     'page_experience' => 'Experience',

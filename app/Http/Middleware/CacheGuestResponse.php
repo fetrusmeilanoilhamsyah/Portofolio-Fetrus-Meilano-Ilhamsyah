@@ -22,21 +22,27 @@ class CacheGuestResponse
         }
 
         $version = Cache::get('guest_cache_version', 1);
-        $cacheKey = 'guest_response_'.$version.'_'.sha1($request->fullUrl());
+        $tab = $request->query('tab');
+        $queryString = $tab ? "?tab={$tab}" : '';
+        $cacheKey = 'guest_response_'.$version.'_'.sha1($request->path().$queryString);
 
         if (Cache::has($cacheKey)) {
-            return Cache::get($cacheKey);
+            $cached = Cache::get($cacheKey);
+
+            return response($cached['content'], $cached['status'])
+                ->header('Content-Type', $cached['content_type'])
+                ->header('X-Cache', 'HIT');
         }
 
         $response = $next($request);
 
-        if ($response->isSuccessful()) {
-            if (method_exists($response, 'withCookie')) {
-                foreach ($response->headers->getCookies() as $cookie) {
-                    $response->headers->removeCookie($cookie->getName(), $cookie->getPath(), $cookie->getDomain());
-                }
-            }
-            Cache::put($cacheKey, $response, now()->addDays(7));
+        if ($response->isSuccessful() && ! $response->headers->has('Set-Cookie')) {
+            Cache::put($cacheKey, [
+                'status' => $response->getStatusCode(),
+                'content' => $response->getContent(),
+                'content_type' => $response->headers->get('Content-Type') ?? 'text/html',
+            ], now()->addDays(7));
+            $response->headers->set('X-Cache', 'MISS');
         }
 
         return $response;

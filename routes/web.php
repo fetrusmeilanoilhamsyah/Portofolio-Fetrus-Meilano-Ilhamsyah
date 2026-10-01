@@ -18,40 +18,43 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/sitemap.xml', [PublicController::class, 'sitemap'])->name('sitemap');
-Route::get('/robots.txt', [PublicController::class, 'robots'])->name('robots');
+Route::middleware(['throttle:60,1'])->group(function () {
+    Route::get('/sitemap.xml', [PublicController::class, 'sitemap'])->name('sitemap');
+    Route::get('/robots.txt', [PublicController::class, 'robots'])->name('robots');
 
-// ─── Indonesia (default, tanpa prefix) ───────────────────────────────────────
-Route::middleware([SetLocale::class])->group(function () {
-    Route::get('/', [PublicController::class, 'home'])->name('home');
-    Route::get('/about', [PublicController::class, 'about'])->name('about');
-    Route::get('/experience', [PublicController::class, 'experience'])->name('experience');
-    Route::get('/projects', [PublicController::class, 'projects'])->name('projects');
-    Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('projects.show');
-    Route::get('/social', [PublicController::class, 'social'])->name('social');
-    Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+    // ─── Indonesia (default, tanpa prefix) ───────────────────────────────────────
+    Route::middleware([SetLocale::class])->group(function () {
+        Route::get('/', [PublicController::class, 'home'])->name('home');
+        Route::get('/about', [PublicController::class, 'about'])->name('about');
+        Route::get('/experience', [PublicController::class, 'experience'])->name('experience');
+        Route::get('/projects', [PublicController::class, 'projects'])->name('projects');
+        Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('projects.show');
+        Route::get('/social', [PublicController::class, 'social'])->name('social');
+        Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
 
-    // API endpoint for Command Palette
-    Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('command-palette');
-});
+        // API endpoint for Command Palette
+        Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('command-palette');
+    });
 
-// ─── Inggris (prefix /en) ─────────────────────────────────────────────────────
-Route::prefix('en')->middleware([SetLocale::class])->group(function () {
-    Route::get('/', [PublicController::class, 'home'])->name('en.home');
-    Route::get('/about', [PublicController::class, 'about'])->name('en.about');
-    Route::get('/experience', [PublicController::class, 'experience'])->name('en.experience');
-    Route::get('/projects', [PublicController::class, 'projects'])->name('en.projects');
-    Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('en.projects.show');
-    Route::get('/social', [PublicController::class, 'social'])->name('en.social');
-    Route::get('/contact', [PublicController::class, 'contact'])->name('en.contact');
+    // ─── Inggris (prefix /en) ─────────────────────────────────────────────────────
+    Route::prefix('en')->middleware([SetLocale::class])->group(function () {
+        Route::get('/', [PublicController::class, 'home'])->name('en.home');
+        Route::get('/about', [PublicController::class, 'about'])->name('en.about');
+        Route::get('/experience', [PublicController::class, 'experience'])->name('en.experience');
+        Route::get('/projects', [PublicController::class, 'projects'])->name('en.projects');
+        Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('en.projects.show');
+        Route::get('/social', [PublicController::class, 'social'])->name('en.social');
+        Route::get('/contact', [PublicController::class, 'contact'])->name('en.contact');
 
-    // API endpoint for Command Palette
-    Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('en.command-palette');
+        // API endpoint for Command Palette
+        Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('en.command-palette');
+    });
 });
 
 // CSP Report Endpoint
 Route::post('/api/csp-report', function (Request $request) {
-    Log::warning('CSP Violation:', $request->all());
+    $content = substr($request->getContent(), 0, 2048);
+    Log::channel('csp')->info('CSP Violation: '.$content);
 
-    return response()->json(['status' => 'ok']);
-})->withoutMiddleware([VerifyCsrfToken::class]);
+    return response()->noContent();
+})->middleware(['throttle:10,1'])->withoutMiddleware([VerifyCsrfToken::class]);

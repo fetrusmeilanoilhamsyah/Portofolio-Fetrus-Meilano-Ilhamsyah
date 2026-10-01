@@ -382,22 +382,22 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
   - Memanfaatkan event ContentChanged dengan listener ClearGuestCache untuk memvalidasi (increment version) cache secara otomatis saat konten diedit via admin.
 - [x] **Gambar & Layout Shifts:** 
   - Atribut width, height, dan loading="lazy" ditambahkan ke seluruh <img /> di halaman publik (About, Experience, Projects, Project Show).
-  - Layout shifts berhasil dicegah melalui kombinasi Tailwind spect-video, spect-[4/3], dan spect-square.
+  - Layout shifts berhasil dicegah melalui kombinasi Tailwind spect-video, spect-[4/3], dan spect-square.
 - [x] **Keamanan (Security):** 
   - SecurityHeaders middleware global ditambahkan untuk X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy.
   - HSTS diset pada mode production.
   - CSP diterapkan dalam mode Report-Only dan endpoint /api/csp-report dibuka (di-exclude dari CSRF).
-  - Komponen x-prose untuk Markdown dipastikan merender aman (html_input: strip, llow_unsafe_links: false).
+  - Komponen x-prose untuk Markdown dipastikan merender aman (html_input: strip, llow_unsafe_links: false).
   - Middleware 	hrottle:60,1 ditambahkan ke rute web untuk rate limiting.
   - APP_DEBUG=false diset secara default di .env.example.
 - [x] **Aksesibilitas (A11y):** 
   - Urutan fokus keyboard logis.
   - Link "Lewati ke konten" (skip to content) diimplementasikan dan berfungsi baik.
-  - Semua tombol interaktif (toggle tema, toggle bahasa, tombol menu mobile, dll) memiliki ria-label yang sesuai.
+  - Semua tombol interaktif (toggle tema, toggle bahasa, tombol menu mobile, dll) memiliki ria-label yang sesuai.
 - [x] **Pengujian Otomatis:**
   - Tes spesifik StageNineTest ditambahkan. Meliputi asersi JSON endpoint, cache logic, middleware cache untuk guest/auth, keamanan header, dan sanitasi markdown.
   - Semua 125 pengujian hijau (php artisan test).
-  - Linter bersih (endor/bin/pint).
+  - Linter bersih (\vendor/bin/pint).
 - [x] **Lighthouse:** 
   - Lighthouse dijalankan pada halaman Home (/).
   - **Performance:** 96
@@ -409,3 +409,20 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 ### Keputusan Penting
 - **Custom Cache Middleware:** Mengimplementasikan custom cache (CacheGuestResponse) dan increment versi kunci cache (guest_cache_version) daripada memasang ekstensi berat seperti spatie/laravel-responsecache, memastikan aplikasi tetap ringan tanpa package eksternal.
 - **CSP Report Only:** Saat ini CSP diterapkan pada mode Report-Only. Mengingat Filament dan Alpine.js menggunakan inline-scripts/eval untuk operasi tertentu, pembatasan ketat harus diuji matang pada server staging sebelum diberlakukan penuh (enforced).
+
+### Tahap 8
+- Dibuat halaman social dan contact.
+- SEO meta tags ditambahkan dengan ShareImage (OG).
+- Semua data diambil dari Filament (Socialite link, ContactMessage).
+- Sitemap dan robots.txt dihasilkan dinamis.
+- Tidak ada package eksternal seperti artesaos/seotools.
+
+### Koreksi 9b
+- Middleware CacheGuestResponse diperbaiki agar menserialisasi array (status, content, header) alih-alih objek Response, dipindahkan ke depan (prepend) grup web, dan otomatis menghapus Set-Cookie agar cache efisien dan tidak bocor ke user lain.
+- .env.example dikembalikan ke lokal (APP_ENV=local, APP_DEBUG=true), lalu dibuat .env.production.example terpisah.
+- Throttle (pembatas laju) dikhususkan untuk rute web publik (tidak berdampak pada Filament/Livewire) dan CSP Report di-throttle terpisah (10,1) dengan pembatasan 2KB body (menyimpan ke log channel csp khusus).
+- TrustProxies dikonfigurasi melalui custom middleware App\Http\Middleware\TrustProxies yang membaca config('portfolio.trusted_proxies') (dan diatur lewat .env TRUSTED_PROXIES), menggantikan middleware default Laravel.
+- Preload dan includeSubDomains dihapus dari HSTS karena domain belum final.
+- ui.pages terjemahan bahasa ('Halaman', 'Pages') ditambahkan. Dibuat TranslationTest untuk memastikan kunci bahasa aman.
+- Aksesibilitas: role="dialog", aria-modal, combobox, listbox, dan focus trap pada Command Palette serta Sertifikat modal. Focus kembali (restore) ditangani via Alpine x-trap.
+- Evaluasi Lighthouse (Mobile Profil) pada halaman tambahan: /projects meraih skor: Perf 94, A11y 98, Best Practices 100, SEO 92.

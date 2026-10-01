@@ -19,7 +19,7 @@ class SecurityHeaders
             $response->header('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), browsing-topics=()');
 
             if (app()->environment('production')) {
-                $response->header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
+                $response->header('Strict-Transport-Security', 'max-age=31536000');
             }
 
             // CSP Report-Only

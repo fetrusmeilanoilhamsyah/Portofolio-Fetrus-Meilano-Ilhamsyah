@@ -25,7 +25,18 @@ return [
     'open_to_work' => 'Terbuka untuk kesempatan kerja',
     'aria_main_menu' => 'Menu utama',
 
+    // Palet & Media
+    'home' => 'Beranda',
+    'about' => 'Tentang',
+    'experience' => 'Pengalaman',
+    'projects' => 'Proyek',
+    'social' => 'Sosial',
+    'contact' => 'Kontak',
+    'video_player' => 'Pemutar Video',
+    'load_interactive_media' => 'Muat Media Interaktif',
+
     // Halaman
+    'pages' => 'Halaman',
     'page_home' => 'Beranda',
     'page_about' => 'Tentang Saya',
     'page_experience' => 'Pengalaman',
