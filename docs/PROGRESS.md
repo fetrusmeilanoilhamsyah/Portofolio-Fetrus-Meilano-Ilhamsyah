@@ -13,7 +13,7 @@
 | 7 | Experience dan Projects | Selesai |
 | 8 | Media Sosial, Kontak, SEO | Selesai |
 | 9 | Polesan, performa, keamanan, tes | Selesai |
-| 10 | Persiapan deploy ke VPS | Belum |
+| 10 | Persiapan deploy ke VPS | Selesai |
 
 ---
 
@@ -469,3 +469,21 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 - **Tautan Beranda:** Menambahkan tautan teks "Lihat pengalaman" di bawah barisan tombol utama di halaman Beranda.
 - **Pembersihan Command Palette:** Memperbaiki kelas Tailwind untuk latar belakang palet perintah yang tembus pandang (`bg-surface` menjadi `bg-surf`), menyesuaikan warna teks, dan menghapus titik oranye berdenyut dari tombol navigasi *mobile*.
 - **Pengecekan View Transition:** Menghapus implementasi View Transitions API karena SPA/Swup ditolak pemilik.
+
+## Tahap 10 — Persiapan Deploy ke VPS ✅ SELESAI
+
+**Selesai pada:** 2026-10-02
+
+### Yang Selesai
+- [x] Membuat folder \deploy/\ berisi \
+ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
+- [x] Memperbarui \.env.production.example\ dengan konfigurasi absolut SQLite dan *trusted proxies* Cloudflare.
+- [x] Membuat panduan langkah demi langkah di \docs/DEPLOY.md\ yang aman, terisolasi, dan tidak mengganggu layanan lain di VPS.
+- [x] Membuat perintah backup otomatis \php artisan portfolio:backup\ yang mencadangkan SQLite dan unggahan (maksimal 7 cadangan terakhir) dan mendaftarkannya di Console Kernel / Routes.
+- [x] Menjalankan uji coba akhir: tes lulus semua (hijau) dan kode telah dirapikan (pint).
+
+### Keputusan Penting
+- **Isolasi Pengguna:** Menggunakan pengguna sistem khusus \portfolio\ dengan PHP-FPM pool tersendiri agar proses tidak bisa mengakses folder root atau bot lain di VPS.
+- **Tidak Dieksekusi Otomatis:** Sesuai permintaan, tidak ada perintah yang benar-benar dijalankan di VPS oleh agen; semuanya dituangkan dalam panduan untuk dijalankan manual secara sadar oleh pemilik.
+- **Pembatasan Nginx:** File *upload* dari \/storage\ dicegah dari eksekusi PHP dengan arahan konfigurasi murni demi keamanan tambahan.
+
