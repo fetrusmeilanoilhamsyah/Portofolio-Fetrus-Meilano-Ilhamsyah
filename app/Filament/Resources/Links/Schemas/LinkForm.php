@@ -47,6 +47,7 @@ class LinkForm
                                         'file-text' => 'Dokumen',
                                         'link' => 'Tautan',
                                         'message-circle' => 'Pesan',
+                                        'whatsapp' => 'WhatsApp',
                                     ])
                                     ->searchable()
                                     ->required(),
