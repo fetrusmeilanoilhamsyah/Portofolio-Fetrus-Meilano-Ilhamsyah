@@ -487,3 +487,5 @@ ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
 - **Tidak Dieksekusi Otomatis:** Sesuai permintaan, tidak ada perintah yang benar-benar dijalankan di VPS oleh agen; semuanya dituangkan dalam panduan untuk dijalankan manual secara sadar oleh pemilik.
 - **Pembatasan Nginx:** File *upload* dari \/storage\ dicegah dari eksekusi PHP dengan arahan konfigurasi murni demi keamanan tambahan.
 
+### Perbaikan Tambahan
+- Menambahkan input `TagsInput` untuk kolom `stack` di `ProjectForm` (tab Umum) yang sebelumnya tidak tersedia di panel admin. Menggunakan `dehydrateStateUsing` untuk membersihkan tag duplikat dan string kosong secara otomatis sesuai permintaan.

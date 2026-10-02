@@ -40,16 +40,16 @@
 
                     <div class="flex items-center gap-4 overflow-hidden z-10 pointer-events-none">
                         @if($contact->icon)
-                            <div class="text-ink-muted shrink-0 group-hover:text-brand transition-colors">
+                            <div class="text-ink-muted shrink-0 group-hover:text-brand-ink transition-colors">
                                 <x-svg-icon :name="$contact->icon" class="w-6 h-6" />
                             </div>
                         @else
-                            <div class="text-ink-muted shrink-0 group-hover:text-brand transition-colors">
+                            <div class="text-ink-muted shrink-0 group-hover:text-brand-ink transition-colors">
                                 <x-svg-icon name="link" class="w-6 h-6" />
                             </div>
                         @endif
                         <div class="min-w-0">
-                            <h3 class="font-medium text-ink group-hover:text-brand transition-colors truncate">{{ public_text($contact->label) }}</h3>
+                            <h3 class="font-medium text-ink group-hover:text-brand-ink transition-colors truncate">{{ public_text($contact->label) }}</h3>
                             <p class="text-sm text-ink-muted truncate">{{ $displayUrl }}</p>
                             @if($contact->note)
                                 <p class="text-xs text-brand-ink mt-1 truncate">{{ public_text($contact->note) }}</p>
@@ -59,11 +59,11 @@
                     
                     <div class="flex items-center gap-2 z-10">
                         @if($isUrl)
-                            <a href="{{ $href }}" target="_blank" rel="noopener noreferrer" class="shrink-0 p-2 text-ink-muted hover:text-brand hover:bg-brand/10 rounded-lg transition-colors focus:outline-none" aria-label="Buka Tautan" title="Buka Tautan">
+                            <a href="{{ $href }}" target="_blank" rel="noopener noreferrer" class="shrink-0 p-2 text-ink-muted hover:text-brand-ink hover:bg-brand/10 rounded-lg transition-colors focus:outline-none" aria-label="Buka Tautan" title="Buka Tautan">
                                 <x-svg-icon name="external-link" class="w-5 h-5" />
                             </a>
                         @endif
-                        <button type="button" @click.prevent="copy" class="shrink-0 p-2 text-ink-muted hover:text-brand hover:bg-brand/10 rounded-lg transition-colors focus:outline-none" :aria-label="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'" :title="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'">
+                        <button type="button" @click.prevent="copy" class="shrink-0 p-2 text-ink-muted hover:text-brand-ink hover:bg-brand/10 rounded-lg transition-colors focus:outline-none" :aria-label="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'" :title="copied ? '{{ __('ui.copied') }}' : '{{ __('ui.btn_copy') }}'">
                             <template x-if="!copied">
                                 <x-svg-icon name="copy" class="w-5 h-5" />
                             </template>

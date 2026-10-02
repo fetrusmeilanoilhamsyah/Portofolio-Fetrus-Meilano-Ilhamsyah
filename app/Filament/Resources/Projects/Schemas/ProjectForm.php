@@ -12,6 +12,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TagsInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -44,6 +45,16 @@ class ProjectForm
                                     ->label('Tipe')
                                     ->options(ProjectType::class)
                                     ->required(),
+                                TagsInput::make('stack')
+                                    ->label('Stack teknologi')
+                                    ->placeholder('Ketik lalu tekan Enter')
+                                    ->reorderable()
+                                    ->splitKeys(['Tab', ','])
+                                    ->suggestions(['Laravel', 'PHP', 'Filament', 'Tailwind CSS', 'Alpine.js', 'SQLite', 'MySQL', 'Python', 'python-telegram-bot', 'Node.js', 'Vue.js', 'Nginx', 'systemd', 'Midtrans', 'Digiflazz', 'Pakasir'])
+                                    ->rules(['array', 'max:12'])
+                                    ->nestedRecursiveRules(['max:30'])
+                                    ->dehydrateStateUsing(fn ($state) => is_array($state) ? array_values(array_unique(array_filter($state, fn ($v) => trim($v) !== ''))) : null)
+                                    ->helperText('Tag pertama (maksimal 4) tampil di kartu proyek.'),
                                 Textarea::make('summary.id')
                                     ->label('Ringkasan (ID)')
                                     ->required()

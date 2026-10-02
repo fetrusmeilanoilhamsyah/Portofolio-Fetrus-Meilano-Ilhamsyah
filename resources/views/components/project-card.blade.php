@@ -51,16 +51,16 @@
             @endif
         </div>
         
-        @if($project->tags && count($project->tags) > 0)
+        @if(is_array($project->stack) && count($project->stack) > 0)
             <div class="mt-3 flex flex-wrap gap-1.5 relative z-10 border-t border-line/50 pt-3">
-                @foreach(array_slice($project->tags, 0, 4) as $tag)
+                @foreach(array_slice($project->stack, 0, 4) as $tag)
                     <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-ink/5 text-[11px] font-medium text-ink-muted">
                         {{ $tag }}
                     </span>
                 @endforeach
-                @if(count($project->tags) > 4)
+                @if(count($project->stack) > 4)
                     <span class="inline-flex items-center px-1.5 py-0.5 rounded bg-transparent text-[11px] font-medium text-ink-muted">
-                        +{{ count($project->tags) - 4 }}
+                        +{{ count($project->stack) - 4 }}
                     </span>
                 @endif
             </div>
