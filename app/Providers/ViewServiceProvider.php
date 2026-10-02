@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Enums\LinkGroup;
+use App\Models\Link;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -28,6 +30,17 @@ class ViewServiceProvider extends ServiceProvider
                 $siteSetting = SiteSetting::query()->first();
             }
             $view->with('siteSetting', $siteSetting);
+
+            static $sidebarSocialLinks = false;
+            if ($sidebarSocialLinks === false) {
+                $sidebarSocialLinks = Link::query()
+                    ->published()
+                    ->where('group', LinkGroup::Akun)
+                    ->whereNotNull('icon')
+                    ->limit(5)
+                    ->get(['id', 'label', 'url', 'icon']);
+            }
+            $view->with('sidebarSocialLinks', $sidebarSocialLinks);
         });
     }
 }

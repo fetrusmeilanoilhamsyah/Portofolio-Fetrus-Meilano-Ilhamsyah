@@ -24,7 +24,7 @@
     @endif
 
     {{-- Canonical & View Transitions --}}
-    <meta name="view-transition" content="same-origin" />
+    
     <link rel="canonical" href="{{ url()->current() }}">
 
     {{-- Hreflang --}}
@@ -211,12 +211,9 @@
 
                 <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
                     {{-- Ikon akun --}}
-                    @php
-                        $sidebarLinks = \App\Models\Link::published()->where('group', \App\Enums\LinkGroup::Akun)->whereNotNull('icon')->limit(5)->get();
-                    @endphp
-                    @if($sidebarLinks->isNotEmpty())
+                    @if($sidebarSocialLinks->isNotEmpty())
                         <div class="flex items-center gap-1">
-                            @foreach($sidebarLinks as $sLink)
+                            @foreach($sidebarSocialLinks as $sLink)
                                 <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
                                     <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
                                 </a>
@@ -281,12 +278,9 @@
                 {{-- Bagian bawah sidebar --}}
                 <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
                     {{-- Ikon akun --}}
-                    @php
-                        $sidebarLinks = \App\Models\Link::published()->where('group', \App\Enums\LinkGroup::Akun)->whereNotNull('icon')->limit(5)->get();
-                    @endphp
-                    @if($sidebarLinks->isNotEmpty())
+                    @if($sidebarSocialLinks->isNotEmpty())
                         <div class="flex items-center gap-1">
-                            @foreach($sidebarLinks as $sLink)
+                            @foreach($sidebarSocialLinks as $sLink)
                                 <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
                                     <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
                                 </a>

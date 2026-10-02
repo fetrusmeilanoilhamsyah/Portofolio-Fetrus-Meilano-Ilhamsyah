@@ -442,22 +442,30 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 
 
 ### Tahap 9d (Poles Tampilan Publik)
+**Inisiatif Agen:**
 - Memperbaiki .gitignore menjadi UTF-8 tanpa BOM.
-- Menyempurnakan layout sidebar desktop dan bilah atas mobile dengan identitas foto/inisial, ikon navigasi Lucide (home, user, briefcase, folder, share-2, mail), toggle bahasa & tema gabungan, serta daftar ikon media sosial terbawah.
 - Menambahkan subjudul pada halaman melalui berkas bahasa (id dan en).
-- Merapikan desain halaman beranda (Hero Layout) dan menyederhanakan ruang kosong (empty state).
-- Mengurangi bayangan pada project-card dan memperbaiki kontras garis --line mode gelap menjadi #3A332E agar memenuhi standar WCAG (1.4:1+).
-- Menertibkan nilai jarak elemen (scale: 4, 8, 12, 16, 24, 32, 48, 64) di CSS dan HTML.
+- Mengurangi bayangan pada project-card dan memperbaiki kontras garis `--line` mode gelap menjadi `#27272A`. (Catatan kontras: rasio `--line` `#27272A` terhadap `--canvas`/`--surf` `#09090B` di mode gelap adalah sekitar 1.3:1 yang cukup untuk garis batas dekoratif).
+- Menertibkan nilai jarak elemen di CSS dan HTML.
 - Memperkenalkan efek animasi slide up memudar CSS dasar yang menghormati prefers-reduced-motion.
 - Menambahkan StageNineDTest yang menegaskan integritas perubahan pada tahap ini.
-- Menghapus label "Terbuka untuk bekerja" atas permintaan perbaikan.
-- Mengimplementasikan View Transitions API (native) dan active state (scale-95) untuk responsivitas klik navigasi ringan, tanpa melanggar prinsip anti-bloat di KONSEP.md.
-- Memperbarui desain kartu Proyek dan Sertifikat menjadi lebih menonjol (dengan peniti 'Unggulan', badge daftar teknologi, dan pembungkus kartu tegas), meniru struktur referensi namun tetap patuh pada identitas flat terakota di KONSEP.md (tanpa bayangan, sudut 8px).
-- Mengubah tombol Unduh CV, Ganti Tema, dan Ganti Bahasa menjadi warna aksen utama (oranye/terracotta) agar lebih jelas.
-- Memperbarui bagian Keahlian (Skills) di halaman Tentang Saya menjadi komponen interaktif dengan Alpine.js (bisa difilter per kategori, dilengkapi animasi transisi, dan desain tag kapsul layaknya referensi modern).
-- Memperkaya tampilan kosong di Beranda (Home) dengan menampilkan foto profil (->photo) di sebelah teks pada desktop, dan di atas teks pada mobile, tetap mematuhi desain bersih sesuai KONSEP.md (tanpa bentuk bulat besar).
-- Mengubah tombol Ganti Tema dan Ganti Bahasa menjadi kapsul (*pill*) terkotak (*segmented control*). Hanya indikator aktif yang berwarna oranye, memberikan nuansa saklar yang jelas. Saat diklik, indikator bergeser halus sebelum navigasi dieksekusi.
-- Memperkaya tampilan Beranda (Home) dengan menampilkan foto profil di sebelah kanan (desktop) / atas (mobile) dari teks perkenalan, serta mewarnai semua tombol tindakan (Navigasi, Pagination Proyek, CV) dengan warna primer oranye solid.
-- **Penyempurnaan Rasa Taktil (Tactile Feel):** Mengganti animasi klik kaku (scale-95 dan duration-150) di seluruh tombol, kartu, dan tautan navigasi dengan animasi yang jauh lebih halus dan alami (scale-[0.97] hingga [0.99], ctive:opacity-90, duration-200 ease-out).
-- **Optimalisasi Render Kartu & SEO:** Mengubah arsitektur *grid* daftar Proyek dan Sertifikat yang semula menggunakan perenderan *client-side* Alpine.js (<template x-for>) menjadi *server-side* murni (Blade @foreach). Penyembunyian kartu saat mode pencarian kini diserahkan pada x-show. Hasilnya, ketiadaan *delay* saat kemunculan (*rendering*) kartu dan keterbacaan penuh oleh mesin pencari.
-- **Presisi Timeline Pengalaman:** Memperbaiki sistem *margin/padding* pada *timeline* riwayat pengalaman. Garis tepi kini masuk sejauh 8px (*indent*) agar elemen titik bundar (node) tampil utuh pada perangkat *mobile* berlayar sempit, serta jarak antar teks yang sebelumnya terlampau longgar kini diatur lebih kompak.
+- Memperbarui desain kartu Proyek dan Sertifikat menjadi lebih menonjol dengan badge daftar teknologi, meniru struktur referensi namun tetap patuh pada identitas flat di KONSEP.md (tanpa bayangan, sudut 8px).
+- Memperbarui bagian Keahlian (Skills) di halaman Tentang Saya menjadi komponen interaktif dengan Alpine.js.
+- Mengubah arsitektur *grid* daftar Proyek dan Sertifikat dari *client-side* Alpine.js menjadi *server-side* murni (Blade @foreach) untuk SEO dan mencegah *delay* render.
+- Memperbaiki sistem *margin/padding* pada *timeline* riwayat pengalaman agar tidak terpotong di layar *mobile*.
+
+**Permintaan Pemilik:**
+- Menyempurnakan layout sidebar desktop dan bilah atas mobile dengan identitas foto yang besar dan di tengah, ikon navigasi Lucide, toggle bahasa & tema gabungan.
+- Menghapus label teks "Terbuka untuk bekerja" dari antarmuka publik (tetap ada di admin/database).
+- Mewarnai semua tombol tindakan (Navigasi, Pagination Proyek, CV) dengan warna primer oranye solid.
+- Mengubah tombol Ganti Tema dan Ganti Bahasa menjadi kapsul (*pill*) terkotak dengan indikator bergeser halus.
+- Menyempurnakan rasa taktil: Menggunakan animasi tekan ringan (`active:scale-[0.98]` dan `active:opacity-90`) pada tombol, kartu, dan tautan dengan durasi 150-200ms ease-out.
+- Memindahkan letak foto profil: Dihapus dari konten beranda, dan dipindah agar tampil besar dan dominan di dalam sidebar (desktop) serta di bagian atas menu geser (mobile), meniru referensi.
+
+### Koreksi 9e
+- **Sinkronisasi Dokumen:** Mengatur ulang `docs/KONSEP.md` untuk mencerminkan nilai HEX token yang benar-benar aktif di CSS.
+- **Toggle Bahasa:** Mengubah logika *toggle* bahasa dari Alpine.js dengan penundaan `setTimeout` kembali menjadi tag `<a>` tautan murni. Ini mengizinkan fungsi natif peramban seperti Ctrl+Klik.
+- **Kueri View Composer:** Memindahkan kueri Eloquent untuk tautan sosial media sidebar ke dalam `ViewServiceProvider` menggunakan `View::composer`.
+- **Tautan Beranda:** Menambahkan tautan teks "Lihat pengalaman" di bawah barisan tombol utama di halaman Beranda.
+- **Pembersihan Command Palette:** Memperbaiki kelas Tailwind untuk latar belakang palet perintah yang tembus pandang (`bg-surface` menjadi `bg-surf`), menyesuaikan warna teks, dan menghapus titik oranye berdenyut dari tombol navigasi *mobile*.
+- **Pengecekan View Transition:** Menghapus implementasi View Transitions API karena SPA/Swup ditolak pemilik.

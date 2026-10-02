@@ -43,16 +43,18 @@ Database: SQLite. Tidak ada Redis, antrean, atau layanan pihak ketiga selain yan
 
 ## Desain
 Tata letak dan alur UX mengikuti pola situs pribadi dengan sidebar kiri (desktop) dan menu geser (mobile), tapi identitas visual harus berbeda dan tidak boleh terlihat seperti salinan situs lain.
-- Sidebar: nama, satu baris peran, titik status hanya kalau "terbuka untuk kerja" aktif di admin, toggle bahasa dan tema, menu, tombol palet perintah. Tanpa foto bulat besar, tanpa lencana centang biru.
-- Warna (terang): latar #F6F3EE, permukaan #FFFFFF, teks #1C1917, teks redup #6B645C, garis #E3DDD3, aksen #C8501E (hover #A63F14).
-- Warna (gelap): latar #14110F, permukaan #1D1A17, teks #EDE8E1, teks redup #A39B90, garis #2C2723, aksen #E8743F.
+- Sidebar: nama, satu baris peran, titik status hanya kalau "terbuka untuk kerja" aktif di admin, toggle bahasa dan tema, menu, tombol palet perintah. (Keputusan pemilik: Foto profil ditampilkan besar dan di tengah pada sidebar, dan label teks "terbuka untuk kerja" dari antarmuka publik dihapus meski kolom database tetap ada).
+- Toggle tema dan bahasa berbentuk kapsul (`rounded-full`) dengan indikator bergeser.
+- Warna (terang): latar #FFFFFF, permukaan #FFFFFF, teks #111827, teks redup #4B5563, garis #E5E7EB, aksen (oranye solid) #C8501E (hover #A63F14), ok #15803d.
+- Warna (gelap): latar #09090B, permukaan #09090B, teks #FAFAFA, teks redup #A1A1AA, garis #27272A, aksen (oranye solid) #E8743F (hover #C85F2A), ok #4ade80.
+- Efek tekan: `active:scale-[0.98]` dan `active:opacity-90` pada tombol, kartu, dan tautan diperbolehkan (gerak halus 150 sampai 200 ms, tanpa animasi dekoratif).
 - Semua kombinasi teks dan latar harus lolos kontras WCAG AA. Cek, jangan asumsikan.
 - Bukan kuning, bukan biru-navy, bukan ungu.
 - Satu font: Plus Jakarta Sans (self-host). Font mono bawaan sistem untuk kode.
-- Sudut membulat kecil (6 sampai 8 px), garis tipis, hampir tanpa bayangan. Pembatas berupa garis solid tipis, bukan putus-putus.
+- Sudut membulat kecil (6 sampai 8 px), garis tipis, dilarang ada bayangan (shadow). Pembatas berupa garis solid tipis, bukan putus-putus.
 - Ikon: Lucide sebagai SVG inline.
 - Animasi: hanya fade dan geser halus 150 sampai 200 ms, wajib menghormati `prefers-reduced-motion`.
-- Dilarang: partikel, efek glitch, teks gradien, glassmorphism, spinner loading layar penuh, animasi berlebihan, gambar stok.
+- Dilarang: partikel, efek glitch, teks gradien, glassmorphism, bayangan, sudut membulat besar, spinner loading layar penuh, animasi berlebihan, gambar stok.
 - Ikuti tema sistem (terang/gelap) dan jangan ada kedipan tema saat halaman dimuat.
 
 ## Tulisan
