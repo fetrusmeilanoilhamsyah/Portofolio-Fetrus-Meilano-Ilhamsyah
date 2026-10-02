@@ -98,7 +98,15 @@
     {{-- ═══ MOBILE: bilah atas ═══ --}}
     <header
         class="lg:hidden flex items-center justify-between px-4 py-3 border-b bg-surf border-line"
-        x-data="{ open: false }"
+        x-data="{ 
+            open: false,
+            init() {
+                if (!sessionStorage.getItem('mobile_sidebar_seen') && window.innerWidth < 1024) {
+                    setTimeout(() => { this.open = true; }, 300);
+                    sessionStorage.setItem('mobile_sidebar_seen', '1');
+                }
+            }
+        }"
     >
         {{-- Nama singkat --}}
         <a
@@ -152,40 +160,45 @@
                 tabindex="-1"
                 class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 gap-6 focus:outline-none bg-surf"
             >
-                <div class="flex items-start justify-between">
+                {{-- Close Button --}}
+                <button
+                    type="button"
+                    @click="open = false"
+                    class="absolute top-4 right-4 p-2 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5"
+                    aria-label="{{ __('ui.close_menu') }}"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                         stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                    </svg>
+                </button>
+
+                <div class="flex flex-col items-center text-center gap-3">
                     {{-- Identitas --}}
-                    <div class="flex items-center gap-3">
-                        @if($siteSetting?->photo)
-                            <img src="{{ media_url($siteSetting->photo) }}" width="48" height="48" alt="{{ public_text($siteSetting->name) }}" class="w-12 h-12 rounded-lg object-cover shrink-0">
-                        @else
-                            <div class="w-12 h-12 rounded-lg bg-brand/10 text-brand-ink flex items-center justify-center font-bold shrink-0">
-                                {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
+                    @if($siteSetting?->photo)
+                        <div class="w-28 h-28 shrink-0 rounded-lg overflow-hidden bg-canvas ring-1 ring-line/50">
+                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
+                        </div>
+                    @else
+                        <div class="w-28 h-28 rounded-lg bg-brand/5 text-brand-ink flex items-center justify-center text-xl font-bold shrink-0 ring-1 ring-line/50">
+                            {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
+                        </div>
+                    @endif
+                    <div>
+                        <span class="block font-bold text-lg leading-tight mb-0.5 text-ink">
+                            {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
+                        </span>
+                        
+                        @if($siteSetting?->cv_file)
+                            <div class="mt-2 flex justify-center">
+                                <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-brand/10 text-brand-ink hover:bg-brand/20 transition-colors focus:outline-none">
+                                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                    {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
+                                </a>
                             </div>
                         @endif
-                        <div>
-                            <span class="block font-semibold text-base leading-tight mb-0.5 text-ink">
-                                {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
-                            </span>
-                            @if($siteSetting)
-                                <p class="text-sm text-ink-muted line-clamp-2">
-                                    {{ public_text($siteSetting->role) }}
-                                </p>
-                            @endif
-                        </div>
                     </div>
-                    
-                    <button
-                        type="button"
-                        @click="open = false"
-                        class="p-1.5 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5"
-                        aria-label="{{ __('ui.close_menu') }}"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" aria-hidden="true">
-                            <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-                        </svg>
-                    </button>
                 </div>
 
                 {{-- Toggle bahasa & tema --}}
@@ -211,12 +224,6 @@
                         </div>
                     @endif
 
-                    {{-- Unduh CV --}}
-                    @if($siteSetting?->cv_file)
-                        <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full px-3 py-2 text-sm font-medium rounded-md bg-brand hover:bg-brand-hover active:scale-95 transition-all duration-150 text-brand-fg">
-                            {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
-                        </a>
-                    @endif
                 </div>
             </nav>
         </div>
@@ -231,25 +238,31 @@
             <div class="flex flex-col flex-1 p-6 gap-6">
 
                 {{-- Identitas --}}
-                <div class="flex items-center gap-3">
+                <div class="flex flex-col items-center text-center gap-4">
                     @if($siteSetting?->photo)
-                        <img src="{{ media_url($siteSetting->photo) }}" width="48" height="48" alt="{{ public_text($siteSetting->name) }}" class="w-12 h-12 rounded-lg object-cover shrink-0">
+                        <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-canvas ring-1 ring-line/50">
+                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
+                        </div>
                     @else
-                        <div class="w-12 h-12 rounded-lg bg-brand/10 text-brand-ink flex items-center justify-center font-bold shrink-0">
+                        <div class="w-24 h-24 rounded-lg bg-brand/5 text-brand-ink flex items-center justify-center text-2xl font-bold shrink-0 ring-1 ring-line/50">
                             {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
                         </div>
                     @endif
                     <div>
                         <a
                             href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-                            class="block font-semibold text-base leading-tight mb-0.5 text-ink"
+                            class="block font-bold text-lg leading-tight mb-1 text-ink"
                         >
                             {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                         </a>
-                        @if($siteSetting)
-                            <p class="text-sm text-ink-muted line-clamp-2">
-                                {{ public_text($siteSetting->role) }}
-                            </p>
+                        
+                        @if($siteSetting?->cv_file)
+                            <div class="mt-2 flex justify-center">
+                                <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-brand/10 text-brand-ink hover:bg-brand/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">
+                                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                                    {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
+                                </a>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -279,13 +292,6 @@
                                 </a>
                             @endforeach
                         </div>
-                    @endif
-
-                    {{-- Unduh CV --}}
-                    @if($siteSetting?->cv_file)
-                        <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-full px-3 py-2 text-sm font-medium rounded-md bg-brand hover:bg-brand-hover active:scale-95 transition-all duration-150 text-brand-fg">
-                            {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
-                        </a>
                     @endif
 
                     {{-- Tombol palet perintah --}}

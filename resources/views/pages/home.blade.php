@@ -35,8 +35,17 @@
         <div class="space-y-16">
             {{-- Hero Block --}}
             @if($siteSetting && (!empty(public_text($siteSetting->name)) || !empty(public_text($siteSetting->role)) || !empty($intro)))
-                <div class="flex flex-col-reverse sm:flex-row items-start gap-8 sm:gap-12">
-                    <div class="flex-1 min-w-0">
+                <div class="flex flex-col items-start">
+                    <div class="w-full">
+                        {{-- Photo for mobile only (desktop has it in sidebar) --}}
+                        @if($siteSetting->photo)
+                            <div class="lg:hidden mb-6 flex justify-start">
+                                <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-canvas border border-line">
+                                    <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                        @endif
+
                         @if($siteSetting->location)
                             <div class="text-xs font-semibold tracking-wider uppercase text-ink-muted mb-3">
                                 {{ $siteSetting->location }}
@@ -73,12 +82,6 @@
                             </x-button>
                         </div>
                     </div>
-
-                    @if($siteSetting->photo)
-                        <div class="w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 shrink-0 rounded-lg overflow-hidden bg-canvas border border-line">
-                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
-                        </div>
-                    @endif
                 </div>
             @endif
 
