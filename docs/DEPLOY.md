@@ -153,14 +153,34 @@ Arsip akan disimpan di `storage/app/backups/`. Unduh cadangan ini berkala menggu
 ## 10. HTTPS
 
 **Opsi 1: Cloudflare Origin Certificate (Disarankan)**
-1. Di Cloudflare, ubah SSL/TLS ke **Full (Strict)**.
-2. Buat *Origin Certificate*, unduh `.pem` dan `.key` ke `/etc/ssl/certs/` dan `/etc/ssl/private/`.
-3. Tambahkan ke `nginx.conf`: 
-   ```nginx
-   listen 443 ssl http2;
-   ssl_certificate /etc/ssl/certs/portofolio.pem;
-   ssl_certificate_key /etc/ssl/private/portofolio.key;
+Jangan ubah mode Cloudflare ke Full (Strict) sebelum langkah-langkah di server selesai, karena akan menyebabkan *error 525*.
+*Mode "Flexible" tidak disarankan karena koneksi dari Cloudflare ke server tidak terenkripsi.*
+
+1. Di Cloudflare (SSL/TLS > Origin Server), klik **Create Certificate**. Pilih RSA, biarkan hostname default, set durasi 15 tahun.
+2. Simpan sertifikat di server VPS Anda:
+   ```bash
+   sudo mkdir -p /etc/ssl/cloudflare
+   sudo nano /etc/ssl/cloudflare/portofolio.pem     # tempel Origin Certificate
+   sudo nano /etc/ssl/cloudflare/portofolio.key     # tempel Private Key
+   
+   # Set izin berkas
+   sudo chown root:root /etc/ssl/cloudflare/portofolio.*
+   sudo chmod 644 /etc/ssl/cloudflare/portofolio.pem
+   sudo chmod 600 /etc/ssl/cloudflare/portofolio.key
    ```
+3. Tambahkan konfigurasi SSL di Nginx (`/etc/nginx/sites-available/portofolio.conf`). Tambahkan direktif `listen 443 ssl` dan lokasi sertifikat (lihat contoh di `deploy/nginx.conf`).
+4. Uji konfigurasi Nginx dan muat ulang:
+   ```bash
+   sudo nginx -t
+   sudo systemctl reload nginx
+   ```
+5. Uji akses HTTPS secara lokal dari dalam VPS:
+   ```bash
+   curl -skI https://127.0.0.1 -H "Host: domain-anda.com" | head -5
+   ```
+   *(Pastikan mengembalikan status HTTP 200 atau 302).*
+6. Pastikan port 443 terbuka di firewall (Tencent Console & `sudo ufw allow 443`).
+7. **BARU TERAKHIR:** Di menu Cloudflare (SSL/TLS > Overview), ubah enkripsi ke **Full (Strict)**.
 
 **Opsi 2: Let's Encrypt / Certbot**
 1. Pastikan domain terhubung (tanpa proxy Cloudflare orange-cloud).

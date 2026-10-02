@@ -489,3 +489,8 @@ ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
 
 ### Perbaikan Tambahan
 - Menambahkan input `TagsInput` untuk kolom `stack` di `ProjectForm` (tab Umum) yang sebelumnya tidak tersedia di panel admin. Menggunakan `dehydrateStateUsing` untuk membersihkan tag duplikat dan string kosong secara otomatis sesuai permintaan.
+
+### Perbaikan Infrastruktur Deploy
+- **deploy.sh**: Menambahkan `trap` untuk keamanan mode maintenance, memperbaiki cara `git pull` agar `fast-forward` saja pada branch `master`, menangani `storage:link` agar idempoten, dan mengatur folder `.cache` Composer khusus.
+- **DEPLOY.md**: Memperbaiki urutan langkah HTTPS agar menghindari error 525 (memasang origin certificate sebelum mengubah ke Cloudflare Full Strict).
+- **nginx.conf**: Menambahkan contoh konfigurasi port 443 SSL (terkomentar) dan membatasi pemrosesan PHP hanya pada `index.php` demi keamanan.
