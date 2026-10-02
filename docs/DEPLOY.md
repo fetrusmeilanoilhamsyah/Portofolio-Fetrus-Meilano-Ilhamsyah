@@ -101,7 +101,7 @@ npm run build
 
 Unggah seluruh folder (kecuali `.git` dan `/node_modules`) menggunakan `rsync` ke `/var/www/portofolio`.
 ```bash
-rsync -avz --exclude '.git' --exclude 'node_modules' ./ root@43.163.107.250:/var/www/portofolio/
+rsync -avz --exclude '.git' --exclude 'node_modules' ./ root@[IP_VPS_ANDA]:/var/www/portofolio/
 ```
 
 Di VPS, salin `.env.production.example` menjadi `.env`:
