@@ -39,6 +39,7 @@ class LinkForm
                                         'twitter' => 'Twitter/X',
                                         'youtube' => 'YouTube',
                                         'instagram' => 'Instagram',
+                                        'tiktok' => 'TikTok',
                                         'facebook' => 'Facebook',
                                         'mail' => 'Email',
                                         'phone' => 'Telepon',
