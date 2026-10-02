@@ -29,7 +29,6 @@ class LinkForm
                                     ->required(),
                                 TextInput::make('url')
                                     ->label('URL')
-                                    ->url()
                                     ->required(),
                                 Select::make('icon')
                                     ->label('Ikon')
