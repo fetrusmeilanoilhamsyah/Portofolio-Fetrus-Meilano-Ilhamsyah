@@ -314,8 +314,14 @@
             </div>
 
             <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-4 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
-                <div class="text-[13px] text-ink-muted">
-                    &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}. {{ __('ui.copyright') }}
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-[13px] text-ink-muted">
+                    <div>
+                        &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}. {{ __('ui.copyright') }}
+                    </div>
+                    <div class="hidden sm:block w-1 h-1 rounded-full bg-line"></div>
+                    <a href="{{ localized_route('cv') }}" class="font-medium hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline">
+                        {{ __('ui.view_cv_web') }} &rarr;
+                    </a>
                 </div>
                 @if($sidebarSocialLinks->isNotEmpty())
                     <div class="flex items-center gap-4">
