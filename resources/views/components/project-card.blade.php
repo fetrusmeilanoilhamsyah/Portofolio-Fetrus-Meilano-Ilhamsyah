@@ -25,7 +25,7 @@
         @endif
 
         {{-- Overlay Hover --}}
-        <div class="absolute inset-0 bg-ink/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex items-center justify-center">
+        <div class="absolute inset-0 bg-ink/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 flex items-center justify-center pointer-events-none">
             <div class="flex items-center gap-2 text-canvas font-semibold tracking-wide transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                 <span>{{ app()->getLocale() === 'en' ? 'View Project' : 'Lihat Proyek' }}</span>
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -34,8 +34,8 @@
     </div>
     
     <div class="flex flex-col flex-1 p-5 md:p-6">
-        <h3 class="text-lg font-bold text-ink group-hover:text-brand-ink transition-colors leading-tight mb-2">
-            <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none before:absolute before:inset-0 before:z-0">
+        <h3 class="text-lg font-bold text-ink group-hover:text-brand-ink transition-colors leading-tight mb-2 relative z-30">
+            <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none before:absolute before:inset-0">
                 {{ $project->title }}
             </a>
         </h3>
