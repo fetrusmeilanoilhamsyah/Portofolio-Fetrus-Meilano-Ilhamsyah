@@ -37,14 +37,7 @@
             @if($siteSetting && (!empty(public_text($siteSetting->name)) || !empty(public_text($siteSetting->role)) || !empty($intro)))
                 <div class="flex flex-col items-start">
                     <div class="w-full">
-                        {{-- Photo for mobile only (desktop has it in sidebar) --}}
-                        @if($siteSetting->photo)
-                            <div class="lg:hidden mb-6 flex justify-start">
-                                <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-canvas border border-line">
-                                    <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
-                                </div>
-                            </div>
-                        @endif
+
 
                         <div class="flex flex-wrap items-center gap-3 mb-6">
                             @if($siteSetting->location)
