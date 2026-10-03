@@ -230,9 +230,9 @@
 
         {{-- ═══ DESKTOP: sidebar kiri tetap ═══ --}}
         <aside
-            class="hidden lg:flex flex-col w-64 xl:w-72 shrink-0 sticky top-0 h-screen overflow-y-auto layout-sidebar bg-surf border-r border-line"
+            class="hidden lg:flex flex-col w-[250px] shrink-0 sticky top-0 h-screen overflow-y-auto layout-sidebar bg-surf border-r border-line"
         >
-            <div class="flex flex-col flex-1 p-6 gap-6">
+            <div class="flex flex-col flex-1 p-5 gap-5">
 
                 {{-- Identitas --}}
                 <div class="flex flex-col items-center text-center gap-4">
