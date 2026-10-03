@@ -23,6 +23,7 @@ class CertificateFactory extends Factory
             'file' => null,
             'alt' => ['id' => fake()->sentence(3), 'en' => fake()->sentence(3)],
             'is_published' => false,
+            'show_on_cv' => true,
             'sort_order' => 0,
         ];
     }

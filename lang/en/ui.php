@@ -93,4 +93,17 @@ return [
     'search_placeholder' => 'Search pages and projects...',
     'loading' => 'Loading...',
     'no_results' => 'No results found.',
+
+    // CV print
+    'page_cv' => 'CV',
+    'cv_print' => 'Print / Save PDF',
+    'cv_work_experience' => 'Work Experience',
+    'cv_internship' => 'Internship',
+    'cv_organization' => 'Organization',
+    'cv_education' => 'Education',
+    'cv_skills' => 'Skills',
+    'cv_certificates' => 'Certificates',
+    'cv_summary' => 'Summary',
+    'back' => 'Back',
+    'view_cv_web' => 'View web CV',
 ];

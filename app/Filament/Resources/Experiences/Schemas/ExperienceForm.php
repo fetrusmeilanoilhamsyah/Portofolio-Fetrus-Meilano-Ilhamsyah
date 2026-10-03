@@ -78,6 +78,10 @@ class ExperienceForm
                                 Toggle::make('is_published')
                                     ->label('Terbitkan')
                                     ->default(false),
+                                Toggle::make('show_on_cv')
+                                    ->label('Tampil di CV')
+                                    ->default(true)
+                                    ->helperText('Tampilkan pengalaman ini di halaman CV cetak.'),
                             ]),
                     ])
                     ->columnSpanFull(),

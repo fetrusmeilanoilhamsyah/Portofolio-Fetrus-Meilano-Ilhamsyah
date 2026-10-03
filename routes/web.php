@@ -31,6 +31,7 @@ Route::middleware(['throttle:60,1'])->group(function () {
         Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('projects.show');
         Route::get('/social', [PublicController::class, 'social'])->name('social');
         Route::get('/contact', [PublicController::class, 'contact'])->name('contact');
+        Route::get('/cv', [PublicController::class, 'cv'])->name('cv');
 
         // API endpoint for Command Palette
         Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('command-palette');
@@ -45,6 +46,7 @@ Route::middleware(['throttle:60,1'])->group(function () {
         Route::get('/projects/{slug}', [PublicController::class, 'projectShow'])->name('en.projects.show');
         Route::get('/social', [PublicController::class, 'social'])->name('en.social');
         Route::get('/contact', [PublicController::class, 'contact'])->name('en.contact');
+        Route::get('/cv', [PublicController::class, 'cv'])->name('en.cv');
 
         // API endpoint for Command Palette
         Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('en.command-palette');

@@ -21,6 +21,7 @@ use Spatie\Translatable\HasTranslations;
     'file',
     'alt',
     'is_published',
+    'show_on_cv',
     'sort_order',
 ])]
 class Certificate extends Model
@@ -32,6 +33,7 @@ class Certificate extends Model
 
     protected $attributes = [
         'is_published' => false,
+        'show_on_cv' => true,
         'sort_order' => 0,
     ];
 
@@ -41,6 +43,7 @@ class Certificate extends Model
             'issued_at' => 'date',
             'expires_at' => 'date',
             'is_published' => 'boolean',
+            'show_on_cv' => 'boolean',
             'sort_order' => 'integer',
         ];
     }

@@ -10,6 +10,7 @@ Situs portofolio pribadi yang dinamis. Semua isi (proyek, pengalaman, sertifikat
 - `/projects` dan `/projects/{slug}`
 - `/social` (Media Sosial)
 - `/contact`
+- `/cv` halaman CV cetak (A4)
 - `/admin` panel admin (khusus pemilik)
 
 Bahasa: Indonesia sebagai default (tanpa prefix), Inggris di prefix `/en`. Field bahasa Inggris boleh kosong; kalau kosong tampilkan versi Indonesia. Nama rute tetap berbahasa Inggris, label di layar diterjemahkan.

@@ -23,6 +23,7 @@ class ExperienceFactory extends Factory
             'started_at' => fake()->date(),
             'ended_at' => null,
             'is_published' => false,
+            'show_on_cv' => true,
             'sort_order' => 0,
         ];
     }

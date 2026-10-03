@@ -74,6 +74,10 @@ class CertificateForm
                                 Toggle::make('is_published')
                                     ->label('Terbitkan')
                                     ->default(false),
+                                Toggle::make('show_on_cv')
+                                    ->label('Tampil di CV')
+                                    ->default(true)
+                                    ->helperText('Tampilkan sertifikat ini di halaman CV cetak.'),
                                 TextInput::make('sort_order')
                                     ->label('Urutan')
                                     ->numeric()

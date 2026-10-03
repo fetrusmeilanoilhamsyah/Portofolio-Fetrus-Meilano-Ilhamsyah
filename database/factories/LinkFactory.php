@@ -20,6 +20,7 @@ class LinkFactory extends Factory
             'icon' => 'link',
             'note' => null,
             'is_published' => false,
+            'show_on_cv' => false,
             'sort_order' => 0,
         ];
     }

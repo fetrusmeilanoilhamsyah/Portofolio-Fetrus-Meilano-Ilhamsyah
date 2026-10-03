@@ -69,6 +69,10 @@ class LinkForm
                                 Toggle::make('is_published')
                                     ->label('Terbitkan')
                                     ->default(false),
+                                Toggle::make('show_on_cv')
+                                    ->label('Tampil di CV')
+                                    ->default(false)
+                                    ->helperText('Tampilkan tautan ini di header CV. Hanya bermakna untuk grup Kontak dan Akun.'),
                                 TextInput::make('sort_order')
                                     ->label('Urutan')
                                     ->numeric()

@@ -241,5 +241,131 @@ body {
 }
 [x-cloak] { display: none !important; }
 
+/* ─────────────────────────────────────────────
+   CV CETAK — kertas A4, selalu putih
+   .cv-paper menimpa token lokal agar mode gelap
+   tidak mengubah warna kertas.
+   ───────────────────────────────────────────── */
+.cv-action-bar {
+    background-color: var(--surf);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
 
-[x-cloak] { display: none !important; }
+/* Kertas CV: selalu token terang, tidak peduli tema sistem */
+.cv-paper {
+    /* Override lokal token warna agar selalu tampak seperti kertas putih */
+    --canvas: #FFFFFF;
+    --canvas-muted: #F3F4F6;
+    --surf: #FFFFFF;
+    --ink: #111827;
+    --ink-muted: #4B5563;
+    --line: #E5E7EB;
+    --brand: #C8501E;
+    --brand-hover: #A63F14;
+    --brand-fg: #FFFFFF;
+    --brand-ink: #A63F14;
+    --ok: #15803d;
+
+    background-color: var(--canvas);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    font-family: var(--font-sans);
+}
+
+.cv-section-title {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Tautan kontak di CV: tidak berwarna aneh, tidak ada garis bawah cetak */
+.cv-contact-link {
+    color: var(--ink-muted);
+    text-decoration: none;
+}
+
+.cv-contact-link:hover {
+    color: var(--ink);
+    text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────
+   GAYA CETAK
+   ───────────────────────────────────────────── */
+@media print {
+    /* Ukuran halaman A4, margin 14mm */
+    @page {
+        size: A4;
+        margin: 14mm;
+    }
+
+    /* Sembunyikan semua kecuali kertas CV */
+    body > *:not(.cv-paper),
+    .cv-action-bar,
+    .print\:hidden {
+        display: none !important;
+    }
+
+    body {
+        background: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+
+    .cv-paper {
+        border: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: none !important;
+        min-height: auto !important;
+    }
+
+    .cv-content {
+        padding: 0 !important;
+    }
+
+    /* Font cetak: 10–10.5pt */
+    .cv-content,
+    .cv-content p,
+    .cv-content span,
+    .cv-content div {
+        font-size: 10pt;
+        line-height: 1.4;
+    }
+
+    .cv-content h1 { font-size: 14pt; }
+    .cv-content h2 { font-size: 11pt; }
+
+    /* Tidak ada break di tengah entri */
+    .break-inside-avoid {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* Tautan tidak berwarna, tidak ada URL setelah tautan */
+    a, a:visited {
+        color: var(--ink) !important;
+        text-decoration: none !important;
+    }
+
+    a[href]::after {
+        content: none !important;
+    }
+
+    /* Hapus animasi dan bayangan */
+    * {
+        animation: none !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+}

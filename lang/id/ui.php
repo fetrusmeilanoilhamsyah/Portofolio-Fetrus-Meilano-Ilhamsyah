@@ -93,4 +93,17 @@ return [
     'search_placeholder' => 'Cari halaman dan proyek...',
     'loading' => 'Memuat...',
     'no_results' => 'Tidak ada hasil ditemukan.',
+
+    // CV cetak
+    'page_cv' => 'CV',
+    'cv_print' => 'Cetak / Simpan PDF',
+    'cv_work_experience' => 'Pengalaman Kerja',
+    'cv_internship' => 'Magang',
+    'cv_organization' => 'Organisasi',
+    'cv_education' => 'Pendidikan',
+    'cv_skills' => 'Keahlian',
+    'cv_certificates' => 'Sertifikat',
+    'cv_summary' => 'Ringkasan',
+    'back' => 'Kembali',
+    'view_cv_web' => 'Lihat CV versi web',
 ];

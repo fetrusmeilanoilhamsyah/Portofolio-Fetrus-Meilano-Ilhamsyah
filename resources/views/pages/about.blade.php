@@ -15,10 +15,21 @@
                     </div>
                     
                     @if($siteSetting->cv_file)
-                        <div class="mt-8">
+                        <div class="mt-8 flex flex-wrap items-center gap-3">
                             <x-button as="a" href="{{ media_url($siteSetting->cv_file) }}" target="_blank" variant="primary" icon="download">
                                 {{ __('ui.download_cv') }}
                             </x-button>
+                            <a
+                                href="{{ app()->getLocale() === 'en' ? route('en.cv') : route('cv') }}"
+                                class="text-sm text-brand-ink hover:underline transition-colors"
+                            >{{ __('ui.view_cv_web') }}</a>
+                        </div>
+                    @else
+                        <div class="mt-8">
+                            <a
+                                href="{{ app()->getLocale() === 'en' ? route('en.cv') : route('cv') }}"
+                                class="text-sm text-brand-ink hover:underline transition-colors"
+                            >{{ __('ui.view_cv_web') }}</a>
                         </div>
                     @endif
                 </section>

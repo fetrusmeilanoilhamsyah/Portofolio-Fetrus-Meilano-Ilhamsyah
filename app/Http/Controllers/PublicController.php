@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\ExperienceKind;
 use App\Enums\LinkGroup;
 use App\Models\Certificate;
 use App\Models\Experience;
 use App\Models\Link;
 use App\Models\Project;
+use App\Models\SiteSetting;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -104,6 +104,32 @@ class PublicController extends Controller
         return view('pages.contact', compact('contacts'));
     }
 
+    public function cv(): View
+    {
+        $siteSetting = SiteSetting::query()->first();
+
+        // Experiences grouped by kind, only published + show_on_cv, ordered by started_at DESC
+        $experiences = Experience::published()
+            ->where('show_on_cv', true)
+            ->orderByDesc('started_at')
+            ->get()
+            ->groupBy(fn ($exp) => $exp->kind->value ?? $exp->kind);
+
+        // Certificates published + show_on_cv, ordered by issued_at DESC
+        $certificates = Certificate::published()
+            ->where('show_on_cv', true)
+            ->orderByDesc('issued_at')
+            ->get();
+
+        // Contact links published + show_on_cv
+        $cvLinks = Link::published()
+            ->where('show_on_cv', true)
+            ->ordered()
+            ->get();
+
+        return view('pages.cv', compact('siteSetting', 'experiences', 'certificates', 'cvLinks'));
+    }
+
     public function robots(): Response
     {
         $content = "User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ".route('sitemap')."\n";
@@ -140,4 +166,3 @@ class PublicController extends Controller
         return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 }
-

@@ -53,7 +53,7 @@ class SiteSettings extends Page implements HasForms
         $setting = SiteSetting::current();
 
         $data = $setting->attributesToArray();
-        foreach (['role', 'intro_home', 'about_body', 'open_to_work_note'] as $attribute) {
+        foreach (['role', 'intro_home', 'about_body', 'open_to_work_note', 'cv_summary'] as $attribute) {
             $data[$attribute] = $setting->getTranslations($attribute);
         }
 
@@ -91,6 +91,18 @@ class SiteSettings extends Page implements HasForms
                                     ->required(),
                                 MarkdownEditor::make('about_body.en')
                                     ->label('Isi About (EN)'),
+                                TextInput::make('cv_summary.id')
+                                    ->label('Ringkasan CV (ID)')
+                                    ->helperText('2 sampai 3 kalimat; kalau kosong dipakai intro Beranda. Maks. 400 karakter.')
+                                    ->maxLength(400),
+                                TextInput::make('cv_summary.en')
+                                    ->label('Ringkasan CV (EN)')
+                                    ->helperText('2 sampai 3 kalimat; kalau kosong dipakai intro Beranda.')
+                                    ->maxLength(400),
+                                Toggle::make('cv_show_photo')
+                                    ->label('Tampilkan foto di CV')
+                                    ->helperText('Tampilkan foto profil kecil di header CV cetak.')
+                                    ->default(false),
                                 FileUpload::make('photo')
                                     ->label('Foto Profil')
                                     ->image()
@@ -161,7 +173,7 @@ class SiteSettings extends Page implements HasForms
         $setting = SiteSetting::current();
 
         // Handle translations properly
-        foreach (['role', 'intro_home', 'about_body', 'open_to_work_note'] as $attribute) {
+        foreach (['role', 'intro_home', 'about_body', 'open_to_work_note', 'cv_summary'] as $attribute) {
             if (isset($data[$attribute])) {
                 $setting->setTranslations($attribute, $data[$attribute]);
                 unset($data[$attribute]);

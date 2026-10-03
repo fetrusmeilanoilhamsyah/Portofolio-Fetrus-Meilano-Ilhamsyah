@@ -500,3 +500,15 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
 - **Force HTTPS:** Tidak ditambahkan. Dengan Cloudflare Full (Strict) dan TLS di Nginx, Laravel membaca HTTPS langsung; perubahan manual itu hanya perlu saat mode Flexible.
 - **Publikasi Aset Livewire:** Nginx yang memblokir dinamisasi berkas JS dicegah dengan menjalankan php artisan livewire:publish --assets dan filament:assets. File statis kini diletakkan secara permanen di /public, diizinkan oleh Nginx, dan memulihkan SPA admin secara menyeluruh.
 
+## Tahap 11   CV cetak otomatis ' SELESAI
+**Selesai pada:** 2026-10-04
+### Yang Selesai
+- [x] Migrasi kolom \show_on_cv\, \cv_summary\, dan \cv_show_photo\ tanpa mengubah migrasi lama.
+- [x] Model dan factory diperbarui dengan kolom-kolom baru tersebut.
+- [x] Admin Filament diperbarui dengan saklar 'Tampil di CV' untuk Pengalaman, Sertifikat, dan Tautan.
+- [x] Halaman Pengaturan Situs di admin ditambahi bidang 'Ringkasan CV' dan saklar foto.
+- [x] Rute \/cv\ dan \/en/cv\ serta metode pengontrol \cv()\ yang menghimpun dan memfilter data terbit.
+- [x] Tampilan \cv.blade.php\ dengan tata letak satu kolom untuk CV, bebas dari [ISI:...].
+- [x] Kelas CSS \.cv-paper\ dan aturan cetak \@page\ di \pp.css\ tanpa palet warna baru (lokal override token).
+- [x] Tautan 'Lihat CV versi web' di halaman About dan meta noindex pada CV.
+- [x] 151 tes dilewati (0 gagal, 0 skipped), termasuk 7 tes spesifik untuk halaman CV cetak dan Livewire admin.

@@ -17,6 +17,8 @@ class SiteSettingFactory extends Factory
             'role' => ['id' => 'Developer', 'en' => 'Developer'],
             'intro_home' => ['id' => fake()->sentence(10), 'en' => fake()->sentence(10)],
             'about_body' => ['id' => fake()->paragraph(3), 'en' => fake()->paragraph(3)],
+            'cv_summary' => null,
+            'cv_show_photo' => false,
             'photo' => null,
             'cv_file' => null,
             'location' => fake()->city(),

@@ -14,6 +14,8 @@ use Spatie\Translatable\HasTranslations;
     'role',
     'intro_home',
     'about_body',
+    'cv_summary',
+    'cv_show_photo',
     'photo',
     'cv_file',
     'location',
@@ -27,17 +29,19 @@ class SiteSetting extends Model
     /** @use HasFactory<SiteSettingFactory> */
     use DispatchesContentChanged, HasFactory, HasTranslations;
 
-    public array $translatable = ['role', 'intro_home', 'about_body', 'open_to_work_note'];
+    public array $translatable = ['role', 'intro_home', 'about_body', 'open_to_work_note', 'cv_summary'];
 
     protected $attributes = [
         'name' => '',
         'open_to_work' => false,
+        'cv_show_photo' => false,
     ];
 
     protected function casts(): array
     {
         return [
             'open_to_work' => 'boolean',
+            'cv_show_photo' => 'boolean',
             'skills' => 'array',
         ];
     }
