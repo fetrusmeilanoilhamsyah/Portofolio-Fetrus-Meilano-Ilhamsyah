@@ -218,3 +218,7 @@ Jika terjadi *crash* fatal:
 ## 14. Github Pages Situs Lama
 
 Biarkan Github Pages tetap aktif (jangan hapus repositori lama) **sampai** situs VPS lulus uji asap 100%. Setelah semuanya lancar semalaman, barulah ganti DNS A Record / CNAME domain Anda dari Github Pages ke IP VPS (atau aktifkan proxy Cloudflare).
+
+### Catatan Tambahan (Penting)
+- Jika server punya perubahan manual pada berkas yang dilacak git, lakukan `git checkout -- <berkas>` sebelum `git pull`.
+- jalankan `git config core.fileMode false` di server.

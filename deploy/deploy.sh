@@ -32,6 +32,8 @@ git pull origin master --ff-only || {
 
 # 3. Instal dependensi PHP
 composer install --no-dev --optimize-autoloader --no-interaction
+php artisan filament:assets
+php artisan livewire:publish --assets
 
 # 4. Eksekusi migrasi database
 php artisan migrate --force

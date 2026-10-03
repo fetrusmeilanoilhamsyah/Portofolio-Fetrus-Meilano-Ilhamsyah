@@ -1,4 +1,4 @@
-# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
+﻿# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
 
 ## Daftar Tahap
 
@@ -475,17 +475,17 @@ Semua kombinasi warna desain telah divalidasi dan diuji via ColorContrastTest.
 **Selesai pada:** 2026-10-02
 
 ### Yang Selesai
-- [x] Membuat folder \deploy/\ berisi \
-ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
-- [x] Memperbarui \.env.production.example\ dengan konfigurasi absolut SQLite dan *trusted proxies* Cloudflare.
-- [x] Membuat panduan langkah demi langkah di \docs/DEPLOY.md\ yang aman, terisolasi, dan tidak mengganggu layanan lain di VPS.
-- [x] Membuat perintah backup otomatis \php artisan portfolio:backup\ yang mencadangkan SQLite dan unggahan (maksimal 7 cadangan terakhir) dan mendaftarkannya di Console Kernel / Routes.
+- [x] Membuat folder `deploy/` berisi \
+ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
+- [x] Memperbarui `.env.production.example` dengan konfigurasi absolut SQLite dan *trusted proxies* Cloudflare.
+- [x] Membuat panduan langkah demi langkah di `docs/DEPLOY.md` yang aman, terisolasi, dan tidak mengganggu layanan lain di VPS.
+- [x] Membuat perintah backup otomatis `php artisan portfolio:backup` yang mencadangkan SQLite dan unggahan (maksimal 7 cadangan terakhir) dan mendaftarkannya di Console Kernel / Routes.
 - [x] Menjalankan uji coba akhir: tes lulus semua (hijau) dan kode telah dirapikan (pint).
 
 ### Keputusan Penting
-- **Isolasi Pengguna:** Menggunakan pengguna sistem khusus \portfolio\ dengan PHP-FPM pool tersendiri agar proses tidak bisa mengakses folder root atau bot lain di VPS.
+- **Isolasi Pengguna:** Menggunakan pengguna sistem khusus `portfolio` dengan PHP-FPM pool tersendiri agar proses tidak bisa mengakses folder root atau bot lain di VPS.
 - **Tidak Dieksekusi Otomatis:** Sesuai permintaan, tidak ada perintah yang benar-benar dijalankan di VPS oleh agen; semuanya dituangkan dalam panduan untuk dijalankan manual secara sadar oleh pemilik.
-- **Pembatasan Nginx:** File *upload* dari \/storage\ dicegah dari eksekusi PHP dengan arahan konfigurasi murni demi keamanan tambahan.
+- **Pembatasan Nginx:** File *upload* dari `/storage` dicegah dari eksekusi PHP dengan arahan konfigurasi murni demi keamanan tambahan.
 
 ### Perbaikan Tambahan
 - Menambahkan input `TagsInput` untuk kolom `stack` di `ProjectForm` (tab Umum) yang sebelumnya tidak tersedia di panel admin. Menggunakan `dehydrateStateUsing` untuk membersihkan tag duplikat dan string kosong secara otomatis sesuai permintaan.
@@ -497,5 +497,6 @@ ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
 
 ### Penyelesaian Bug Login Produksi (Cloudflare + Filament)
 - **Status:** Selesai pada 2026-10-03
-- **Force HTTPS:** Menambahkan URL::forceScheme('https') di AppServiceProvider agar formulir Filament Livewire mematuhi rute HTTPS penuh meskipun berada di belakang proxy ketat Cloudflare, mengeliminasi isu "login mental" (CSRF / MethodNotAllowed).
+- **Force HTTPS:** Tidak ditambahkan. Dengan Cloudflare Full (Strict) dan TLS di Nginx, Laravel membaca HTTPS langsung; perubahan manual itu hanya perlu saat mode Flexible.
 - **Publikasi Aset Livewire:** Nginx yang memblokir dinamisasi berkas JS dicegah dengan menjalankan php artisan livewire:publish --assets dan filament:assets. File statis kini diletakkan secara permanen di /public, diizinkan oleh Nginx, dan memulihkan SPA admin secara menyeluruh.
+
