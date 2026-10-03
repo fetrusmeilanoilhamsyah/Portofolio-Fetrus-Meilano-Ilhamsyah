@@ -56,20 +56,20 @@
                         </div>
                         
                         @if(public_text($siteSetting->name))
-                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-ink mb-6 leading-tight">
+                            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink mb-5 leading-tight">
                                 {{ app()->getLocale() === 'en' ? "Hi, I'm" : "Halo, saya" }} 
                                 <span class="text-brand-ink">{{ public_text($siteSetting->name) }}</span>
                             </h1>
                         @endif
                         
                         @if(public_text($siteSetting->role))
-                            <p class="text-xl md:text-2xl text-ink-muted mb-6 font-medium leading-relaxed max-w-2xl">
+                            <p class="text-lg md:text-xl text-ink-muted mb-6 font-medium leading-relaxed max-w-2xl">
                                 {{ public_text($siteSetting->role) }}
                             </p>
                         @endif
                         
                         @if($intro)
-                            <div class="max-w-3xl text-base md:text-lg text-ink-muted mb-10 leading-relaxed">
+                            <div class="max-w-2xl text-base text-ink-muted mb-10 leading-relaxed">
                                 <x-prose :content="$intro" />
                             </div>
                         @endif
