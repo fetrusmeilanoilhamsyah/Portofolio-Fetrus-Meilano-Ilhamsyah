@@ -237,18 +237,18 @@
                 {{-- Identitas --}}
                 <div class="flex flex-col items-center text-center gap-4">
                     @if($siteSetting?->photo)
-                        <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-canvas ring-1 ring-line/50">
+                        <div class="w-24 h-24 shrink-0 rounded-full overflow-hidden bg-canvas ring-2 ring-canvas shadow-sm">
                             <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
                         </div>
                     @else
-                        <div class="w-24 h-24 rounded-lg bg-brand/5 text-brand-ink flex items-center justify-center text-2xl font-bold shrink-0 ring-1 ring-line/50">
+                        <div class="w-24 h-24 rounded-full bg-brand/5 text-brand-ink flex items-center justify-center text-2xl font-bold shrink-0 ring-2 ring-canvas shadow-sm">
                             {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
                         </div>
                     @endif
                     <div>
                         <a
                             href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-                            class="block font-bold text-lg leading-tight mb-1 text-brand-ink"
+                            class="block font-bold text-[17px] leading-tight mb-1 text-brand-ink"
                         >
                             {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                         </a>
@@ -262,26 +262,26 @@
                             </div>
                         @endif
                     </div>
-                </div>
-
-                {{-- Toggle bahasa & tema --}}
-                <div class="flex items-center gap-3">
-                    @include('partials.theme-toggle')
-                    @include('partials.lang-toggle')
+                    
+                    {{-- Toggle bahasa & tema (Tengah) --}}
+                    <div class="flex items-center justify-center gap-2 mt-1">
+                        @include('partials.lang-toggle')
+                        @include('partials.theme-toggle')
+                    </div>
                 </div>
 
                 {{-- Navigasi --}}
-                <nav aria-label="{{ __('ui.aria_main_menu') }}">
+                <nav aria-label="{{ __('ui.aria_main_menu') }}" class="mt-2">
                     @include('partials.nav-links', ['mobile' => false])
                 </nav>
 
                 {{-- Bagian bawah sidebar --}}
-                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
+                <div class="mt-auto pt-6 border-t border-line flex flex-col gap-4">
                     {{-- Ikon akun --}}
                     @if($sidebarSocialLinks->isNotEmpty())
-                        <div class="flex items-center gap-1">
+                        <div class="flex items-center justify-center gap-2">
                             @foreach($sidebarSocialLinks as $sLink)
-                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
+                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-8 h-8 rounded-full transition-colors text-ink-muted bg-canvas border border-line hover:text-brand-ink hover:border-brand/40" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
                                     <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
                                 </a>
                             @endforeach
@@ -293,12 +293,23 @@
                         type="button"
                         @click="$dispatch('open-palette')"
                         aria-label="{{ __('ui.command_palette') }}"
-                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-pointer text-ink-muted border-line bg-canvas hover:bg-ink/5 active:scale-95 transition-all duration-150"
+                        class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-full border border-brand/20 text-brand-ink bg-brand/5 hover:bg-brand/10 active:scale-[0.98] transition-all duration-150 shadow-sm"
                     >
                         <x-svg-icon name="lucide-command" class="w-3.5 h-3.5" aria-hidden="true" />
                         <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>
-                        <kbd class="ml-auto text-xs font-mono px-1.5 py-0.5 rounded border border-line text-[0.6875rem]">⌘K</kbd>
+                        <kbd class="ml-1 text-[10px] font-mono px-1.5 py-0.5 rounded bg-brand/10 border border-brand/20">⌘K</kbd>
                     </button>
+                    
+                    {{-- Hak cipta --}}
+                    <div class="text-[10px] text-ink-muted text-center mt-2 px-2 leading-relaxed">
+                        <div class="font-bold uppercase tracking-widest mb-1">{{ __('ui.copyright') }} &copy; {{ date('Y') }}</div>
+                        <div>{{ public_text($siteSetting?->name) ?? config('app.name') }}</div>
+                        <div class="mt-3">
+                            <a href="{{ localized_route('cv') }}" class="inline-flex items-center gap-1 font-medium text-ink hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline underline-offset-2">
+                                {{ __('ui.view_cv_web') }} &rarr;
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </aside>
@@ -306,41 +317,12 @@
         {{-- ═══ KONTEN UTAMA ═══ --}}
         <main
             id="main-content"
-            class="flex-1 flex flex-col min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
+            class="flex-1 flex flex-col min-w-0 px-6 py-8 md:px-10 lg:px-16 xl:px-24"
             tabindex="-1"
         >
-            <div class="mx-auto w-full {{ $maxWidth }} flex-1">
+            <div class="mx-auto w-full max-w-4xl flex-1">
                 {{ $slot }}
             </div>
-
-            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
-                
-                {{-- KIRI: Hak Cipta --}}
-                <div class="flex-1 w-full flex justify-center md:justify-start text-[13px] text-ink-muted order-3 md:order-1">
-                    &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}
-                </div>
-                
-                {{-- TENGAH: Tautan CV --}}
-                <div class="flex-1 w-full flex justify-center text-[13px] order-1 md:order-2">
-                    <a href="{{ localized_route('cv') }}" class="font-medium text-ink-muted hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline">
-                        {{ __('ui.view_cv_web') }} &rarr;
-                    </a>
-                </div>
-
-                {{-- KANAN: Sosmed --}}
-                <div class="flex-1 w-full flex justify-center md:justify-end order-2 md:order-3">
-                    @if($sidebarSocialLinks->isNotEmpty())
-                        <div class="flex items-center gap-4">
-                            @foreach($sidebarSocialLinks as $sLink)
-                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="text-ink-muted hover:text-brand-ink transition-colors" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
-                                    <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-                </div>
-
-            </footer>
         </main>
 
     </div>
