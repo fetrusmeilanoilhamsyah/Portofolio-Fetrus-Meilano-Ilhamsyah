@@ -230,9 +230,9 @@
 
         {{-- ═══ DESKTOP: sidebar kiri tetap ═══ --}}
         <aside
-            class="hidden lg:flex flex-col w-[250px] shrink-0 sticky top-0 h-screen overflow-y-auto layout-sidebar bg-surf border-r border-line"
+            class="hidden lg:flex flex-col w-64 xl:w-72 shrink-0 sticky top-0 h-screen overflow-y-auto layout-sidebar bg-surf border-r border-line"
         >
-            <div class="flex flex-col flex-1 p-5 gap-5">
+            <div class="flex flex-col flex-1 p-6 gap-6">
 
                 {{-- Identitas --}}
                 <div class="flex flex-col items-center text-center gap-4">
@@ -309,11 +309,11 @@
             class="flex-1 flex flex-col min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
             tabindex="-1"
         >
-            <div class="w-full max-w-4xl flex-1">
+            <div class="mx-auto w-full {{ $maxWidth }} flex-1">
                 {{ $slot }}
             </div>
 
-            <footer class="w-full max-w-4xl mt-20 pt-8 pb-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
+            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
                 
                 {{-- KIRI: Hak Cipta --}}
                 <div class="flex-1 w-full flex justify-center md:justify-start text-[13px] text-ink-muted order-3 md:order-1">
