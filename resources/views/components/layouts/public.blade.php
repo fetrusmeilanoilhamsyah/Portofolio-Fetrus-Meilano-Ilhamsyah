@@ -306,12 +306,27 @@
         {{-- ═══ KONTEN UTAMA ═══ --}}
         <main
             id="main-content"
-            class="flex-1 min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
+            class="flex-1 flex flex-col min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
             tabindex="-1"
         >
-            <div class="mx-auto w-full {{ $maxWidth }}">
+            <div class="mx-auto w-full {{ $maxWidth }} flex-1">
                 {{ $slot }}
             </div>
+
+            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-4 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
+                <div class="text-[13px] text-ink-muted">
+                    &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}. {{ __('ui.copyright') }}
+                </div>
+                @if($sidebarSocialLinks->isNotEmpty())
+                    <div class="flex items-center gap-4">
+                        @foreach($sidebarSocialLinks as $sLink)
+                            <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="text-ink-muted hover:text-brand-ink transition-colors" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
+                                <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </footer>
         </main>
 
     </div>

@@ -106,4 +106,5 @@ return [
     'cv_summary' => 'Ringkasan',
     'back' => 'Kembali',
     'view_cv_web' => 'Lihat CV versi web',
+    'copyright' => 'Hak cipta dilindungi.',
 ];

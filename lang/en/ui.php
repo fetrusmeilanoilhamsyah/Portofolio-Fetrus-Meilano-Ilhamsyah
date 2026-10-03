@@ -106,4 +106,5 @@ return [
     'cv_summary' => 'Summary',
     'back' => 'Back',
     'view_cv_web' => 'View web CV',
+    'copyright' => 'All rights reserved.',
 ];
