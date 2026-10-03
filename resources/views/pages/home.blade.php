@@ -54,7 +54,7 @@
                         
                         @if(public_text($siteSetting->name))
                             <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4 leading-tight">
-                                {{ public_text($siteSetting->name) }}
+                                {{ app()->getLocale() === 'en' ? "Hi, I'm" : "Halo, saya" }} {{ public_text($siteSetting->name) }}
                             </h1>
                         @endif
                         
@@ -89,6 +89,78 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Keahlian di Beranda --}}
+                @if($siteSetting->skills && is_array($siteSetting->skills) && count($siteSetting->skills) > 0)
+                    @php
+                        $skillData = [];
+                        $totalSkills = 0;
+                        foreach($siteSetting->skills as $sg) {
+                            $items = array_filter(array_map('trim', explode(',', $sg['items'] ?? '')));
+                            if(count($items) > 0) {
+                                $skillData[] = [
+                                    'group' => trim($sg['group']),
+                                    'items' => array_values($items),
+                                ];
+                                $totalSkills += count($items);
+                            }
+                        }
+                    @endphp
+                    @if($totalSkills > 0)
+                        <section x-data="{ 
+                            active: 'Semua',
+                            groups: {{ \Illuminate\Support\Js::from($skillData) }}
+                        }" class="max-w-4xl pt-4">
+                            <div class="flex items-center gap-2 mb-6">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ink-muted"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                                <h2 class="text-xl font-bold text-ink">{{ __('ui.skills') }}</h2>
+                            </div>
+                            
+                            {{-- Filter Buttons --}}
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <button 
+                                    @click="active = 'Semua'" 
+                                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ease-out active:scale-[0.97] border"
+                                    :class="active === 'Semua' ? 'bg-brand text-brand-fg border-brand-hover' : 'bg-canvas text-ink-muted border-line hover:bg-ink/5'"
+                                >
+                                    Semua 
+                                    <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                                          :class="active === 'Semua' ? 'bg-black/20 text-brand-fg' : 'bg-ink/10 text-ink-muted'">{{ $totalSkills }}</span>
+                                </button>
+                                
+                                <template x-for="g in groups" :key="g.group">
+                                    <button 
+                                        @click="active = g.group" 
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all duration-200 ease-out active:scale-[0.97] border"
+                                        :class="active === g.group ? 'bg-brand text-brand-fg border-brand-hover' : 'bg-canvas text-ink-muted border-line hover:bg-ink/5'"
+                                    >
+                                        <span x-text="g.group"></span>
+                                        <span class="px-1.5 py-0.5 rounded-full text-[9px] font-bold"
+                                              :class="active === g.group ? 'bg-black/20 text-brand-fg' : 'bg-ink/10 text-ink-muted'"
+                                              x-text="g.items.length"></span>
+                                    </button>
+                                </template>
+                            </div>
+
+                            {{-- Skills Cloud --}}
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="g in groups" :key="g.group">
+                                    <template x-for="skill in g.items" :key="skill">
+                                        <div 
+                                            x-show="active === 'Semua' || active === g.group"
+                                            x-transition:enter="transition ease-out duration-200"
+                                            x-transition:enter-start="opacity-0 scale-90"
+                                            x-transition:enter-end="opacity-100 scale-100"
+                                            class="inline-flex items-center px-3 py-1.5 rounded-full bg-canvas border border-line text-xs font-medium text-ink hover:border-brand/40 hover:-translate-y-0.5 transition-all cursor-default"
+                                        >
+                                            <span x-text="skill"></span>
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </section>
+                    @endif
+                @endif
             @endif
 
             {{-- Proyek Unggulan --}}
