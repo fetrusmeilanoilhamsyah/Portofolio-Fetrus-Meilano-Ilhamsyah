@@ -494,3 +494,8 @@ ginx.conf\, \php-fpm-pool.conf\, dan \deploy.sh\.
 - **deploy.sh**: Menambahkan `trap` untuk keamanan mode maintenance, memperbaiki cara `git pull` agar `fast-forward` saja pada branch `master`, menangani `storage:link` agar idempoten, dan mengatur folder `.cache` Composer khusus.
 - **DEPLOY.md**: Memperbaiki urutan langkah HTTPS agar menghindari error 525 (memasang origin certificate sebelum mengubah ke Cloudflare Full Strict).
 - **nginx.conf**: Menambahkan contoh konfigurasi port 443 SSL (terkomentar) dan membatasi pemrosesan PHP hanya pada `index.php` demi keamanan.
+
+### Penyelesaian Bug Login Produksi (Cloudflare + Filament)
+- **Status:** Selesai pada 2026-10-03
+- **Force HTTPS:** Menambahkan URL::forceScheme('https') di AppServiceProvider agar formulir Filament Livewire mematuhi rute HTTPS penuh meskipun berada di belakang proxy ketat Cloudflare, mengeliminasi isu "login mental" (CSRF / MethodNotAllowed).
+- **Publikasi Aset Livewire:** Nginx yang memblokir dinamisasi berkas JS dicegah dengan menjalankan php artisan livewire:publish --assets dan filament:assets. File statis kini diletakkan secara permanen di /public, diizinkan oleh Nginx, dan memulihkan SPA admin secara menyeluruh.
