@@ -1,59 +1,128 @@
-<x-layouts.public :title="__('ui.page_about') . ' — ' . (public_text($siteSetting?->name) ?? config('app.name'))">
+<x-layouts.public :title="__('ui.page_about') . ' - ' . config('app.name')">
     <x-page-header :title="__('ui.page_about')" :subtitle="__('ui.sub_about')" />
 
-    @if(!$siteSetting || (empty(public_text($siteSetting->about_body)) && empty($siteSetting->photo) && $education->isEmpty() && empty($siteSetting->skills)))
-        <x-empty-state :message="__('ui.empty_coming_soon')" />
+    @if(empty($siteSetting->about_body))
+        <x-empty-state icon="user" :message="__('ui.empty_coming_soon')" />
     @else
-        <div class="flex flex-col md:flex-row gap-10 lg:gap-16 mb-16">
-            {{-- Bagian kiri: Konten utama --}}
-            <div class="flex-1 min-w-0">
-                @if(public_text($siteSetting->about_body))
-                    <div class="text-ink-muted mb-10">
-                        <x-prose :content="public_text($siteSetting->about_body)" />
+        <div class="flex flex-col-reverse md:flex-row gap-12 items-start mt-8">
+            <div class="flex-1 w-full space-y-12">
+                <section>
+                    <div
+                        class="prose-portfolio"
+                        aria-live="polite"
+                    >
+                        {!! public_text($siteSetting->about_body, true) !!}
                     </div>
-                @endif
-                
-                @if($siteSetting->cv_file)
-                    <div class="mb-10">
-                        <x-button as="a" href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" variant="primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                            {{ __('ui.download_cv') }}
-                        </x-button>
-                    </div>
+                    
+                    @if($siteSetting->cv_file)
+                        <div class="mt-8">
+                            <x-button as="a" href="{{ media_url($siteSetting->cv_file) }}" target="_blank" variant="primary" icon="download">
+                                {{ __('ui.download_cv') }}
+                            </x-button>
+                        </div>
+                    @endif
+                </section>
+
+                @php
+                    $workExp = $experiences->where('kind', '!=', App\Enums\ExperienceKind::Pendidikan);
+                    $eduExp = $experiences->where('kind', App\Enums\ExperienceKind::Pendidikan);
+                @endphp
+
+                @if($workExp->isNotEmpty())
+                    <section class="space-y-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ink-muted"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            <h2 class="text-xl font-bold text-ink">Pengalaman</h2>
+                        </div>
+                        <div class="space-y-4">
+                            @foreach($workExp as $exp)
+                                <div class="bg-surf border border-line rounded-lg p-4 sm:p-5 transition-colors hover:border-ink/20" x-data="{ expanded: false }">
+                                    <div class="flex gap-4 items-start sm:items-center">
+                                        <div class="w-12 h-12 rounded-lg bg-canvas border border-line flex items-center justify-center overflow-hidden shrink-0">
+                                            @if($exp->logo)
+                                                <img src="{{ media_url($exp->logo) }}" alt="{{ $exp->organization }}" class="w-full h-full object-cover" width="48" height="48" loading="lazy">
+                                            @else
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-ink-muted"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-bold text-ink text-base truncate">{{ $exp->title }}</h3>
+                                            <div class="text-sm font-medium text-ink-muted truncate">
+                                                {{ $exp->organization }}
+                                                @if($exp->location) &bull; {{ $exp->location }} @endif
+                                            </div>
+                                            <div class="text-xs text-ink-muted opacity-80 mt-1 flex flex-wrap gap-x-2 gap-y-1 items-center">
+                                                <span>{{ $exp->started_at?->translatedFormat('M Y') ?? '' }} - {{ $exp->ended_at ? $exp->ended_at->translatedFormat('M Y') : 'Sekarang' }}</span>
+                                                @if($exp->started_at)
+                                                    @php
+                                                        $diff = $exp->started_at->diffAsCarbonInterval($exp->ended_at ?? now());
+                                                    @endphp
+                                                    <span>&bull; {{ $diff->y > 0 ? $diff->y . ' thn ' : '' }}{{ $diff->m > 0 ? $diff->m . ' bln' : '' }}</span>
+                                                @endif
+                                                <span class="px-2 py-0.5 rounded-full bg-canvas-muted border border-line text-[10px] uppercase font-bold">{{ $exp->kind->label() }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if($exp->description)
+                                        <div class="mt-4 pt-4 border-t border-line/50">
+                                            <button @click="expanded = !expanded" class="text-sm font-medium text-brand-ink hover:underline flex items-center gap-1 transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-90' : ''"><path d="m9 18 6-6-6-6"/></svg>
+                                                <span x-text="expanded ? 'Sembunyikan detail' : 'Tampilkan detail'"></span>
+                                            </button>
+                                            <div x-show="expanded" x-collapse x-cloak>
+                                                <div class="mt-3 text-sm text-ink-muted prose-sm max-w-none">
+                                                    {!! Str::markdown($exp->description, ['html_input' => 'strip']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
                 @endif
 
-                @if($education->isNotEmpty())
-                    <section class="mb-10">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-2xl font-bold text-ink">{{ __('ui.education') }}</h2>
-                            <a href="{{ localized_route('experience') }}" class="text-sm font-medium text-brand-ink hover:underline">
-                                {{ __('ui.btn_view_all') }} &rarr;
-                            </a>
+                @if($eduExp->isNotEmpty())
+                    <section class="space-y-4 mt-8">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-ink-muted"><path d="M21.42 10.922a2 2 0 0 1-.019 3.838L12.83 19.25a2 2 0 0 1-1.665 0l-8.571-4.49a2 2 0 0 1-.019-3.838l8.571-4.363a2 2 0 0 1 1.689 0l8.571 4.363z"/><path d="M7 14v4.032a2 2 0 0 0 1.085 1.777L11.17 21.41a2 2 0 0 0 1.66 0l3.085-1.601A2 2 0 0 0 17 18.032V14"/><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/></svg>
+                            <h2 class="text-xl font-bold text-ink">Pendidikan</h2>
                         </div>
-                        <div class="space-y-6">
-                            @foreach($education as $edu)
-                                <div class="flex gap-4 group">
-                                    <div class="mt-1">
-                                        <div class="w-10 h-10 rounded bg-canvas-muted border border-line flex items-center justify-center overflow-hidden shrink-0">
+                        <div class="space-y-4">
+                            @foreach($eduExp as $edu)
+                                <div class="bg-surf border border-line rounded-lg p-4 sm:p-5 transition-colors hover:border-ink/20" x-data="{ expanded: false }">
+                                    <div class="flex gap-4 items-start sm:items-center">
+                                        <div class="w-12 h-12 rounded-lg bg-canvas border border-line flex items-center justify-center overflow-hidden shrink-0">
                                             @if($edu->logo)
-                                                <img src="{{ media_url($edu->logo) }}" alt="{{ $edu->organization }}" class="w-full h-full object-cover" width="40" height="40" loading="lazy">
+                                                <img src="{{ media_url($edu->logo) }}" alt="{{ $edu->organization }}" class="w-full h-full object-cover" width="48" height="48" loading="lazy">
                                             @else
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-ink-muted"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-ink-muted"><path d="M21.42 10.922a2 2 0 0 1-.019 3.838L12.83 19.25a2 2 0 0 1-1.665 0l-8.571-4.49a2 2 0 0 1-.019-3.838l8.571-4.363a2 2 0 0 1 1.689 0l8.571 4.363z"/><path d="M7 14v4.032a2 2 0 0 0 1.085 1.777L11.17 21.41a2 2 0 0 0 1.66 0l3.085-1.601A2 2 0 0 0 17 18.032V14"/><path d="M22 10v6"/><path d="M2 10l10-5 10 5-10 5z"/></svg>
                                             @endif
                                         </div>
-                                    </div>
-                                    <div>
-                                        <h3 class="font-bold text-ink">{{ $edu->title }}</h3>
-                                        <div class="text-sm font-medium text-ink-muted mb-1">{{ $edu->organization }}</div>
-                                        <div class="text-xs text-ink-muted opacity-80">
-                                            {{ $edu->started_at?->translatedFormat('Y') }} 
-                                            @if($edu->started_at && $edu->ended_at)
-                                                &mdash; {{ $edu->ended_at->translatedFormat('Y') }}
-                                            @elseif($edu->started_at)
-                                                &mdash; {{ __('ui.present') ?? 'Sekarang' }}
-                                            @endif
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="font-bold text-ink text-base truncate">{{ $edu->organization }}</h3>
+                                            <div class="text-sm font-medium text-ink-muted truncate">
+                                                {{ $edu->title }}
+                                                @if($edu->location) &bull; {{ $edu->location }} @endif
+                                            </div>
+                                            <div class="text-xs text-ink-muted opacity-80 mt-1 flex items-center gap-2">
+                                                <span>{{ $edu->started_at?->format('Y') ?? '' }} - {{ $edu->ended_at ? $edu->ended_at->format('Y') : 'Sekarang' }}</span>
+                                            </div>
                                         </div>
                                     </div>
+                                    @if($edu->description)
+                                        <div class="mt-4 pt-4 border-t border-line/50">
+                                            <button @click="expanded = !expanded" class="text-sm font-medium text-brand-ink hover:underline flex items-center gap-1 transition-colors">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-200" x-bind:class="expanded ? 'rotate-90' : ''"><path d="m9 18 6-6-6-6"/></svg>
+                                                <span x-text="expanded ? 'Sembunyikan detail' : 'Tampilkan detail'"></span>
+                                            </button>
+                                            <div x-show="expanded" x-collapse x-cloak>
+                                                <div class="mt-3 text-sm text-ink-muted prose-sm max-w-none">
+                                                    {!! Str::markdown($edu->description, ['html_input' => 'strip']) !!}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endif
                                 </div>
                             @endforeach
                         </div>
@@ -145,3 +214,6 @@
         </div>
     @endif
 </x-layouts.public>
+
+
+

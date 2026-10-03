@@ -25,9 +25,9 @@ class PublicController extends Controller
 
     public function about(): View
     {
-        $education = Experience::published()->where('kind', ExperienceKind::Pendidikan)->ordered()->get();
+        $experiences = Experience::published()->ordered()->get();
 
-        return view('pages.about', compact('education'));
+        return view('pages.about', compact('experiences'));
     }
 
     public function experience(): View
@@ -140,3 +140,4 @@ class PublicController extends Controller
         return response($xml, 200, ['Content-Type' => 'application/xml']);
     }
 }
+
