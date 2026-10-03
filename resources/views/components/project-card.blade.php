@@ -34,8 +34,9 @@
     </div>
     
     <div class="flex flex-col flex-1 p-5 md:p-6">
-        <h3 class="text-lg font-bold text-ink group-hover:text-brand-ink transition-colors leading-tight mb-2 relative z-30">
-            <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none before:absolute before:inset-0">
+        <h3 class="text-lg font-bold text-ink group-hover:text-brand-ink transition-colors leading-tight mb-2">
+            <a href="{{ localized_route('projects.show', [$project->slug]) }}" class="focus:outline-none">
+                <span class="absolute inset-0 z-30" aria-hidden="true"></span>
                 {{ $project->title }}
             </a>
         </h3>
