@@ -313,25 +313,33 @@
                 {{ $slot }}
             </div>
 
-            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-4 border-t border-line flex flex-col sm:flex-row items-center justify-between gap-6 print:hidden">
-                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 text-[13px] text-ink-muted">
-                    <div>
-                        &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}. {{ __('ui.copyright') }}
-                    </div>
-                    <div class="hidden sm:block w-1 h-1 rounded-full bg-line"></div>
-                    <a href="{{ localized_route('cv') }}" class="font-medium hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline">
+            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
+                
+                {{-- KIRI: Hak Cipta --}}
+                <div class="flex-1 w-full flex justify-center md:justify-start text-[13px] text-ink-muted order-3 md:order-1">
+                    &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}
+                </div>
+                
+                {{-- TENGAH: Tautan CV --}}
+                <div class="flex-1 w-full flex justify-center text-[13px] order-1 md:order-2">
+                    <a href="{{ localized_route('cv') }}" class="font-medium text-ink-muted hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline">
                         {{ __('ui.view_cv_web') }} &rarr;
                     </a>
                 </div>
-                @if($sidebarSocialLinks->isNotEmpty())
-                    <div class="flex items-center gap-4">
-                        @foreach($sidebarSocialLinks as $sLink)
-                            <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="text-ink-muted hover:text-brand-ink transition-colors" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
-                                <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
-                            </a>
-                        @endforeach
-                    </div>
-                @endif
+
+                {{-- KANAN: Sosmed --}}
+                <div class="flex-1 w-full flex justify-center md:justify-end order-2 md:order-3">
+                    @if($sidebarSocialLinks->isNotEmpty())
+                        <div class="flex items-center gap-4">
+                            @foreach($sidebarSocialLinks as $sLink)
+                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="text-ink-muted hover:text-brand-ink transition-colors" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
+                                    <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
+                                </a>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+
             </footer>
         </main>
 
