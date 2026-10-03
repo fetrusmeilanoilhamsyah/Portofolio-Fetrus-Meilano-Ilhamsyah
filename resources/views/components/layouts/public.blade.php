@@ -111,7 +111,7 @@
         {{-- Nama singkat --}}
         <a
             href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-            class="text-sm font-semibold tracking-tight text-ink"
+            class="text-sm font-bold tracking-tight text-brand-ink"
         >
             {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
         </a>
@@ -248,7 +248,7 @@
                     <div>
                         <a
                             href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-                            class="block font-bold text-lg leading-tight mb-1 text-ink"
+                            class="block font-bold text-lg leading-tight mb-1 text-brand-ink"
                         >
                             {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                         </a>
