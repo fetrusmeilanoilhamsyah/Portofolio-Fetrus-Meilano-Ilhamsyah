@@ -46,45 +46,60 @@
                             </div>
                         @endif
 
-                        @if($siteSetting->location)
-                            <div class="text-xs font-semibold tracking-wider uppercase text-ink-muted mb-3">
-                                {{ $siteSetting->location }}
-                            </div>
-                        @endif
+                        <div class="flex flex-wrap items-center gap-3 mb-6">
+                            @if($siteSetting->location)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-canvas border border-line text-[11px] font-semibold text-ink-muted tracking-wide uppercase">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                                    {{ $siteSetting->location }}
+                                </span>
+                            @endif
+
+                            @if($siteSetting->open_to_work)
+                                <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 text-[11px] font-semibold text-green-700 dark:text-green-400 tracking-wide uppercase">
+                                    <span class="relative flex h-2 w-2">
+                                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                    </span>
+                                    {{ app()->getLocale() === 'en' ? 'Open to Work' : 'Terbuka untuk pekerjaan' }}
+                                </span>
+                            @endif
+                        </div>
                         
                         @if(public_text($siteSetting->name))
-                            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-ink mb-4 leading-tight">
-                                {{ app()->getLocale() === 'en' ? "Hi, I'm" : "Halo, saya" }} {{ public_text($siteSetting->name) }}
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-ink mb-6 leading-tight">
+                                {{ app()->getLocale() === 'en' ? "Hi, I'm" : "Halo, saya" }} 
+                                <span class="text-brand-ink">{{ public_text($siteSetting->name) }}</span>
                             </h1>
                         @endif
                         
                         @if(public_text($siteSetting->role))
-                            <p class="text-lg md:text-xl text-ink-muted mb-6 font-medium leading-relaxed max-w-2xl">
+                            <p class="text-xl md:text-2xl text-ink-muted mb-6 font-medium leading-relaxed max-w-2xl">
                                 {{ public_text($siteSetting->role) }}
                             </p>
                         @endif
                         
                         @if($intro)
-                            <div class="max-w-prose text-ink-muted mb-8 leading-relaxed">
+                            <div class="max-w-3xl text-base md:text-lg text-ink-muted mb-10 leading-relaxed">
                                 <x-prose :content="$intro" />
                             </div>
                         @endif
                         
                         <div class="flex flex-wrap items-center gap-4">
-                            <x-button as="a" href="{{ localized_route('projects') }}" variant="primary">
+                            <x-button as="a" href="{{ localized_route('projects') }}" variant="primary" class="shadow-sm">
                                 {{ __('ui.page_projects') }}
                             </x-button>
-                            <x-button as="a" href="{{ localized_route('about') }}" variant="primary">
+                            <x-button as="a" href="{{ localized_route('about') }}" variant="secondary">
                                 {{ __('ui.page_about') }}
                             </x-button>
-                            <x-button as="a" href="{{ localized_route('contact') }}" variant="primary">
+                            <x-button as="a" href="{{ localized_route('contact') }}" variant="secondary">
                                 {{ __('ui.page_contact') }}
                             </x-button>
                         </div>
-                        <div class="mt-6">
+                        
+                        <div class="mt-8">
                             <a href="{{ localized_route('experience') }}" class="inline-flex items-center gap-1 text-[13px] font-semibold text-ink-muted hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline underline-offset-4">
                                 {{ app()->getLocale() === 'en' ? 'View experience' : 'Lihat pengalaman' }}
-                                <svg class="w-3.5 h-3.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                                <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                             </a>
                         </div>
                     </div>
