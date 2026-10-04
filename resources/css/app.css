@@ -255,19 +255,40 @@ body {
 }
 
 /* Kertas CV: selalu token terang, tidak peduli tema sistem */
-.cv-paper {
-    /* Override lokal token warna agar selalu tampak seperti kertas putih */
+.cv-paper, .dark .cv-paper {
+    /* Override alias (untuk fallback) dan Tailwind V4 --color-* langsung */
     --canvas: #FFFFFF;
+    --color-canvas: #FFFFFF;
+    
     --canvas-muted: #F3F4F6;
+    --color-canvas-muted: #F3F4F6;
+    
     --surf: #FFFFFF;
+    --color-surf: #FFFFFF;
+    
     --ink: #111827;
+    --color-ink: #111827;
+    
     --ink-muted: #4B5563;
+    --color-ink-muted: #4B5563;
+    
     --line: #E5E7EB;
+    --color-line: #E5E7EB;
+    
     --brand: #C8501E;
+    --color-brand: #C8501E;
+    
     --brand-hover: #A63F14;
+    --color-brand-hover: #A63F14;
+    
     --brand-fg: #FFFFFF;
+    --color-brand-fg: #FFFFFF;
+    
     --brand-ink: #A63F14;
+    --color-brand-ink: #A63F14;
+    
     --ok: #15803d;
+    --color-ok: #15803d;
 
     background-color: var(--canvas);
     color: var(--ink);
