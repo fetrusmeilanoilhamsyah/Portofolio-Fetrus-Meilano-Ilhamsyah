@@ -55,10 +55,12 @@
     --ink: #111827;
     --ink-muted: #4B5563;
     --line: #E5E7EB;
-    --brand: #C8501E;
-    --brand-hover: #A63F14;
+    
+    /* Warna blu by BCA (Biru Elektrik) */
+    --brand: #1B3CFF; 
+    --brand-hover: #112ECC;
     --brand-fg: #FFFFFF;
-    --brand-ink: #A63F14;
+    --brand-ink: #1B3CFF;
     --ok: #15803d;
 }
 
@@ -74,10 +76,11 @@ html.dark {
     --ink-muted: #888888; /* Abu-abu netral */
     --line: #333333; /* Garis batas (elegan) */
     
-    --brand: #E8743F; /* Oranye */
-    --brand-hover: #C85F2A;
-    --brand-fg: #FFFFFF; /* Teks di dalam tombol oranye lebih bagus putih! */
-    --brand-ink: #E8743F;
+    /* Warna blu by BCA (Sedikit diterangkan agar bersinar di atas hitam) */
+    --brand: #4C65FF; 
+    --brand-hover: #2E4AFF;
+    --brand-fg: #FFFFFF;
+    --brand-ink: #667CFF;
     --ok: #4ade80;
 }
 
@@ -277,17 +280,17 @@ body {
     --line: #E5E7EB;
     --color-line: #E5E7EB;
     
-    --brand: #C8501E;
-    --color-brand: #C8501E;
+    --brand: #1B3CFF;
+    --color-brand: #1B3CFF;
     
-    --brand-hover: #A63F14;
-    --color-brand-hover: #A63F14;
+    --brand-hover: #112ECC;
+    --color-brand-hover: #112ECC;
     
     --brand-fg: #FFFFFF;
     --color-brand-fg: #FFFFFF;
     
-    --brand-ink: #A63F14;
-    --color-brand-ink: #A63F14;
+    --brand-ink: #1B3CFF;
+    --color-brand-ink: #1B3CFF;
     
     --ok: #15803d;
     --color-ok: #15803d;
