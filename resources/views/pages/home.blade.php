@@ -35,10 +35,10 @@
         <div class="space-y-16">
             {{-- Hero Block --}}
             @if($siteSetting && (!empty(public_text($siteSetting->name)) || !empty(public_text($siteSetting->role)) || !empty($intro)))
-                <div class="flex flex-col items-start">
-                    <div class="w-full">
-
-
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
+                    
+                    {{-- Kolom Kiri: Teks --}}
+                    <div class="lg:col-span-8 lg:pr-8">
                         @if($siteSetting->location)
                             <div class="text-xs font-semibold tracking-wider uppercase text-ink-muted mb-4">
                                 {{ $siteSetting->location }}
@@ -46,7 +46,7 @@
                         @endif
                         
                         @if(public_text($siteSetting->name))
-                            <h1 class="text-3xl md:text-4xl font-bold tracking-tight text-ink mb-5 leading-tight">
+                            <h1 class="text-3xl md:text-5xl font-bold tracking-tight text-ink mb-6 leading-tight">
                                 {{ app()->getLocale() === 'en' ? "Hi, I'm" : "Halo, saya" }} 
                                 <span class="text-brand-ink">{{ public_text($siteSetting->name) }}</span>
                             </h1>
@@ -83,6 +83,17 @@
                             </a>
                         </div>
                     </div>
+
+                    {{-- Kolom Kanan: Foto Profil --}}
+                    @if($siteSetting->photo)
+                        <div class="hidden lg:block lg:col-span-4 relative group">
+                            <div class="absolute -inset-2 bg-line/20 rounded-3xl transform rotate-3 transition-transform duration-500 group-hover:rotate-6"></div>
+                            <div class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-canvas-muted ring-1 ring-line shadow-sm">
+                                <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
 
                 {{-- Keahlian di Beranda --}}
