@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
             App\Http\Middleware\TrustProxies::class
         );
 
+        $middleware->validateCsrfTokens(except: [
+            'api/csp-report',
+        ]);
+
         $middleware->web(prepend: [
             StripGuestCookies::class,
         ], append: [
