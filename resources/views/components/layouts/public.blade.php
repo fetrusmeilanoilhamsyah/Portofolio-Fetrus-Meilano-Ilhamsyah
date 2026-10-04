@@ -99,10 +99,9 @@
     <header 
         class="sticky top-0 z-40 bg-surf/95 backdrop-blur-md border-b border-line w-full"
         x-data="{ 
-            open: false,
-            init() {
+                        init() {
                 if (!sessionStorage.getItem('mobile_sidebar_seen') && window.innerWidth < 1024) {
-                    setTimeout(() => { this.open = true; }, 300);
+                    setTimeout(() => { $dispatch('open-mobile-menu'); }, 300);
                     sessionStorage.setItem('mobile_sidebar_seen', '1');
                 }
             }
@@ -151,14 +150,16 @@
                 </div>
                 
                 {{-- Mobile Hamburger --}}
-                <button type="button" @click="open = true; $nextTick(() => $refs.mobileMenu.focus())" class="lg:hidden p-2 rounded-md text-ink-muted hover:bg-ink/5" aria-label="{{ __('ui.open_menu') }}">
+                <button type="button" @click="$dispatch('open-mobile-menu')" class="lg:hidden p-2 rounded-md text-ink-muted hover:bg-ink/5" aria-label="{{ __('ui.open_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                 </button>
             </div>
         </div>
 
+    </header>
+
         {{-- MOBILE DRAWER --}}
-        <div id="mobile-menu" x-show="open" x-cloak role="dialog" aria-modal="true" aria-label="{{ __('ui.aria_main_menu') }}" @keydown.escape.window="open = false" x-trap.noscroll="open" class="fixed inset-0 z-50 flex lg:hidden">
+        <div id="mobile-menu" x-data="{ open: false }" x-show="open" @open-mobile-menu.window="open = true; $nextTick(() => $refs.mobileMenu.focus())" x-cloak role="dialog" aria-modal="true" aria-label="{{ __('ui.aria_main_menu') }}" @keydown.escape.window="open = false" x-trap.noscroll="open" class="fixed inset-0 z-50 flex lg:hidden">
             <div class="absolute inset-0 bg-black/40" @click="open = false" aria-hidden="true"></div>
             <nav x-ref="mobileMenu" tabindex="-1" class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 gap-6 focus:outline-none bg-surf border-r border-line">
                 <button type="button" @click="open = false" class="absolute top-4 right-4 p-2 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ __('ui.close_menu') }}">
@@ -185,7 +186,18 @@
                     </div>
                 </div>
                 @include('partials.nav-links', ['mobile' => true, 'closeMenu' => true])
-                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
+                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-4">
+                    {{-- Tombol palet perintah --}}
+                    <button
+                        type="button"
+                        @click="$dispatch('open-palette'); open = false"
+                        aria-label="{{ __('ui.command_palette') }}"
+                        class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-full border border-line text-ink bg-canvas-muted hover:bg-line/50 active:scale-[0.98] transition-all duration-150 shadow-sm"
+                    >
+                        <x-svg-icon name="lucide-command" class="w-3.5 h-3.5" aria-hidden="true" />
+                        <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>
+                    </button>
+
                     @if($sidebarSocialLinks->isNotEmpty())
                         <div class="flex items-center gap-1 justify-center">
                             @foreach($sidebarSocialLinks as $sLink)
@@ -198,7 +210,8 @@
                 </div>
             </nav>
         </div>
-    </header>
+
+
 
     {{-- KONTEN UTAMA --}}
     <main id="main-content" class="flex-1 flex flex-col min-w-0 w-full" tabindex="-1">

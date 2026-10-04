@@ -1,4 +1,4 @@
-<x-layouts.public :title="public_text($siteSetting?->name) ?? config('app.name')">
+<x-layouts.public :title="public_text($siteSetting?->name) ?? config('app.name')" maxWidth="max-w-6xl">
     @push('head')
         @if($siteSetting)
             @php
