@@ -1,4 +1,4 @@
-<x-layouts.public :title="__('ui.page_experience') . ' — ' . config('app.name')">
+<x-layouts.public :title="__('ui.page_experience') . ' — ' . config('app.name')" maxWidth="max-w-6xl">
     <x-page-header :title="__('ui.page_experience')" :subtitle="__('ui.sub_experience')" />
 
     <div x-data="tabs()" class="mt-8">

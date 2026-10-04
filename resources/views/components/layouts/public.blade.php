@@ -1,4 +1,4 @@
-@props(['maxWidth' => 'max-w-3xl', 'description' => null, 'image' => null, 'isProject' => false])
+@props(['maxWidth' => 'max-w-6xl', 'description' => null, 'image' => null, 'isProject' => false])
 <!DOCTYPE html>
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
