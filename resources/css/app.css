@@ -66,15 +66,17 @@
    CSS CUSTOM PROPERTIES — Tema Gelap
    ───────────────────────────────────────────── */
 html.dark {
-    --canvas: #09090B;
-    --canvas-muted: #18181B;
-    --surf: #09090B;
-    --ink: #FAFAFA;
-    --ink-muted: #A1A1AA;
-    --line: #27272A;
-    --brand: #E8743F;
+    --canvas: #0A0A0A; /* Latar belakang utama (pekat) */
+    --canvas-muted: #141414;
+    --surf: #111111; /* Latar sidebar/kartu (sedikit lebih terang) */
+    
+    --ink: #EDEDED; /* Putih lembut (tidak menyilaukan) */
+    --ink-muted: #888888; /* Abu-abu netral */
+    --line: #333333; /* Garis batas (elegan) */
+    
+    --brand: #E8743F; /* Oranye */
     --brand-hover: #C85F2A;
-    --brand-fg: #09090B;
+    --brand-fg: #FFFFFF; /* Teks di dalam tombol oranye lebih bagus putih! */
     --brand-ink: #E8743F;
     --ok: #4ade80;
 }
