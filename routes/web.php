@@ -53,10 +53,3 @@ Route::middleware(['throttle:60,1'])->group(function () {
     });
 });
 
-// CSP Report Endpoint
-Route::post('/api/csp-report', function (Request $request) {
-    $content = substr($request->getContent(), 0, 2048);
-    Log::channel('csp')->info('CSP Violation: '.$content);
-
-    return response()->noContent();
-})->middleware(['throttle:10,1'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class, \Illuminate\Session\Middleware\StartSession::class]);
