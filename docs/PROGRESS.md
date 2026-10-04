@@ -512,3 +512,16 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
 - [x] Kelas CSS \.cv-paper\ dan aturan cetak \@page\ di \pp.css\ tanpa palet warna baru (lokal override token).
 - [x] Tautan 'Lihat CV versi web' di halaman About dan meta noindex pada CV.
 - [x] 151 tes dilewati (0 gagal, 0 skipped), termasuk 7 tes spesifik untuk halaman CV cetak dan Livewire admin.
+
+### Audit Keamanan & Perbaikan Deploy (Oct 4)
+- **Status:** Selesai pada 2026-10-04
+- **Perbaikan Keamanan:**
+  - Menghapus \	rustProxies(at: '*')\ dari \ootstrap/app.php\ yang membuat semua IP dipercaya dan mem-bypass \TRUSTED_PROXIES\ di \.env\.
+  - Memindahkan route \/api/csp-report\ ke \outes/api.php\ untuk melepaskannya sepenuhnya dari \PreventRequestForgery\ dan \StartSession\ agar menerima POST dari browser tanpa error 419 (CSRF).
+- **Perbaikan Konten & SEO:**
+  - Menghapus file statis \public/robots.txt\ agar Nginx merender rute dinamis Laravel yang memuat \Sitemap:\.
+  - Mengubah pemanggilan public_text() di \bout.blade.php\ ke komponen \<x-prose>\ agar teks About Profile dapat merender format Markdown tebal dan miring dengan aman.
+- **Perbaikan Nginx & Desain:**
+  - Membersihkan BOM (Byte Order Mark) UTF-8 yang merusak (file Nginx 0 byte) di \deploy/nginx.conf\. Memperbarui panduan \DEPLOY.md\ untuk otomatis membersihkan BOM dengan \sed\.
+  - Membersihkan sisa-sisa kelas Tailwind glassmorphism (\ackdrop-blur\), bayangan (\shadow-sm\), dan border raksasa (\ounded-2xl\) di 3 file view untuk mematuhi \KONSEP.md\ (Brutalist Lite).
+  - 158/158 tes hijau.
