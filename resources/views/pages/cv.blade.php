@@ -26,14 +26,14 @@
 <article class="cv-content p-8 md:p-10 print:p-0" aria-label="Curriculum Vitae">
 
     {{-- ─── KEPALA ─────────────────────────────────────────────────────────── --}}
-    <header class="cv-header flex items-start gap-4 pb-4 mb-6 border-b border-line">
+    <header class="cv-header flex items-start gap-4 pb-4 mb-6 border-b border-gray-200">
         <div class="flex-1 min-w-0">
-            <h1 class="text-xl font-bold text-ink leading-tight">{{ $name }}</h1>
+            <h1 class="text-xl font-bold text-gray-900 leading-tight">{{ $name }}</h1>
             @if($role)
-                <p class="text-sm text-ink-muted mt-0.5">{{ $role }}</p>
+                <p class="text-sm text-gray-600 mt-0.5">{{ $role }}</p>
             @endif
             @if($location)
-                <p class="text-xs text-ink-muted mt-0.5">{{ $location }}</p>
+                <p class="text-xs text-gray-600 mt-0.5">{{ $location }}</p>
             @endif
 
             {{-- Kontak dari tautan show_on_cv --}}
@@ -47,7 +47,7 @@
                         @endphp
                         <a
                             href="{{ $cvLink->url }}"
-                            class="cv-contact-link text-xs text-ink-muted hover:text-ink"
+                            class="cv-contact-link text-xs text-gray-600 hover:text-gray-900"
                             target="_blank"
                             rel="noopener noreferrer"
                         >{{ $linkLabel }}</a>
@@ -58,7 +58,7 @@
 
         {{-- Foto kecil: hanya bila dua syarat terpenuhi --}}
         @if($showPhoto)
-            <div class="cv-photo shrink-0 w-[28mm] h-[36mm] overflow-hidden border border-line rounded-sm bg-canvas-muted">
+            <div class="cv-photo shrink-0 w-[28mm] h-[36mm] overflow-hidden border border-gray-200 rounded-sm bg-gray-100">
                 <img
                     src="{{ media_url($siteSetting->photo) }}"
                     alt="{{ $name }}"
@@ -75,7 +75,7 @@
     @if($summaryText)
         <section class="cv-section mb-5 break-inside-avoid">
             <h2 class="cv-section-title">{{ __('ui.cv_summary') }}</h2>
-            <p class="text-sm text-ink leading-relaxed">{{ $summaryText }}</p>
+            <p class="text-sm text-gray-900 leading-relaxed">{{ $summaryText }}</p>
         </section>
     @endif
 
@@ -91,17 +91,17 @@
                 <div class="cv-entry break-inside-avoid mb-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
-                            <p class="text-sm font-semibold text-ink leading-tight">{{ $title }}</p>
-                            <p class="text-xs text-ink-muted">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                            <p class="text-sm font-semibold text-gray-900 leading-tight">{{ $title }}</p>
+                            <p class="text-xs text-gray-600">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
                         </div>
-                        <p class="text-xs text-ink-muted shrink-0 text-right">
+                        <p class="text-xs text-gray-600 shrink-0 text-right">
                             {{ $exp->started_at?->translatedFormat('M Y') }}
                             – {{ $exp->ended_at ? $exp->ended_at->translatedFormat('M Y') : __('ui.present') }}
                         </p>
                     </div>
                     @php $desc = public_text($exp->description ?? ''); @endphp
                     @if($desc)
-                        <div class="mt-1 text-xs text-ink-muted leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
+                        <div class="mt-1 text-xs text-gray-600 leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
                     @endif
                 </div>
             @endforeach
@@ -120,17 +120,17 @@
                 <div class="cv-entry break-inside-avoid mb-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
-                            <p class="text-sm font-semibold text-ink leading-tight">{{ $title }}</p>
-                            <p class="text-xs text-ink-muted">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                            <p class="text-sm font-semibold text-gray-900 leading-tight">{{ $title }}</p>
+                            <p class="text-xs text-gray-600">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
                         </div>
-                        <p class="text-xs text-ink-muted shrink-0 text-right">
+                        <p class="text-xs text-gray-600 shrink-0 text-right">
                             {{ $exp->started_at?->translatedFormat('M Y') }}
                             – {{ $exp->ended_at ? $exp->ended_at->translatedFormat('M Y') : __('ui.present') }}
                         </p>
                     </div>
                     @php $desc = public_text($exp->description ?? ''); @endphp
                     @if($desc)
-                        <div class="mt-1 text-xs text-ink-muted leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
+                        <div class="mt-1 text-xs text-gray-600 leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
                     @endif
                 </div>
             @endforeach
@@ -149,17 +149,17 @@
                 <div class="cv-entry break-inside-avoid mb-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
-                            <p class="text-sm font-semibold text-ink leading-tight">{{ $title }}</p>
-                            <p class="text-xs text-ink-muted">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                            <p class="text-sm font-semibold text-gray-900 leading-tight">{{ $title }}</p>
+                            <p class="text-xs text-gray-600">{{ $exp->organization }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
                         </div>
-                        <p class="text-xs text-ink-muted shrink-0 text-right">
+                        <p class="text-xs text-gray-600 shrink-0 text-right">
                             {{ $exp->started_at?->translatedFormat('M Y') }}
                             – {{ $exp->ended_at ? $exp->ended_at->translatedFormat('M Y') : __('ui.present') }}
                         </p>
                     </div>
                     @php $desc = public_text($exp->description ?? ''); @endphp
                     @if($desc)
-                        <div class="mt-1 text-xs text-ink-muted leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
+                        <div class="mt-1 text-xs text-gray-600 leading-relaxed">{!! Str::markdown($desc, ['html_input' => 'strip']) !!}</div>
                     @endif
                 </div>
             @endforeach
@@ -178,12 +178,12 @@
                 <div class="cv-entry break-inside-avoid mb-3">
                     <div class="flex items-start justify-between gap-2">
                         <div>
-                            <p class="text-sm font-semibold text-ink leading-tight">{{ $orgName }}</p>
+                            <p class="text-sm font-semibold text-gray-900 leading-tight">{{ $orgName }}</p>
                             @if($title)
-                                <p class="text-xs text-ink-muted">{{ $title }}</p>
+                                <p class="text-xs text-gray-600">{{ $title }}</p>
                             @endif
                         </div>
-                        <p class="text-xs text-ink-muted shrink-0 text-right">
+                        <p class="text-xs text-gray-600 shrink-0 text-right">
                             {{ $exp->started_at?->format('Y') }}
                             – {{ $exp->ended_at ? $exp->ended_at->format('Y') : __('ui.present') }}
                         </p>
@@ -204,8 +204,8 @@
                         $items = array_filter(array_map('trim', explode(',', $skillGroup['items'] ?? '')));
                     @endphp
                     @if($groupName && count($items) > 0)
-                        <div class="text-xs text-ink flex gap-2">
-                            <span class="font-semibold shrink-0 text-ink-muted">{{ $groupName }}:</span>
+                        <div class="text-xs text-gray-900 flex gap-2">
+                            <span class="font-semibold shrink-0 text-gray-600">{{ $groupName }}:</span>
                             <span>{{ implode(', ', array_values($items)) }}</span>
                         </div>
                     @endif
@@ -222,13 +222,13 @@
                 @foreach($certificates as $cert)
                     <div class="cv-entry flex items-start justify-between gap-2 break-inside-avoid">
                         <div>
-                            <span class="text-sm font-medium text-ink">{{ $cert->title }}</span>
+                            <span class="text-sm font-medium text-gray-900">{{ $cert->title }}</span>
                             @if($cert->issuer)
-                                <span class="text-xs text-ink-muted ml-1">· {{ $cert->issuer }}</span>
+                                <span class="text-xs text-gray-600 ml-1">· {{ $cert->issuer }}</span>
                             @endif
                         </div>
                         @if($cert->issued_at)
-                            <span class="text-xs text-ink-muted shrink-0">{{ $cert->issued_at->format('Y') }}</span>
+                            <span class="text-xs text-gray-600 shrink-0">{{ $cert->issued_at->format('Y') }}</span>
                         @endif
                     </div>
                 @endforeach

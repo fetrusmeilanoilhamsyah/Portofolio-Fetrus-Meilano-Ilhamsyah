@@ -290,9 +290,9 @@ body {
     --ok: #15803d;
     --color-ok: #15803d;
 
-    background-color: var(--canvas);
-    color: var(--ink);
-    border: 1px solid var(--line);
+    background-color: #FFFFFF; /* white */
+    color: #111827; /* gray-900 */
+    border: 1px solid #E5E7EB; /* gray-200 */
     font-family: var(--font-sans);
 }
 
@@ -301,20 +301,20 @@ body {
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--ink-muted);
-    border-bottom: 1px solid var(--line);
+    color: #4B5563; /* text-gray-600 */
+    border-bottom: 1px solid #E5E7EB; /* border-gray-200 */
     padding-bottom: 0.25rem;
     margin-bottom: 0.75rem;
 }
 
 /* Tautan kontak di CV: tidak berwarna aneh, tidak ada garis bawah cetak */
 .cv-contact-link {
-    color: var(--ink-muted);
+    color: #4B5563;
     text-decoration: none;
 }
 
 .cv-contact-link:hover {
-    color: var(--ink);
+    color: #111827;
     text-decoration: underline;
 }
 
@@ -375,7 +375,7 @@ body {
 
     /* Tautan tidak berwarna, tidak ada URL setelah tautan */
     a, a:visited {
-        color: var(--ink) !important;
+        color: #111827 !important;
         text-decoration: none !important;
     }
 
