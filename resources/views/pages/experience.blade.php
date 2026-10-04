@@ -48,11 +48,9 @@
                             <h2 class="text-xl font-bold mb-6 text-ink pb-2 border-b border-line">
                                 {{ ucfirst($kind) }}
                             </h2>
-                            <div class="ml-2 space-y-8 border-l-2 border-line">
+                            <div class="space-y-0 mt-4">
                                 @foreach($experiences[$kind] as $exp)
-                                    <div class="relative pl-6">
-                                        {{-- Timeline dot --}}
-                                        <div class="absolute w-3 h-3 bg-brand rounded-full -left-[7px] top-2 ring-4 ring-canvas"></div>
+                                    <div class="py-8 first:pt-0 last:pb-0 border-b border-line last:border-0">
                                         
                                         <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                                             <div class="flex-1">
@@ -71,12 +69,12 @@
                                                 </div>
                                                 
                                                 @if($exp->description)
-                                                    <div class="mt-3">
-                                                        <x-prose :content="$exp->description" class="text-sm" />
+                                                    <div class="mt-4 prose-sm text-ink-muted">
+                                                        <x-prose :content="$exp->description" />
                                                     </div>
                                                 @endif
                                             </div>
-                                            <div class="text-sm text-ink-muted whitespace-nowrap bg-canvas-muted px-2 py-1 rounded">
+                                            <div class="text-sm text-ink-muted whitespace-nowrap bg-canvas-muted px-2.5 py-1 rounded-sm border border-line">
                                                 {{ $exp->started_at->translatedFormat('M Y') }} — 
                                                 {{ $exp->ended_at ? $exp->ended_at->translatedFormat('M Y') : __('ui.present') }}
                                             </div>
