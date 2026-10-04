@@ -59,4 +59,4 @@ Route::post('/api/csp-report', function (Request $request) {
     Log::channel('csp')->info('CSP Violation: '.$content);
 
     return response()->noContent();
-})->middleware(['throttle:10,1']);
+})->middleware(['throttle:10,1'])->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class, \Illuminate\Session\Middleware\StartSession::class]);
