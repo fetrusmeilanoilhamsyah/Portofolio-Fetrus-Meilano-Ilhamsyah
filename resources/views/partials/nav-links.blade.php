@@ -13,7 +13,7 @@
 @endphp
 
 <ul
-    class="flex flex-col gap-3"
+    class="flex flex-col lg:flex-row gap-2 lg:gap-1"
     role="list"
 >
     @foreach ($links as $link)
@@ -26,10 +26,10 @@
                 href="{{ $url }}"
                 @if($isMobile && ($closeMenu ?? false)) @click="open = false" @endif
                 aria-current="{{ $isActive ? 'page' : 'false' }}"
-                class="flex items-center gap-3 px-3 h-[40px] text-sm rounded-md font-medium transition-all duration-200 ease-out active:scale-[0.98] active:opacity-80 focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-ink/5' }}"
+                class="flex items-center gap-3 lg:gap-2 px-3 lg:px-3 h-[42px] lg:h-[36px] text-sm rounded-md font-medium transition-all duration-150 ease-out active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none {{ $isActive ? 'text-brand-ink bg-brand/10' : 'text-ink-muted hover:text-ink hover:bg-ink/5' }}"
             >
-                <x-svg-icon :name="$link['icon']" class="w-[18px] h-[18px] shrink-0 {{ $isActive ? 'text-brand-ink' : '' }}" stroke-width="1.75" aria-hidden="true" />
-                {{ $link['label'] }}
+                <x-svg-icon :name="$link['icon']" class="w-[18px] h-[18px] shrink-0 lg:hidden xl:block xl:w-4 xl:h-4 {{ $isActive ? 'text-brand-ink' : '' }}" stroke-width="1.75" aria-hidden="true" />
+                <span>{{ $link['label'] }}</span>
             </a>
         </li>
     @endforeach

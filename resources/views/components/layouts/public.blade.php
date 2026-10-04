@@ -95,9 +95,9 @@
         {{ __('ui.skip_to_content') }}
     </a>
 
-    {{-- ═══ MOBILE: bilah atas ═══ --}}
-    <header
-        class="lg:hidden flex items-center justify-between px-4 py-3 border-b bg-surf border-line"
+        {{-- ═══ HEADER NAVIGASI (Desktop & Mobile) ═══ --}}
+    <header 
+        class="sticky top-0 z-40 bg-surf/95 backdrop-blur-md border-b border-line w-full"
         x-data="{ 
             open: false,
             init() {
@@ -108,88 +108,72 @@
             }
         }"
     >
-        {{-- Nama singkat --}}
-        <a
-            href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-            class="text-sm font-bold tracking-tight text-brand-ink"
-        >
-            {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
-        </a>
-
-        {{-- Tombol buka menu --}}
-        <button
-            type="button"
-            @click="open = true; $nextTick(() => $refs.mobileMenu.focus())"
-            class="p-2 rounded-md text-ink-muted"
-            :aria-expanded="open"
-            aria-controls="mobile-menu"
-            aria-label="{{ __('ui.open_menu') }}"
-        >
-            {{-- Lucide: Menu --}}
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                 aria-hidden="true">
-                <line x1="4" x2="20" y1="12" y2="12"/>
-                <line x1="4" x2="20" y1="6" y2="6"/>
-                <line x1="4" x2="20" y1="18" y2="18"/>
-            </svg>
-        </button>
-
-        {{-- ─── Panel geser mobile ─── --}}
-        <div
-            id="mobile-menu"
-            x-show="open"
-            x-cloak
-            role="dialog"
-            aria-modal="true"
-            aria-label="{{ __('ui.aria_main_menu') }}"
-            @keydown.escape.window="open = false"
-            x-trap.noscroll="open"
-            class="fixed inset-0 z-50 flex"
-        >
-            {{-- Overlay --}}
-            <div
-                class="absolute inset-0 bg-black/40"
-                @click="open = false"
-                aria-hidden="true"
-            ></div>
-
-            {{-- Panel --}}
-            <nav
-                x-ref="mobileMenu"
-                tabindex="-1"
-                class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 gap-6 focus:outline-none bg-surf"
-            >
-                {{-- Close Button --}}
-                <button
-                    type="button"
-                    @click="open = false"
-                    class="absolute top-4 right-4 p-2 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5"
-                    aria-label="{{ __('ui.close_menu') }}"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                         stroke-linejoin="round" aria-hidden="true">
-                        <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
-                    </svg>
-                </button>
-
-                <div class="flex flex-col items-center text-center gap-3">
-                    {{-- Identitas --}}
+        <div class="max-w-7xl mx-auto px-4 lg:px-8 h-[64px] flex items-center justify-between">
+            {{-- KIRI: Identitas / Logo --}}
+            <div class="flex items-center gap-3">
+                <a href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}" class="flex items-center gap-2 lg:gap-3 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm">
                     @if($siteSetting?->photo)
-                        <div class="w-28 h-28 shrink-0 rounded-lg overflow-hidden bg-canvas ring-1 ring-line/50">
+                        <div class="w-8 h-8 shrink-0 rounded-full overflow-hidden bg-canvas ring-1 ring-line/50 transition-transform group-hover:scale-105">
                             <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
                         </div>
                     @else
-                        <div class="w-28 h-28 rounded-lg bg-brand/5 text-brand-ink flex items-center justify-center text-xl font-bold shrink-0 ring-1 ring-line/50">
+                        <div class="w-8 h-8 rounded-full bg-brand/5 text-brand-ink flex items-center justify-center text-xs font-bold shrink-0 ring-1 ring-line/50 transition-transform group-hover:scale-105">
                             {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
+                        </div>
+                    @endif
+                    <span class="font-bold text-[15px] tracking-tight text-ink group-hover:text-brand-ink transition-colors hidden sm:block">
+                        {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
+                    </span>
+                    <span class="font-bold text-[15px] tracking-tight text-ink group-hover:text-brand-ink transition-colors sm:hidden">
+                        {{ explode(' ', public_text($siteSetting?->name) ?? config('app.name', 'Portofolio'))[0] }}
+                    </span>
+                </a>
+            </div>
+
+            {{-- TENGAH: Menu Navigasi Desktop --}}
+            <nav class="hidden lg:flex items-center" aria-label="{{ __('ui.aria_main_menu') }}">
+                @include('partials.nav-links', ['mobile' => false])
+            </nav>
+
+            {{-- KANAN: Tools & Mobile Toggle --}}
+            <div class="flex items-center gap-1.5 lg:gap-3">
+                {{-- Command Palette Desktop --}}
+                <button type="button" @click="$dispatch('open-palette')" class="hidden lg:flex items-center justify-center w-8 h-8 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5 transition-colors" aria-label="{{ __('ui.command_palette') }}" title="Search (⌘K)">
+                    <x-svg-icon name="lucide-search" class="w-[18px] h-[18px]" stroke-width="2" />
+                </button>
+                
+                {{-- Pembatas --}}
+                <div class="hidden lg:block w-px h-4 bg-line mx-1"></div>
+
+                <div class="flex items-center gap-1">
+                    @include('partials.theme-toggle')
+                    @include('partials.lang-toggle')
+                </div>
+                
+                {{-- Mobile Hamburger --}}
+                <button type="button" @click="open = true; $nextTick(() => $refs.mobileMenu.focus())" class="lg:hidden p-2 rounded-md text-ink-muted hover:bg-ink/5" aria-label="{{ __('ui.open_menu') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                </button>
+            </div>
+        </div>
+
+        {{-- MOBILE DRAWER --}}
+        <div id="mobile-menu" x-show="open" x-cloak role="dialog" aria-modal="true" aria-label="{{ __('ui.aria_main_menu') }}" @keydown.escape.window="open = false" x-trap.noscroll="open" class="fixed inset-0 z-50 flex lg:hidden">
+            <div class="absolute inset-0 bg-black/40" @click="open = false" aria-hidden="true"></div>
+            <nav x-ref="mobileMenu" tabindex="-1" class="relative z-10 w-72 flex flex-col h-full overflow-y-auto p-6 gap-6 focus:outline-none bg-surf border-r border-line">
+                <button type="button" @click="open = false" class="absolute top-4 right-4 p-2 rounded-md text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ __('ui.close_menu') }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+                <div class="flex flex-col items-center text-center gap-3">
+                    @if($siteSetting?->photo)
+                        <div class="w-24 h-24 shrink-0 rounded-full overflow-hidden bg-canvas ring-1 ring-line/50">
+                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
                         </div>
                     @endif
                     <div>
                         <span class="block font-bold text-lg leading-tight mb-0.5 text-ink">
                             {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
                         </span>
-                        
                         @if($siteSetting?->cv_file)
                             <div class="mt-2 flex justify-center">
                                 <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-brand/10 text-brand-ink hover:bg-brand/20 transition-colors focus:outline-none">
@@ -200,19 +184,10 @@
                         @endif
                     </div>
                 </div>
-
-                {{-- Toggle bahasa & tema --}}
-                <div class="flex items-center gap-3">
-                    @include('partials.theme-toggle')
-                    @include('partials.lang-toggle')
-                </div>
-
                 @include('partials.nav-links', ['mobile' => true, 'closeMenu' => true])
-
                 <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
-                    {{-- Ikon akun --}}
                     @if($sidebarSocialLinks->isNotEmpty())
-                        <div class="flex items-center gap-1">
+                        <div class="flex items-center gap-1 justify-center">
                             @foreach($sidebarSocialLinks as $sLink)
                                 <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
                                     <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
@@ -220,114 +195,30 @@
                             @endforeach
                         </div>
                     @endif
-
                 </div>
             </nav>
         </div>
     </header>
 
-    <div class="flex flex-1">
-
-        {{-- ═══ DESKTOP: sidebar kiri tetap ═══ --}}
-        <aside
-            class="hidden lg:flex flex-col w-64 xl:w-72 shrink-0 sticky top-0 h-screen overflow-y-auto layout-sidebar bg-surf border-r border-line"
-        >
-            <div class="flex flex-col flex-1 p-6 gap-6">
-
-                {{-- Identitas --}}
-                <div class="flex flex-col items-center text-center gap-4">
-                    @if($siteSetting?->photo)
-                        <div class="w-24 h-24 shrink-0 rounded-lg overflow-hidden bg-canvas ring-1 ring-line/50">
-                            <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover">
-                        </div>
-                    @else
-                        <div class="w-24 h-24 rounded-lg bg-brand/5 text-brand-ink flex items-center justify-center text-2xl font-bold shrink-0 ring-1 ring-line/50">
-                            {{ strtoupper(substr(public_text($siteSetting?->name) ?? 'PF', 0, 2)) }}
-                        </div>
-                    @endif
-                    <div>
-                        <a
-                            href="{{ app()->getLocale() === 'en' ? route('en.home') : route('home') }}"
-                            class="block font-bold text-lg leading-tight mb-1 text-brand-ink"
-                        >
-                            {{ public_text($siteSetting?->name) ?? config('app.name', 'Portofolio') }}
-                        </a>
-                        
-                        @if($siteSetting?->cv_file)
-                            <div class="mt-2 flex justify-center">
-                                <a href="{{ media_url($siteSetting->cv_file) }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase rounded-full bg-brand/10 text-brand-ink hover:bg-brand/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand">
-                                    <svg class="w-3 h-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                                    {{ __('ui.download_cv', ['default' => 'Unduh CV']) }}
-                                </a>
-                            </div>
-                        @endif
-                    </div>
-                </div>
-
-                {{-- Toggle bahasa & tema --}}
-                <div class="flex items-center gap-3">
-                    @include('partials.theme-toggle')
-                    @include('partials.lang-toggle')
-                </div>
-
-                {{-- Navigasi --}}
-                <nav aria-label="{{ __('ui.aria_main_menu') }}">
-                    @include('partials.nav-links', ['mobile' => false])
-                </nav>
-
-                {{-- Bagian bawah sidebar --}}
-                <div class="mt-auto pt-4 border-t border-line flex flex-col gap-3">
-                    {{-- Ikon akun --}}
-                    @if($sidebarSocialLinks->isNotEmpty())
-                        <div class="flex items-center gap-1">
-                            @foreach($sidebarSocialLinks as $sLink)
-                                <a href="{{ $sLink->url }}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-center w-9 h-9 rounded-md transition-colors text-ink-muted hover:text-ink hover:bg-ink/5" aria-label="{{ public_text($sLink->label) }}" title="{{ public_text($sLink->label) }}">
-                                    <x-svg-icon :name="$sLink->icon" class="w-4 h-4" />
-                                </a>
-                            @endforeach
-                        </div>
-                    @endif
-
-                    {{-- Tombol palet perintah --}}
-                    <button
-                        type="button"
-                        @click="$dispatch('open-palette')"
-                        aria-label="{{ __('ui.command_palette') }}"
-                        class="w-full flex items-center gap-2 px-3 py-2 text-sm rounded-md border cursor-pointer text-ink-muted border-line bg-canvas hover:bg-ink/5 active:scale-95 transition-all duration-150"
-                    >
-                        <x-svg-icon name="lucide-command" class="w-3.5 h-3.5" aria-hidden="true" />
-                        <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>
-                        <kbd class="ml-auto text-xs font-mono px-1.5 py-0.5 rounded border border-line text-[0.6875rem]">⌘K</kbd>
-                    </button>
-                </div>
-            </div>
-        </aside>
-
-        {{-- ═══ KONTEN UTAMA ═══ --}}
-        <main
-            id="main-content"
-            class="flex-1 flex flex-col min-w-0 px-6 py-8 md:px-8 lg:px-12 xl:px-16"
-            tabindex="-1"
-        >
+    {{-- KONTEN UTAMA --}}
+    <main id="main-content" class="flex-1 flex flex-col min-w-0 w-full" tabindex="-1">
+        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 flex-1 flex flex-col">
             <div class="mx-auto w-full {{ $maxWidth }} flex-1">
                 {{ $slot }}
             </div>
+        </div>
 
-            <footer class="mx-auto w-full {{ $maxWidth }} mt-20 pt-8 pb-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
-                
-                {{-- KIRI: Hak Cipta --}}
+        {{-- FOOTER UTAMA --}}
+        <footer class="w-full border-t border-line bg-surf py-8 mt-auto">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 print:hidden">
                 <div class="flex-1 w-full flex justify-center md:justify-start text-[13px] text-ink-muted order-3 md:order-1">
                     &copy; {{ date('Y') }} {{ public_text($siteSetting?->name) ?? config('app.name') }}
                 </div>
-                
-                {{-- TENGAH: Tautan CV --}}
                 <div class="flex-1 w-full flex justify-center text-[13px] order-1 md:order-2">
                     <a href="{{ localized_route('cv') }}" class="font-medium text-ink-muted hover:text-brand-ink transition-colors focus:outline-none focus-visible:underline">
                         {{ __('ui.view_cv_web') }} &rarr;
                     </a>
                 </div>
-
-                {{-- KANAN: Sosmed --}}
                 <div class="flex-1 w-full flex justify-center md:justify-end order-2 md:order-3">
                     @if($sidebarSocialLinks->isNotEmpty())
                         <div class="flex items-center gap-4">
@@ -339,12 +230,10 @@
                         </div>
                     @endif
                 </div>
+            </div>
+        </footer>
+    </main>
 
-            </footer>
-        </main>
-
-    </div>
-    
     <x-command-palette />
 
     @stack('scripts')
