@@ -3,7 +3,7 @@
 use App\Http\Controllers\CommandPaletteController;
 use App\Http\Controllers\PublicController;
 use App\Http\Middleware\SetLocale;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -59,4 +59,4 @@ Route::post('/api/csp-report', function (Request $request) {
     Log::channel('csp')->info('CSP Violation: '.$content);
 
     return response()->noContent();
-})->middleware(['throttle:10,1'])->withoutMiddleware([VerifyCsrfToken::class]);
+})->middleware(['throttle:10,1'])->withoutMiddleware([PreventRequestForgery::class]);

@@ -86,10 +86,9 @@
 
                     {{-- Kolom Kanan: Foto Profil --}}
                     @if($siteSetting->photo)
-                        <div class="hidden lg:block lg:col-span-4 relative group">
-                            <div class="absolute -inset-2 bg-line/20 rounded-3xl transform rotate-3 transition-transform duration-500 group-hover:rotate-6"></div>
-                            <div class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-canvas-muted ring-1 ring-line shadow-sm">
-                                <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy">
+                        <div class="hidden lg:block lg:col-span-4 relative">
+                            <div class="relative w-full aspect-[4/5] rounded-lg overflow-hidden bg-canvas-muted ring-1 ring-line">
+                                <img src="{{ media_url($siteSetting->photo) }}" alt="{{ public_text($siteSetting->name) }}" class="w-full h-full object-cover" loading="lazy">
                             </div>
                         </div>
                     @endif

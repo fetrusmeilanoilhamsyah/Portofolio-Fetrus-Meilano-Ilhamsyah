@@ -11,7 +11,7 @@
                         class="prose-portfolio"
                         aria-live="polite"
                     >
-                        {!! public_text($siteSetting->about_body, true) !!}
+                        <x-prose :content="public_text($siteSetting->about_body)" />
                     </div>
                     
                     @if($siteSetting->cv_file)

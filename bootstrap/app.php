@@ -16,8 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->trustProxies(at: '*'); // Placeholder, actual config is read in App\Http\Middleware\TrustProxies
-
         $middleware->replace(
             TrustProxies::class,
             App\Http\Middleware\TrustProxies::class

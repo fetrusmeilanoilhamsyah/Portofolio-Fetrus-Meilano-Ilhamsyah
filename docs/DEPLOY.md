@@ -73,7 +73,7 @@ Salin file Nginx dari `deploy/nginx.conf` ke `/etc/nginx/sites-available/portofo
 # Cadangkan konfigurasi lama nginx
 sudo cp -r /etc/nginx /etc/nginx_backup
 
-sudo cp deploy/nginx.conf /etc/nginx/sites-available/portofolio.conf
+sudo sed 's/\xEF\xBB\xBF//' deploy/nginx.conf > /etc/nginx/sites-available/portofolio.conf
 sudo ln -s /etc/nginx/sites-available/portofolio.conf /etc/nginx/sites-enabled/
 
 # Wajib tes nginx sebelum reload!

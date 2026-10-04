@@ -97,7 +97,7 @@
 
         {{-- ═══ HEADER NAVIGASI (Desktop & Mobile) ═══ --}}
     <header 
-        class="sticky top-0 z-40 bg-surf/95 backdrop-blur-md border-b border-line w-full"
+        class="sticky top-0 z-40 bg-surf border-b border-line w-full"
         x-data="{ 
                         init() {
                 if (!sessionStorage.getItem('mobile_sidebar_seen') && window.innerWidth < 1024) {
@@ -192,7 +192,7 @@
                         type="button"
                         @click="$dispatch('open-palette'); open = false"
                         aria-label="{{ __('ui.command_palette') }}"
-                        class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-full border border-line text-ink bg-canvas-muted hover:bg-line/50 active:scale-[0.98] transition-all duration-150 shadow-sm"
+                        class="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-semibold rounded-full border border-line text-ink bg-canvas-muted hover:bg-line/50 active:scale-[0.98] transition-all duration-150"
                     >
                         <x-svg-icon name="lucide-command" class="w-3.5 h-3.5" aria-hidden="true" />
                         <span>{{ __('ui.command_palette', ['default' => 'Command Palette']) }}</span>

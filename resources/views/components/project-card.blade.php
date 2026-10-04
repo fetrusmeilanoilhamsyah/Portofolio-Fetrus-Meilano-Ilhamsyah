@@ -3,7 +3,7 @@
 <div class="relative flex flex-col h-full bg-surf rounded-lg border border-line overflow-hidden transition-all duration-300 ease-out hover:-translate-y-1 hover:border-brand/40 group">
     <div class="relative w-full aspect-video bg-canvas border-b border-line overflow-hidden shrink-0">
         @if($project->is_featured)
-            <div class="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 bg-brand text-brand-fg px-2.5 py-1 text-[11px] font-semibold rounded border border-brand-hover shadow-sm">
+            <div class="absolute top-3 right-3 z-20 inline-flex items-center gap-1.5 bg-brand text-brand-fg px-2.5 py-1 text-[11px] font-semibold rounded border border-brand-hover">
                 <x-svg-icon name="lucide-pin" class="w-3.5 h-3.5" stroke-width="2.5" />
                 {{ __('ui.featured', ['default' => 'Unggulan']) }}
             </div>
