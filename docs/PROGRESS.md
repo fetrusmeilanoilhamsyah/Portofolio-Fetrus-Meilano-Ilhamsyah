@@ -543,3 +543,15 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
 - Menambahkan email_verified_at ke dalam properti #[Fillable] pada model User agar nilai otomatis tidak terbuang.
 - Menambahkan konfigurasi SESSION_SECURE_COOKIE=true di dalam .env.production.example.
 - Meralat: ->isRequired() pada autentikasi dua faktor di AdminPanelProvider dihapus karena API tersebut tidak kompatibel/tidak diperlukan pada pustaka bawaan Filament\Auth\MultiFactor\App\AppAuthentication (v5). 2FA harus diaktifkan secara manual melalui profil admin.
+
+### Perbaikan Audit Rendah (5 Okt)
+- **Status:** Selesai pada 2026-10-05
+- **Perbaikan UI & Komponen:**
+  - Melengkapi kasus @case pada svg-icon.blade.php agar ikon search, globe, ile-text, map-pin, message-circle, dan download bisa dirender tanpa menjadi rantai.
+  - Menulis ulang ikon pada command-palette agar disuplai langsung melalui server (Blade x-svg-icon) alih-alih mengandalkan pustaka klien Lucide JS, menjaga performa dan mematuhi aturan zero-dependency.
+  - Memperbaiki komponen x-button agar mendukung pelemparan prop $as dan $icon secara *native*.
+- **Perbaikan Fungsional & Keamanan:**
+  - Memasukkan rute /cv ke dalam daftar sitemap.xml.
+  - Mengamankan logika cadangan di BackupCommand.php dengan VACUUM INTO alih-alih penyalinan langsung, memastikan .env tercakup, dan menambah validasi hasil arsip ZIP.
+  - Menghancurkan file fisik sesi untuk tamu di StripGuestCookies guna mencegah penumpukan berkas sesi mati di direktori ramework/sessions/.
+  - Menaikkan level perlindungan keamanan Content-Security-Policy menjadi paksaan nyata (bukan *Report-Only*) dan menghapus izin kompromi 'unsafe-eval'.

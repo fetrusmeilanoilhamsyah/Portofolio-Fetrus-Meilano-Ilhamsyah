@@ -3,10 +3,12 @@
     'href'    => null,
     'type'    => 'button',
     'disabled' => false,
+    'as'      => null,
+    'icon'    => null,
 ])
 
 @php
-    $tag = $href ? 'a' : 'button';
+    $tag = $as ?? ($href ? 'a' : 'button');
 
     $baseClasses = 'inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium rounded-md transition-all duration-200 ease-out active:scale-[0.97] active:opacity-90 focus-visible:outline-none';
     
@@ -26,5 +28,8 @@
         'opacity-50 cursor-not-allowed pointer-events-none' => $disabled,
     ]) }}
 >
+    @if($icon)
+        <x-svg-icon :name="$icon" class="w-4 h-4 shrink-0" />
+    @endif
     {{ $slot }}
 </{{ $tag }}>

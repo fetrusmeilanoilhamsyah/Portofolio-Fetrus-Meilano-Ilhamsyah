@@ -33,7 +33,7 @@ class CommandPaletteController extends Controller
                     'title' => $page['title'],
                     'url' => $page['url'],
                     'category' => __('ui.pages', [], app()->getLocale()),
-                    'icon' => $page['icon'],
+                    'icon' => \Illuminate\Support\Facades\Blade::render('<x-svg-icon name="'.$page['icon'].'" class="w-4 h-4" />'),
                 ];
             }
 
@@ -45,7 +45,7 @@ class CommandPaletteController extends Controller
                     'title' => $project->title,
                     'url' => route(app()->getLocale() === 'en' ? 'en.projects.show' : 'projects.show', $project->slug),
                     'category' => __('ui.projects', [], app()->getLocale()),
-                    'icon' => 'file-text',
+                    'icon' => \Illuminate\Support\Facades\Blade::render('<x-svg-icon name="file-text" class="w-4 h-4" />'),
                 ];
             }
 

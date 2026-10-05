@@ -32,7 +32,7 @@
     >
         <!-- Search Input -->
         <div class="relative border-b border-line flex items-center px-4 py-3">
-            <i data-lucide="search" class="w-5 h-5 text-ink-muted shrink-0"></i>
+            <x-svg-icon name="search" class="w-5 h-5 text-ink-muted shrink-0" />
             <input 
                 x-ref="searchInput"
                 type="text" 
@@ -60,7 +60,7 @@
 
         <!-- Loading State -->
         <div x-show="isLoading" class="p-6 text-center text-ink-muted flex flex-col items-center">
-            <i data-lucide="loader-2" class="w-6 h-6 animate-spin mb-2 text-brand-ink"></i>
+            <x-svg-icon name="loader-2" class="w-6 h-6 animate-spin mb-2 text-brand-ink" />
             <span>{{ __('ui.loading', ['default' => 'Loading...']) }}</span>
         </div>
 
@@ -81,13 +81,13 @@
                             :id="'palette-item-' + index"
                         >
                             <div class="p-2 rounded-lg bg-surf border border-line group-hover:border-brand/30 shrink-0">
-                                <i :data-lucide="result.icon" class="w-4 h-4"></i>
+                                <span x-html="result.icon"></span>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <p class="text-sm font-medium truncate" x-text="result.title"></p>
                                 <p class="text-xs text-ink-muted truncate" x-text="result.category"></p>
                             </div>
-                            <i data-lucide="corner-down-left" class="w-4 h-4 text-ink-muted opacity-0 group-hover:opacity-100 transition-opacity" :class="selectedIndex === index ? 'opacity-100' : ''"></i>
+                            <x-svg-icon name="corner-down-left" class="w-4 h-4 text-ink-muted opacity-0 group-hover:opacity-100 transition-opacity" x-bind:class="selectedIndex === index ? 'opacity-100' : ''" />
                         </a>
                     </template>
                 </div>
@@ -95,7 +95,7 @@
             
             <template x-if="results.length === 0 && searchQuery.length > 0">
                 <div class="px-6 py-8 text-center text-ink-muted">
-                    <i data-lucide="search-x" class="w-8 h-8 mx-auto mb-3 opacity-50"></i>
+                    <x-svg-icon name="search-x" class="w-8 h-8 mx-auto mb-3 opacity-50" />
                     <p>{{ __('ui.no_results', ['default' => 'No results found.']) }}</p>
                 </div>
             </template>
@@ -152,10 +152,7 @@ document.addEventListener('alpine:init', () => {
                 this.data = await response.json();
                 this.hasFetched = true;
                 this.search();
-                // Re-initialize lucide icons for newly added DOM elements if lucide is available
-                if (window.lucide) {
-                    setTimeout(() => window.lucide.createIcons(), 100);
-                }
+                
             } catch (error) {
                 console.error('Failed to fetch command palette data:', error);
             } finally {
@@ -176,10 +173,6 @@ document.addEventListener('alpine:init', () => {
                 );
             }
             this.selectedIndex = 0;
-            
-            if (window.lucide) {
-                setTimeout(() => window.lucide.createIcons(), 50);
-            }
         },
 
         selectNext() {

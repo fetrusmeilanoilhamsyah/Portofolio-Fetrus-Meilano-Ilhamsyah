@@ -147,6 +147,7 @@ class PublicController extends Controller
             route('projects'), route('en.projects'),
             route('social'), route('en.social'),
             route('contact'), route('en.contact'),
+            route('cv'), route('en.cv'),
         ];
 
         foreach ($projects as $project) {

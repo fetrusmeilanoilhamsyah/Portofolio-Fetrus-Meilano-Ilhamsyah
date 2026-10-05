@@ -28,9 +28,22 @@ class BackupCommand extends Command
         if ($zip->open($zipPath, ZipArchive::CREATE) === true) {
             $dbPath = database_path('database.sqlite');
             if (File::exists($dbPath)) {
-                $zip->addFile($dbPath, 'database/database.sqlite');
+                $tempDbPath = $backupDir.'/temp_database.sqlite';
+                if (File::exists($tempDbPath)) {
+                    File::delete($tempDbPath);
+                }
+                
+                \Illuminate\Support\Facades\DB::statement("VACUUM INTO '{$tempDbPath}'");
+                $zip->addFile($tempDbPath, 'database/database.sqlite');
             } else {
                 $this->warn('Database SQLite tidak ditemukan!');
+            }
+
+            $envPath = base_path('.env');
+            if (File::exists($envPath)) {
+                $zip->addFile($envPath, '.env');
+            } else {
+                $this->warn('File .env tidak ditemukan!');
             }
 
             $storagePath = storage_path('app/public');
@@ -40,8 +53,19 @@ class BackupCommand extends Command
                     $zip->addFile($file->getRealPath(), 'storage/app/public/'.$file->getRelativePathname());
                 }
             }
-            $zip->close();
-            $this->info("Pencadangan berhasil: {$zipPath}");
+            
+            if ($zip->close()) {
+                if (isset($tempDbPath) && File::exists($tempDbPath)) {
+                    File::delete($tempDbPath);
+                }
+                $this->info("Pencadangan berhasil: {$zipPath}");
+            } else {
+                $this->error('Gagal menyimpan file ZIP.');
+                if (isset($tempDbPath) && File::exists($tempDbPath)) {
+                    File::delete($tempDbPath);
+                }
+                return 1;
+            }
         } else {
             $this->error('Gagal membuat arsip zip.');
 
