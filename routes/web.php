@@ -3,9 +3,6 @@
 use App\Http\Controllers\CommandPaletteController;
 use App\Http\Controllers\PublicController;
 use App\Http\Middleware\SetLocale;
-use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,4 +49,3 @@ Route::middleware(['throttle:60,1'])->group(function () {
         Route::get('/api/command-palette', [CommandPaletteController::class, 'index'])->name('en.command-palette');
     });
 });
-

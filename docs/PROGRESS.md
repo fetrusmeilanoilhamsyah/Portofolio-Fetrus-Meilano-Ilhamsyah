@@ -1,4 +1,4 @@
-﻿# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
+# PROGRESS: Portofolio Fetrus Meilano Ilhamsyah
 
 ## Daftar Tahap
 
@@ -516,12 +516,23 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
 ### Audit Keamanan & Perbaikan Deploy (Oct 4)
 - **Status:** Selesai pada 2026-10-04
 - **Perbaikan Keamanan:**
-  - Menghapus \	rustProxies(at: '*')\ dari \ootstrap/app.php\ yang membuat semua IP dipercaya dan mem-bypass \TRUSTED_PROXIES\ di \.env\.
+  - Menghapus \rustProxies(at: '*')\ dari \ootstrap/app.php\ yang membuat semua IP dipercaya dan mem-bypass \TRUSTED_PROXIES\ di \.env\.
   - Memindahkan route \/api/csp-report\ ke \outes/api.php\ untuk melepaskannya sepenuhnya dari \PreventRequestForgery\ dan \StartSession\ agar menerima POST dari browser tanpa error 419 (CSRF).
 - **Perbaikan Konten & SEO:**
   - Menghapus file statis \public/robots.txt\ agar Nginx merender rute dinamis Laravel yang memuat \Sitemap:\.
-  - Mengubah pemanggilan public_text() di \bout.blade.php\ ke komponen \<x-prose>\ agar teks About Profile dapat merender format Markdown tebal dan miring dengan aman.
+  - Mengubah pemanggilan public_text() di \bout.blade.php\ ke komponen \<x-prose>\ agar teks About Profile dapat merender format Markdown tebal dan miring dengan aman.
 - **Perbaikan Nginx & Desain:**
   - Membersihkan BOM (Byte Order Mark) UTF-8 yang merusak (file Nginx 0 byte) di \deploy/nginx.conf\. Memperbarui panduan \DEPLOY.md\ untuk otomatis membersihkan BOM dengan \sed\.
-  - Membersihkan sisa-sisa kelas Tailwind glassmorphism (\ackdrop-blur\), bayangan (\shadow-sm\), dan border raksasa (\ounded-2xl\) di 3 file view untuk mematuhi \KONSEP.md\ (Brutalist Lite).
+  - Membersihkan sisa-sisa kelas Tailwind glassmorphism (\ackdrop-blur\), bayangan (\shadow-sm\), dan border raksasa (\ounded-2xl\) di 3 file view untuk mematuhi \KONSEP.md\ (Brutalist Lite).
   - 158/158 tes hijau.
+
+### Perbaikan Audit Sedang (5 Okt)
+- **Status:** Selesai pada 2026-10-05
+- **Perbaikan Keamanan & Validasi:**
+  - Mengunci input URL dengan regex di LinkForm dan melarang javascript:// di contact.blade.php. Menggunakan @js() untuk mencegah quote breakout pada x-data.
+  - Menambahkan bendera JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP pada data JSON-LD di Beranda untuk mencegah XSS dari teks About.
+  - Memperketat validasi regex pada tautan embed di ProjectForm sehingga hanya menerima format /embed/, /e/, atau /video/ dari YouTube, Streamable, dan Vimeo.
+  - Menghapus param ?tab= dari key caching di CacheGuestResponse agar mencegah *Array to string conversion* 500 dan mencegah eksploitasi *cache flooding*.
+- **Perbaikan Fungsional & UI:**
+  - Menambahkan field DatePicker untuk started_at dan ended_at di dalam form ProjectResource.
+  - Mengoreksi kesalahan penulisan atribut judul rekam jejak Filament (ecordTitleAttribute) pada ExperienceResource (menjadi 	itle), CertificateResource (menjadi 	itle), dan LinkResource (menjadi label).

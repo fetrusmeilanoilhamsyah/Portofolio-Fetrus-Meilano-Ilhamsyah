@@ -22,9 +22,7 @@ class CacheGuestResponse
         }
 
         $version = Cache::get('guest_cache_version', 1);
-        $tab = $request->query('tab');
-        $queryString = $tab ? "?tab={$tab}" : '';
-        $cacheKey = 'guest_response_'.$version.'_'.sha1($request->path().$queryString);
+        $cacheKey = 'guest_response_'.$version.'_'.sha1($request->path());
 
         if ($cached = Cache::get($cacheKey)) {
             return response($cached['content'], $cached['status'])

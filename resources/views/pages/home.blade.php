@@ -17,7 +17,7 @@
                 $jsonLd["sameAs"] = $socialLinks ?? [];
             @endphp
             <script type="application/ld+json">
-                {!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES) !!}
+                {!! json_encode($jsonLd, JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) !!}
             </script>
         @endif
     @endpush

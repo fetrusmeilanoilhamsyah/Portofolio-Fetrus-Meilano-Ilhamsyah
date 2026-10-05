@@ -7,6 +7,7 @@ use App\Enums\ProjectStatus;
 use App\Enums\ProjectType;
 use App\Models\Project;
 use App\Services\ImageOptimizer;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
@@ -45,6 +46,12 @@ class ProjectForm
                                     ->label('Tipe')
                                     ->options(ProjectType::class)
                                     ->required(),
+                                DatePicker::make('started_at')
+                                    ->label('Mulai')
+                                    ->native(false),
+                                DatePicker::make('ended_at')
+                                    ->label('Selesai')
+                                    ->native(false),
                                 TagsInput::make('stack')
                                     ->label('Stack teknologi')
                                     ->placeholder('Ketik lalu tekan Enter')
@@ -160,9 +167,20 @@ class ProjectForm
                                                             return;
                                                         }
                                                         $host = parse_url($value, PHP_URL_HOST);
+                                                        $path = parse_url($value, PHP_URL_PATH) ?? '';
                                                         $allowed = ['www.youtube-nocookie.com', 'www.youtube.com', 'player.vimeo.com', 'streamable.com'];
                                                         if (! in_array($host, $allowed)) {
                                                             $fail('Host URL tidak diizinkan. Gunakan YouTube, Vimeo, atau Streamable.');
+
+                                                            return;
+                                                        }
+
+                                                        if (in_array($host, ['www.youtube.com', 'www.youtube-nocookie.com']) && ! str_starts_with($path, '/embed/')) {
+                                                            $fail('URL YouTube harus berupa format embed (contoh: https://www.youtube.com/embed/...).');
+                                                        } elseif ($host === 'streamable.com' && ! str_starts_with($path, '/e/')) {
+                                                            $fail('URL Streamable harus berupa format embed (contoh: https://streamable.com/e/...).');
+                                                        } elseif ($host === 'player.vimeo.com' && ! str_starts_with($path, '/video/')) {
+                                                            $fail('URL Vimeo harus berupa format embed (contoh: https://player.vimeo.com/video/...).');
                                                         }
                                                     };
                                                 },

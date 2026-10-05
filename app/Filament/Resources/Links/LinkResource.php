@@ -25,7 +25,7 @@ class LinkResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'title';
+    protected static ?string $recordTitleAttribute = 'label';
 
     public static function form(Schema $schema): Schema
     {

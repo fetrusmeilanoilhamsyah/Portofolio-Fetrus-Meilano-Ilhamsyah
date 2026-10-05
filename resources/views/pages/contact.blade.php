@@ -19,14 +19,17 @@
                         $href = 'tel:' . preg_replace('/[^0-9\+]/', '', $rawUrl);
                         $isUrl = true;
                     } elseif (filter_var($rawUrl, FILTER_VALIDATE_URL) || Str::startsWith($rawUrl, ['http', 'mailto:', 'tel:'])) {
-                        $isUrl = true;
-                        $displayUrl = str_replace(['mailto:', 'tel:'], '', $rawUrl);
+                        $scheme = parse_url($rawUrl, PHP_URL_SCHEME);
+                        if (in_array(strtolower($scheme ?? 'http'), ['http', 'https', 'mailto', 'tel'])) {
+                            $isUrl = true;
+                            $displayUrl = str_replace(['mailto:', 'tel:'], '', $rawUrl);
+                        }
                     }
                 @endphp
                 <x-card :padding="false" x-data="{ 
                         copied: false, 
                         copy() { 
-                            navigator.clipboard.writeText('{{ $displayUrl }}').then(() => {
+                            navigator.clipboard.writeText(@js($displayUrl)).then(() => {
                                 this.copied = true;
                                 setTimeout(() => this.copied = false, 2000);
                             });

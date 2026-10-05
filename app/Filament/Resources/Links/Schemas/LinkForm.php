@@ -29,7 +29,20 @@ class LinkForm
                                     ->required(),
                                 TextInput::make('url')
                                     ->label('URL')
-                                    ->required(),
+                                    ->required()
+                                    ->rule(function () {
+                                        return function (string $attribute, $value, \Closure $fail) {
+                                            $isUrl = filter_var($value, FILTER_VALIDATE_URL) && preg_match('/^https?:\/\//i', $value);
+                                            $isMailto = preg_match('/^mailto:/i', $value);
+                                            $isTel = preg_match('/^tel:/i', $value);
+                                            $isPhone = preg_match('/^[0-9\+\-\s]+$/', $value);
+                                            $isEmail = filter_var($value, FILTER_VALIDATE_EMAIL);
+
+                                            if (! $isUrl && ! $isMailto && ! $isTel && ! $isPhone && ! $isEmail) {
+                                                $fail('Format tautan tidak valid (harus berupa http/https, email, atau nomor telepon).');
+                                            }
+                                        };
+                                    }),
                                 Select::make('icon')
                                     ->label('Ikon')
                                     ->options([
