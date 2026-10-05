@@ -555,3 +555,7 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
   - Mengamankan logika cadangan di BackupCommand.php dengan VACUUM INTO alih-alih penyalinan langsung, memastikan .env tercakup, dan menambah validasi hasil arsip ZIP.
   - Menghancurkan file fisik sesi untuk tamu di StripGuestCookies guna mencegah penumpukan berkas sesi mati di direktori ramework/sessions/.
   - Menaikkan level perlindungan keamanan Content-Security-Policy menjadi paksaan nyata (bukan *Report-Only*) dan menghapus izin kompromi 'unsafe-eval'.
+
+### Hotfix CSP Alpine.js (6 Okt)
+- **Status:** Selesai pada 2026-10-06
+- **Detail:** Mengembalikan atribut 'unsafe-eval' pada Content-Security-Policy karena sangat dibutuhkan oleh pustaka standar Alpine.js bawaan Laravel untuk memproses interaksi DOM (seperti membuka *Command Palette*).
