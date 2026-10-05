@@ -23,7 +23,7 @@ class SecurityHeaders
             }
 
             // CSP Ketat (Enforced)
-            $csp = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; media-src 'self' blob: https:; object-src 'none'; frame-src 'self' https:; report-uri /api/csp-report";
+            $csp = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self'; media-src 'self' blob: https:; object-src 'none'; frame-src 'self' https:; report-uri /api/csp-report";
             $response->header('Content-Security-Policy', $csp);
         }
 
