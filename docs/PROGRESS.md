@@ -535,4 +535,11 @@ ginx.conf\, `php-fpm-pool.conf`, dan `deploy.sh`.
   - Menghapus param ?tab= dari key caching di CacheGuestResponse agar mencegah *Array to string conversion* 500 dan mencegah eksploitasi *cache flooding*.
 - **Perbaikan Fungsional & UI:**
   - Menambahkan field DatePicker untuk started_at dan ended_at di dalam form ProjectResource.
-  - Mengoreksi kesalahan penulisan atribut judul rekam jejak Filament (ecordTitleAttribute) pada ExperienceResource (menjadi 	itle), CertificateResource (menjadi 	itle), dan LinkResource (menjadi label).
+  - Mengoreksi kesalahan penulisan atribut judul rekam jejak Filament (ecordTitleAttribute) pada ExperienceResource (menjadi  itle), CertificateResource (menjadi  itle), dan LinkResource (menjadi label).
+
+### Perbaikan Keamanan Admin Tambahan (5 Okt)
+- **Status:** Selesai pada 2026-10-05
+- Menambahkan pengecekan panjang kata sandi (minimal 8 karakter) pada perintah make-admin.
+- Menambahkan email_verified_at ke dalam properti #[Fillable] pada model User agar nilai otomatis tidak terbuang.
+- Menambahkan konfigurasi SESSION_SECURE_COOKIE=true di dalam .env.production.example.
+- Meralat: ->isRequired() pada autentikasi dua faktor di AdminPanelProvider dihapus karena API tersebut tidak kompatibel/tidak diperlukan pada pustaka bawaan Filament\Auth\MultiFactor\App\AppAuthentication (v5). 2FA harus diaktifkan secara manual melalui profil admin.

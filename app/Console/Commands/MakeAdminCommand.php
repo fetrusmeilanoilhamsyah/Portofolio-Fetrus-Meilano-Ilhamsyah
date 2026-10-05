@@ -35,6 +35,12 @@ class MakeAdminCommand extends Command
             return self::FAILURE;
         }
 
+        if (strlen($password) < 8) {
+            $this->error('Kata sandi minimal 8 karakter.');
+
+            return self::FAILURE;
+        }
+
         $confirm = $this->secret('Konfirmasi kata sandi');
 
         if ($password !== $confirm) {
